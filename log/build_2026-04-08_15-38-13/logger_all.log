@@ -1,0 +1,464 @@
+[0.272s] DEBUG:colcon:Command line arguments: ['/usr/bin/colcon', 'build']
+[0.272s] DEBUG:colcon:Parsed command line arguments: Namespace(log_base=None, log_level=None, verb_name='build', build_base='build', install_base='install', merge_install=False, symlink_install=False, test_result_base=None, continue_on_error=False, executor='parallel', parallel_workers=4, event_handlers=None, ignore_user_meta=False, metas=['./colcon.meta'], base_paths=['.'], packages_ignore=None, packages_ignore_regex=None, paths=None, packages_up_to=None, packages_up_to_regex=None, packages_above=None, packages_above_and_dependencies=None, packages_above_depth=None, packages_select_by_dep=None, packages_skip_by_dep=None, packages_skip_up_to=None, packages_select_build_failed=False, packages_skip_build_finished=False, packages_select_test_failures=False, packages_skip_test_passed=False, packages_select=None, packages_skip=None, packages_select_regex=None, packages_skip_regex=None, packages_start=None, packages_end=None, allow_overriding=[], cmake_args=None, cmake_target=None, cmake_target_skip_unavailable=False, cmake_clean_cache=False, cmake_clean_first=False, cmake_force_configure=False, ament_cmake_args=None, catkin_cmake_args=None, catkin_skip_building_tests=False, verb_parser=<colcon_defaults.argument_parser.defaults.DefaultArgumentsDecorator object at 0xffff9be01330>, verb_extension=<colcon_core.verb.build.BuildVerb object at 0xffff9be00c70>, main=<bound method BuildVerb.main of <colcon_core.verb.build.BuildVerb object at 0xffff9be00c70>>)
+[0.743s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) check parameters
+[0.743s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) check parameters
+[0.743s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) check parameters
+[0.743s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) check parameters
+[0.743s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) discover
+[0.744s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) discover
+[0.744s] INFO:colcon.colcon_core.package_discovery:Crawling recursively for packages in '/home/jetson/ros2_ws_px4'
+[0.744s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ignore', 'ignore_ament_install']
+[0.744s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore'
+[0.744s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore_ament_install'
+[0.745s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_pkg']
+[0.745s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_pkg'
+[0.745s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_meta']
+[0.745s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_meta'
+[0.745s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ros']
+[0.745s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ros'
+[0.770s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['cmake', 'python']
+[0.770s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'cmake'
+[0.770s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'python'
+[0.770s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['python_setup_py']
+[0.770s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'python_setup_py'
+[0.770s] Level 1:colcon.colcon_core.package_identification:_identify(build) by extensions ['ignore', 'ignore_ament_install']
+[0.771s] Level 1:colcon.colcon_core.package_identification:_identify(build) by extension 'ignore'
+[0.771s] Level 1:colcon.colcon_core.package_identification:_identify(build) ignored
+[0.771s] Level 1:colcon.colcon_core.package_identification:_identify(install) by extensions ['ignore', 'ignore_ament_install']
+[0.771s] Level 1:colcon.colcon_core.package_identification:_identify(install) by extension 'ignore'
+[0.771s] Level 1:colcon.colcon_core.package_identification:_identify(install) ignored
+[0.772s] Level 1:colcon.colcon_core.package_identification:_identify(log) by extensions ['ignore', 'ignore_ament_install']
+[0.772s] Level 1:colcon.colcon_core.package_identification:_identify(log) by extension 'ignore'
+[0.772s] Level 1:colcon.colcon_core.package_identification:_identify(log) ignored
+[0.772s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['ignore', 'ignore_ament_install']
+[0.772s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'ignore'
+[0.773s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'ignore_ament_install'
+[0.773s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['colcon_pkg']
+[0.773s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'colcon_pkg'
+[0.773s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['colcon_meta']
+[0.773s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'colcon_meta'
+[0.773s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['ros']
+[0.773s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'ros'
+[0.773s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['cmake', 'python']
+[0.773s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'cmake'
+[0.774s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'python'
+[0.774s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['python_setup_py']
+[0.774s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'python_setup_py'
+[0.774s] Level 1:colcon.colcon_core.package_identification:_identify(src/fastlio_to_px4) by extensions ['ignore', 'ignore_ament_install']
+[0.774s] Level 1:colcon.colcon_core.package_identification:_identify(src/fastlio_to_px4) by extension 'ignore'
+[0.774s] Level 1:colcon.colcon_core.package_identification:_identify(src/fastlio_to_px4) by extension 'ignore_ament_install'
+[0.774s] Level 1:colcon.colcon_core.package_identification:_identify(src/fastlio_to_px4) by extensions ['colcon_pkg']
+[0.774s] Level 1:colcon.colcon_core.package_identification:_identify(src/fastlio_to_px4) by extension 'colcon_pkg'
+[0.775s] Level 1:colcon.colcon_core.package_identification:_identify(src/fastlio_to_px4) by extensions ['colcon_meta']
+[0.775s] Level 1:colcon.colcon_core.package_identification:_identify(src/fastlio_to_px4) by extension 'colcon_meta'
+[0.775s] Level 1:colcon.colcon_core.package_identification:_identify(src/fastlio_to_px4) by extensions ['ros']
+[0.775s] Level 1:colcon.colcon_core.package_identification:_identify(src/fastlio_to_px4) by extension 'ros'
+[0.781s] DEBUG:colcon.colcon_core.package_identification:Package 'src/fastlio_to_px4' with type 'ros.ament_cmake' and name 'fastlio_to_px4'
+[0.781s] Level 1:colcon.colcon_core.package_identification:_identify(src/offboard_core_pkg) by extensions ['ignore', 'ignore_ament_install']
+[0.781s] Level 1:colcon.colcon_core.package_identification:_identify(src/offboard_core_pkg) by extension 'ignore'
+[0.781s] Level 1:colcon.colcon_core.package_identification:_identify(src/offboard_core_pkg) by extension 'ignore_ament_install'
+[0.782s] Level 1:colcon.colcon_core.package_identification:_identify(src/offboard_core_pkg) by extensions ['colcon_pkg']
+[0.782s] Level 1:colcon.colcon_core.package_identification:_identify(src/offboard_core_pkg) by extension 'colcon_pkg'
+[0.782s] Level 1:colcon.colcon_core.package_identification:_identify(src/offboard_core_pkg) by extensions ['colcon_meta']
+[0.782s] Level 1:colcon.colcon_core.package_identification:_identify(src/offboard_core_pkg) by extension 'colcon_meta'
+[0.782s] Level 1:colcon.colcon_core.package_identification:_identify(src/offboard_core_pkg) by extensions ['ros']
+[0.782s] Level 1:colcon.colcon_core.package_identification:_identify(src/offboard_core_pkg) by extension 'ros'
+[0.784s] DEBUG:colcon.colcon_core.package_identification:Package 'src/offboard_core_pkg' with type 'ros.ament_cmake' and name 'offboard_core_pkg'
+[0.784s] Level 1:colcon.colcon_core.package_identification:_identify(src/offboard_pkg) by extensions ['ignore', 'ignore_ament_install']
+[0.785s] Level 1:colcon.colcon_core.package_identification:_identify(src/offboard_pkg) by extension 'ignore'
+[0.785s] Level 1:colcon.colcon_core.package_identification:_identify(src/offboard_pkg) by extension 'ignore_ament_install'
+[0.785s] Level 1:colcon.colcon_core.package_identification:_identify(src/offboard_pkg) by extensions ['colcon_pkg']
+[0.785s] Level 1:colcon.colcon_core.package_identification:_identify(src/offboard_pkg) by extension 'colcon_pkg'
+[0.785s] Level 1:colcon.colcon_core.package_identification:_identify(src/offboard_pkg) by extensions ['colcon_meta']
+[0.785s] Level 1:colcon.colcon_core.package_identification:_identify(src/offboard_pkg) by extension 'colcon_meta'
+[0.785s] Level 1:colcon.colcon_core.package_identification:_identify(src/offboard_pkg) by extensions ['ros']
+[0.785s] Level 1:colcon.colcon_core.package_identification:_identify(src/offboard_pkg) by extension 'ros'
+[0.787s] DEBUG:colcon.colcon_core.package_identification:Package 'src/offboard_pkg' with type 'ros.ament_cmake' and name 'offboard_pkg'
+[0.787s] Level 1:colcon.colcon_core.package_identification:_identify(src/px4_msgs) by extensions ['ignore', 'ignore_ament_install']
+[0.787s] Level 1:colcon.colcon_core.package_identification:_identify(src/px4_msgs) by extension 'ignore'
+[0.787s] Level 1:colcon.colcon_core.package_identification:_identify(src/px4_msgs) by extension 'ignore_ament_install'
+[0.788s] Level 1:colcon.colcon_core.package_identification:_identify(src/px4_msgs) by extensions ['colcon_pkg']
+[0.788s] Level 1:colcon.colcon_core.package_identification:_identify(src/px4_msgs) by extension 'colcon_pkg'
+[0.788s] Level 1:colcon.colcon_core.package_identification:_identify(src/px4_msgs) by extensions ['colcon_meta']
+[0.788s] Level 1:colcon.colcon_core.package_identification:_identify(src/px4_msgs) by extension 'colcon_meta'
+[0.788s] Level 1:colcon.colcon_core.package_identification:_identify(src/px4_msgs) by extensions ['ros']
+[0.788s] Level 1:colcon.colcon_core.package_identification:_identify(src/px4_msgs) by extension 'ros'
+[0.790s] DEBUG:colcon.colcon_core.package_identification:Package 'src/px4_msgs' with type 'ros.ament_cmake' and name 'px4_msgs'
+[0.790s] Level 1:colcon.colcon_core.package_identification:_identify(src/px4_ros_com) by extensions ['ignore', 'ignore_ament_install']
+[0.790s] Level 1:colcon.colcon_core.package_identification:_identify(src/px4_ros_com) by extension 'ignore'
+[0.790s] Level 1:colcon.colcon_core.package_identification:_identify(src/px4_ros_com) by extension 'ignore_ament_install'
+[0.790s] Level 1:colcon.colcon_core.package_identification:_identify(src/px4_ros_com) by extensions ['colcon_pkg']
+[0.791s] Level 1:colcon.colcon_core.package_identification:_identify(src/px4_ros_com) by extension 'colcon_pkg'
+[0.791s] Level 1:colcon.colcon_core.package_identification:_identify(src/px4_ros_com) by extensions ['colcon_meta']
+[0.791s] Level 1:colcon.colcon_core.package_identification:_identify(src/px4_ros_com) by extension 'colcon_meta'
+[0.791s] Level 1:colcon.colcon_core.package_identification:_identify(src/px4_ros_com) by extensions ['ros']
+[0.791s] Level 1:colcon.colcon_core.package_identification:_identify(src/px4_ros_com) by extension 'ros'
+[0.793s] DEBUG:colcon.colcon_core.package_identification:Package 'src/px4_ros_com' with type 'ros.ament_cmake' and name 'px4_ros_com'
+[0.794s] Level 1:colcon.colcon_core.package_identification:_identify(src/trajectory_generator_pkg) by extensions ['ignore', 'ignore_ament_install']
+[0.794s] Level 1:colcon.colcon_core.package_identification:_identify(src/trajectory_generator_pkg) by extension 'ignore'
+[0.794s] Level 1:colcon.colcon_core.package_identification:_identify(src/trajectory_generator_pkg) by extension 'ignore_ament_install'
+[0.794s] Level 1:colcon.colcon_core.package_identification:_identify(src/trajectory_generator_pkg) by extensions ['colcon_pkg']
+[0.794s] Level 1:colcon.colcon_core.package_identification:_identify(src/trajectory_generator_pkg) by extension 'colcon_pkg'
+[0.794s] Level 1:colcon.colcon_core.package_identification:_identify(src/trajectory_generator_pkg) by extensions ['colcon_meta']
+[0.794s] Level 1:colcon.colcon_core.package_identification:_identify(src/trajectory_generator_pkg) by extension 'colcon_meta'
+[0.795s] Level 1:colcon.colcon_core.package_identification:_identify(src/trajectory_generator_pkg) by extensions ['ros']
+[0.795s] Level 1:colcon.colcon_core.package_identification:_identify(src/trajectory_generator_pkg) by extension 'ros'
+[0.796s] DEBUG:colcon.colcon_core.package_identification:Package 'src/trajectory_generator_pkg' with type 'ros.catkin' and name 'trajectory_generator_pkg'
+[0.796s] Level 1:colcon.colcon_core.package_identification:_identify(src/vision_node_pkg) by extensions ['ignore', 'ignore_ament_install']
+[0.797s] Level 1:colcon.colcon_core.package_identification:_identify(src/vision_node_pkg) by extension 'ignore'
+[0.797s] Level 1:colcon.colcon_core.package_identification:_identify(src/vision_node_pkg) by extension 'ignore_ament_install'
+[0.797s] Level 1:colcon.colcon_core.package_identification:_identify(src/vision_node_pkg) by extensions ['colcon_pkg']
+[0.797s] Level 1:colcon.colcon_core.package_identification:_identify(src/vision_node_pkg) by extension 'colcon_pkg'
+[0.797s] Level 1:colcon.colcon_core.package_identification:_identify(src/vision_node_pkg) by extensions ['colcon_meta']
+[0.797s] Level 1:colcon.colcon_core.package_identification:_identify(src/vision_node_pkg) by extension 'colcon_meta'
+[0.797s] Level 1:colcon.colcon_core.package_identification:_identify(src/vision_node_pkg) by extensions ['ros']
+[0.797s] Level 1:colcon.colcon_core.package_identification:_identify(src/vision_node_pkg) by extension 'ros'
+[0.799s] DEBUG:colcon.colcon_core.package_identification:Package 'src/vision_node_pkg' with type 'ros.ament_python' and name 'vision_node_pkg'
+[0.799s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) using defaults
+[0.799s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) discover
+[0.799s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) using defaults
+[0.799s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) discover
+[0.799s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) using defaults
+[0.869s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) check parameters
+[0.870s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) discover
+[0.876s] DEBUG:colcon.colcon_installed_package_information.package_discovery:Found 8 installed packages in /home/jetson/fastlio2_ws/install
+[0.878s] DEBUG:colcon.colcon_installed_package_information.package_discovery:Found 6 installed packages in /home/jetson/ros2_ws_px4/install
+[0.881s] DEBUG:colcon.colcon_installed_package_information.package_discovery:Found 288 installed packages in /opt/ros/humble
+[0.884s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) using defaults
+[0.974s] Level 5:colcon.colcon_core.verb:set package 'px4_msgs' build argument 'cmake_args' from command line to 'None'
+[0.974s] Level 5:colcon.colcon_core.verb:set package 'px4_msgs' build argument 'cmake_target' from command line to 'None'
+[0.974s] Level 5:colcon.colcon_core.verb:set package 'px4_msgs' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.975s] Level 5:colcon.colcon_core.verb:set package 'px4_msgs' build argument 'cmake_clean_cache' from command line to 'False'
+[0.975s] Level 5:colcon.colcon_core.verb:set package 'px4_msgs' build argument 'cmake_clean_first' from command line to 'False'
+[0.975s] Level 5:colcon.colcon_core.verb:set package 'px4_msgs' build argument 'cmake_force_configure' from command line to 'False'
+[0.975s] Level 5:colcon.colcon_core.verb:set package 'px4_msgs' build argument 'ament_cmake_args' from command line to 'None'
+[0.975s] Level 5:colcon.colcon_core.verb:set package 'px4_msgs' build argument 'catkin_cmake_args' from command line to 'None'
+[0.975s] Level 5:colcon.colcon_core.verb:set package 'px4_msgs' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.975s] DEBUG:colcon.colcon_core.verb:Building package 'px4_msgs' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/jetson/ros2_ws_px4/build/px4_msgs', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/jetson/ros2_ws_px4/install/px4_msgs', 'merge_install': False, 'path': '/home/jetson/ros2_ws_px4/src/px4_msgs', 'symlink_install': False, 'test_result_base': None}
+[0.976s] Level 5:colcon.colcon_core.verb:set package 'vision_node_pkg' build argument 'cmake_args' from command line to 'None'
+[0.976s] Level 5:colcon.colcon_core.verb:set package 'vision_node_pkg' build argument 'cmake_target' from command line to 'None'
+[0.976s] Level 5:colcon.colcon_core.verb:set package 'vision_node_pkg' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.976s] Level 5:colcon.colcon_core.verb:set package 'vision_node_pkg' build argument 'cmake_clean_cache' from command line to 'False'
+[0.976s] Level 5:colcon.colcon_core.verb:set package 'vision_node_pkg' build argument 'cmake_clean_first' from command line to 'False'
+[0.976s] Level 5:colcon.colcon_core.verb:set package 'vision_node_pkg' build argument 'cmake_force_configure' from command line to 'False'
+[0.976s] Level 5:colcon.colcon_core.verb:set package 'vision_node_pkg' build argument 'ament_cmake_args' from command line to 'None'
+[0.976s] Level 5:colcon.colcon_core.verb:set package 'vision_node_pkg' build argument 'catkin_cmake_args' from command line to 'None'
+[0.976s] Level 5:colcon.colcon_core.verb:set package 'vision_node_pkg' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.976s] DEBUG:colcon.colcon_core.verb:Building package 'vision_node_pkg' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/jetson/ros2_ws_px4/build/vision_node_pkg', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/jetson/ros2_ws_px4/install/vision_node_pkg', 'merge_install': False, 'path': '/home/jetson/ros2_ws_px4/src/vision_node_pkg', 'symlink_install': False, 'test_result_base': None}
+[0.977s] Level 5:colcon.colcon_core.verb:set package 'fastlio_to_px4' build argument 'cmake_args' from command line to 'None'
+[0.977s] Level 5:colcon.colcon_core.verb:set package 'fastlio_to_px4' build argument 'cmake_target' from command line to 'None'
+[0.977s] Level 5:colcon.colcon_core.verb:set package 'fastlio_to_px4' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.977s] Level 5:colcon.colcon_core.verb:set package 'fastlio_to_px4' build argument 'cmake_clean_cache' from command line to 'False'
+[0.977s] Level 5:colcon.colcon_core.verb:set package 'fastlio_to_px4' build argument 'cmake_clean_first' from command line to 'False'
+[0.977s] Level 5:colcon.colcon_core.verb:set package 'fastlio_to_px4' build argument 'cmake_force_configure' from command line to 'False'
+[0.977s] Level 5:colcon.colcon_core.verb:set package 'fastlio_to_px4' build argument 'ament_cmake_args' from command line to 'None'
+[0.977s] Level 5:colcon.colcon_core.verb:set package 'fastlio_to_px4' build argument 'catkin_cmake_args' from command line to 'None'
+[0.977s] Level 5:colcon.colcon_core.verb:set package 'fastlio_to_px4' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.977s] DEBUG:colcon.colcon_core.verb:Building package 'fastlio_to_px4' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/jetson/ros2_ws_px4/build/fastlio_to_px4', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/jetson/ros2_ws_px4/install/fastlio_to_px4', 'merge_install': False, 'path': '/home/jetson/ros2_ws_px4/src/fastlio_to_px4', 'symlink_install': False, 'test_result_base': None}
+[0.978s] Level 5:colcon.colcon_core.verb:set package 'offboard_core_pkg' build argument 'cmake_args' from command line to 'None'
+[0.978s] Level 5:colcon.colcon_core.verb:set package 'offboard_core_pkg' build argument 'cmake_target' from command line to 'None'
+[0.978s] Level 5:colcon.colcon_core.verb:set package 'offboard_core_pkg' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.978s] Level 5:colcon.colcon_core.verb:set package 'offboard_core_pkg' build argument 'cmake_clean_cache' from command line to 'False'
+[0.978s] Level 5:colcon.colcon_core.verb:set package 'offboard_core_pkg' build argument 'cmake_clean_first' from command line to 'False'
+[0.978s] Level 5:colcon.colcon_core.verb:set package 'offboard_core_pkg' build argument 'cmake_force_configure' from command line to 'False'
+[0.979s] Level 5:colcon.colcon_core.verb:set package 'offboard_core_pkg' build argument 'ament_cmake_args' from command line to 'None'
+[0.979s] Level 5:colcon.colcon_core.verb:set package 'offboard_core_pkg' build argument 'catkin_cmake_args' from command line to 'None'
+[0.979s] Level 5:colcon.colcon_core.verb:set package 'offboard_core_pkg' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.979s] DEBUG:colcon.colcon_core.verb:Building package 'offboard_core_pkg' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/jetson/ros2_ws_px4/build/offboard_core_pkg', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/jetson/ros2_ws_px4/install/offboard_core_pkg', 'merge_install': False, 'path': '/home/jetson/ros2_ws_px4/src/offboard_core_pkg', 'symlink_install': False, 'test_result_base': None}
+[0.979s] Level 5:colcon.colcon_core.verb:set package 'offboard_pkg' build argument 'cmake_args' from command line to 'None'
+[0.979s] Level 5:colcon.colcon_core.verb:set package 'offboard_pkg' build argument 'cmake_target' from command line to 'None'
+[0.979s] Level 5:colcon.colcon_core.verb:set package 'offboard_pkg' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.980s] Level 5:colcon.colcon_core.verb:set package 'offboard_pkg' build argument 'cmake_clean_cache' from command line to 'False'
+[0.980s] Level 5:colcon.colcon_core.verb:set package 'offboard_pkg' build argument 'cmake_clean_first' from command line to 'False'
+[0.980s] Level 5:colcon.colcon_core.verb:set package 'offboard_pkg' build argument 'cmake_force_configure' from command line to 'False'
+[0.980s] Level 5:colcon.colcon_core.verb:set package 'offboard_pkg' build argument 'ament_cmake_args' from command line to 'None'
+[0.980s] Level 5:colcon.colcon_core.verb:set package 'offboard_pkg' build argument 'catkin_cmake_args' from command line to 'None'
+[0.980s] Level 5:colcon.colcon_core.verb:set package 'offboard_pkg' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.980s] DEBUG:colcon.colcon_core.verb:Building package 'offboard_pkg' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/jetson/ros2_ws_px4/build/offboard_pkg', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/jetson/ros2_ws_px4/install/offboard_pkg', 'merge_install': False, 'path': '/home/jetson/ros2_ws_px4/src/offboard_pkg', 'symlink_install': False, 'test_result_base': None}
+[0.981s] Level 5:colcon.colcon_core.verb:set package 'px4_ros_com' build argument 'cmake_args' from command line to 'None'
+[0.981s] Level 5:colcon.colcon_core.verb:set package 'px4_ros_com' build argument 'cmake_target' from command line to 'None'
+[0.981s] Level 5:colcon.colcon_core.verb:set package 'px4_ros_com' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.981s] Level 5:colcon.colcon_core.verb:set package 'px4_ros_com' build argument 'cmake_clean_cache' from command line to 'False'
+[0.981s] Level 5:colcon.colcon_core.verb:set package 'px4_ros_com' build argument 'cmake_clean_first' from command line to 'False'
+[0.981s] Level 5:colcon.colcon_core.verb:set package 'px4_ros_com' build argument 'cmake_force_configure' from command line to 'False'
+[0.981s] Level 5:colcon.colcon_core.verb:set package 'px4_ros_com' build argument 'ament_cmake_args' from command line to 'None'
+[0.981s] Level 5:colcon.colcon_core.verb:set package 'px4_ros_com' build argument 'catkin_cmake_args' from command line to 'None'
+[0.981s] Level 5:colcon.colcon_core.verb:set package 'px4_ros_com' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.981s] DEBUG:colcon.colcon_core.verb:Building package 'px4_ros_com' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/jetson/ros2_ws_px4/build/px4_ros_com', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/jetson/ros2_ws_px4/install/px4_ros_com', 'merge_install': False, 'path': '/home/jetson/ros2_ws_px4/src/px4_ros_com', 'symlink_install': False, 'test_result_base': None}
+[0.982s] Level 5:colcon.colcon_core.verb:set package 'trajectory_generator_pkg' build argument 'cmake_args' from command line to 'None'
+[0.982s] Level 5:colcon.colcon_core.verb:set package 'trajectory_generator_pkg' build argument 'cmake_target' from command line to 'None'
+[0.982s] Level 5:colcon.colcon_core.verb:set package 'trajectory_generator_pkg' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.982s] Level 5:colcon.colcon_core.verb:set package 'trajectory_generator_pkg' build argument 'cmake_clean_cache' from command line to 'False'
+[0.982s] Level 5:colcon.colcon_core.verb:set package 'trajectory_generator_pkg' build argument 'cmake_clean_first' from command line to 'False'
+[0.982s] Level 5:colcon.colcon_core.verb:set package 'trajectory_generator_pkg' build argument 'cmake_force_configure' from command line to 'False'
+[0.982s] Level 5:colcon.colcon_core.verb:set package 'trajectory_generator_pkg' build argument 'ament_cmake_args' from command line to 'None'
+[0.982s] Level 5:colcon.colcon_core.verb:set package 'trajectory_generator_pkg' build argument 'catkin_cmake_args' from command line to 'None'
+[0.982s] Level 5:colcon.colcon_core.verb:set package 'trajectory_generator_pkg' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.982s] DEBUG:colcon.colcon_core.verb:Building package 'trajectory_generator_pkg' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/jetson/ros2_ws_px4/build/trajectory_generator_pkg', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/jetson/ros2_ws_px4/install/trajectory_generator_pkg', 'merge_install': False, 'path': '/home/jetson/ros2_ws_px4/src/trajectory_generator_pkg', 'symlink_install': False, 'test_result_base': None}
+[0.983s] INFO:colcon.colcon_core.executor:Executing jobs using 'parallel' executor
+[0.985s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete
+[0.985s] INFO:colcon.colcon_ros.task.ament_cmake.build:Building ROS package in '/home/jetson/ros2_ws_px4/src/px4_msgs' with build type 'ament_cmake'
+[0.986s] INFO:colcon.colcon_cmake.task.cmake.build:Building CMake package in '/home/jetson/ros2_ws_px4/src/px4_msgs'
+[0.992s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_core.shell.bat': Not used on non-Windows systems
+[0.992s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.992s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[1.001s] INFO:colcon.colcon_ros.task.ament_python.build:Building ROS package in '/home/jetson/ros2_ws_px4/src/vision_node_pkg' with build type 'ament_python'
+[1.002s] Level 1:colcon.colcon_core.shell:create_environment_hook('vision_node_pkg', 'ament_prefix_path')
+[1.002s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/jetson/ros2_ws_px4/install/vision_node_pkg/share/vision_node_pkg/hook/ament_prefix_path.ps1'
+[1.004s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/jetson/ros2_ws_px4/install/vision_node_pkg/share/vision_node_pkg/hook/ament_prefix_path.dsv'
+[1.005s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/jetson/ros2_ws_px4/install/vision_node_pkg/share/vision_node_pkg/hook/ament_prefix_path.sh'
+[1.007s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[1.007s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[1.023s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/jetson/ros2_ws_px4/build/px4_msgs': CMAKE_PREFIX_PATH=/home/jetson/fastlio2_ws/install/pgo:/home/jetson/fastlio2_ws/install/localizer:/home/jetson/fastlio2_ws/install/fastlio2:/home/jetson/fastlio2_ws/install/livox_ros_driver2:/home/jetson/fastlio2_ws/install/hba:/home/jetson/fastlio2_ws/install/interface:/home/jetson/fastlio2_ws/install/bringup_pkg:/opt/ros/humble:/home/jetson/fastlio2_ws/install/fastlio_to_px4:/home/jetson/ros2_ws_px4/install/trajectory_generator_pkg:/home/jetson/ros2_ws_px4/install/px4_ros_com:/home/jetson/ros2_ws_px4/install/offboard_pkg:/home/jetson/ros2_ws_px4/install/offboard_core_pkg:/home/jetson/ros2_ws_px4/install/fastlio_to_px4:/home/jetson/ros2_ws_px4/install/px4_msgs /usr/bin/cmake --build /home/jetson/ros2_ws_px4/build/px4_msgs -- -j4 -l4
+[1.612s] INFO:colcon.colcon_core.task.python.build:Building Python package in '/home/jetson/ros2_ws_px4/src/vision_node_pkg'
+[1.612s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[1.613s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[3.223s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/jetson/ros2_ws_px4/src/vision_node_pkg': PYTHONPATH=/home/jetson/ros2_ws_px4/build/vision_node_pkg/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/jetson/ros2_ws_px4/install/vision_node_pkg/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/vision_node_pkg build --build-base /home/jetson/ros2_ws_px4/build/vision_node_pkg/build install --record /home/jetson/ros2_ws_px4/build/vision_node_pkg/install.log --single-version-externally-managed install_data
+[4.203s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/jetson/ros2_ws_px4/build/px4_msgs' returned '0': CMAKE_PREFIX_PATH=/home/jetson/fastlio2_ws/install/pgo:/home/jetson/fastlio2_ws/install/localizer:/home/jetson/fastlio2_ws/install/fastlio2:/home/jetson/fastlio2_ws/install/livox_ros_driver2:/home/jetson/fastlio2_ws/install/hba:/home/jetson/fastlio2_ws/install/interface:/home/jetson/fastlio2_ws/install/bringup_pkg:/opt/ros/humble:/home/jetson/fastlio2_ws/install/fastlio_to_px4:/home/jetson/ros2_ws_px4/install/trajectory_generator_pkg:/home/jetson/ros2_ws_px4/install/px4_ros_com:/home/jetson/ros2_ws_px4/install/offboard_pkg:/home/jetson/ros2_ws_px4/install/offboard_core_pkg:/home/jetson/ros2_ws_px4/install/fastlio_to_px4:/home/jetson/ros2_ws_px4/install/px4_msgs /usr/bin/cmake --build /home/jetson/ros2_ws_px4/build/px4_msgs -- -j4 -l4
+[4.228s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/jetson/ros2_ws_px4/build/px4_msgs': CMAKE_PREFIX_PATH=/home/jetson/fastlio2_ws/install/pgo:/home/jetson/fastlio2_ws/install/localizer:/home/jetson/fastlio2_ws/install/fastlio2:/home/jetson/fastlio2_ws/install/livox_ros_driver2:/home/jetson/fastlio2_ws/install/hba:/home/jetson/fastlio2_ws/install/interface:/home/jetson/fastlio2_ws/install/bringup_pkg:/opt/ros/humble:/home/jetson/fastlio2_ws/install/fastlio_to_px4:/home/jetson/ros2_ws_px4/install/trajectory_generator_pkg:/home/jetson/ros2_ws_px4/install/px4_ros_com:/home/jetson/ros2_ws_px4/install/offboard_pkg:/home/jetson/ros2_ws_px4/install/offboard_core_pkg:/home/jetson/ros2_ws_px4/install/fastlio_to_px4:/home/jetson/ros2_ws_px4/install/px4_msgs /usr/bin/cmake --install /home/jetson/ros2_ws_px4/build/px4_msgs
+[4.322s] Level 1:colcon.colcon_core.environment:checking '/home/jetson/ros2_ws_px4/install/vision_node_pkg' for CMake module files
+[4.323s] Level 1:colcon.colcon_core.environment:checking '/home/jetson/ros2_ws_px4/install/vision_node_pkg' for CMake config files
+[4.324s] Level 1:colcon.colcon_core.environment:checking '/home/jetson/ros2_ws_px4/install/vision_node_pkg/lib'
+[4.325s] Level 1:colcon.colcon_core.environment:checking '/home/jetson/ros2_ws_px4/install/vision_node_pkg/bin'
+[4.325s] Level 1:colcon.colcon_core.environment:checking '/home/jetson/ros2_ws_px4/install/vision_node_pkg/lib/pkgconfig/vision_node_pkg.pc'
+[4.325s] Level 1:colcon.colcon_core.environment:checking '/home/jetson/ros2_ws_px4/install/vision_node_pkg/lib/python3.10/site-packages'
+[4.326s] Level 1:colcon.colcon_core.shell:create_environment_hook('vision_node_pkg', 'pythonpath')
+[4.326s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/jetson/ros2_ws_px4/install/vision_node_pkg/share/vision_node_pkg/hook/pythonpath.ps1'
+[4.327s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/jetson/ros2_ws_px4/install/vision_node_pkg/share/vision_node_pkg/hook/pythonpath.dsv'
+[4.328s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/jetson/ros2_ws_px4/install/vision_node_pkg/share/vision_node_pkg/hook/pythonpath.sh'
+[4.335s] Level 1:colcon.colcon_core.environment:checking '/home/jetson/ros2_ws_px4/install/vision_node_pkg/bin'
+[4.336s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(vision_node_pkg)
+[4.337s] INFO:colcon.colcon_core.shell:Creating package script '/home/jetson/ros2_ws_px4/install/vision_node_pkg/share/vision_node_pkg/package.ps1'
+[4.348s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/jetson/ros2_ws_px4/install/vision_node_pkg/share/vision_node_pkg/package.dsv'
+[4.351s] INFO:colcon.colcon_core.shell:Creating package script '/home/jetson/ros2_ws_px4/install/vision_node_pkg/share/vision_node_pkg/package.sh'
+[4.353s] INFO:colcon.colcon_core.shell:Creating package script '/home/jetson/ros2_ws_px4/install/vision_node_pkg/share/vision_node_pkg/package.bash'
+[4.354s] INFO:colcon.colcon_core.shell:Creating package script '/home/jetson/ros2_ws_px4/install/vision_node_pkg/share/vision_node_pkg/package.zsh'
+[4.356s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/jetson/ros2_ws_px4/install/vision_node_pkg/share/colcon-core/packages/vision_node_pkg)
+[4.438s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/jetson/ros2_ws_px4/src/vision_node_pkg' returned '0': PYTHONPATH=/home/jetson/ros2_ws_px4/build/vision_node_pkg/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/jetson/ros2_ws_px4/install/vision_node_pkg/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/vision_node_pkg build --build-base /home/jetson/ros2_ws_px4/build/vision_node_pkg/build install --record /home/jetson/ros2_ws_px4/build/vision_node_pkg/install.log --single-version-externally-managed install_data
+[5.438s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(px4_msgs)
+[5.438s] Level 1:colcon.colcon_core.environment:checking '/home/jetson/ros2_ws_px4/install/px4_msgs' for CMake module files
+[5.440s] Level 1:colcon.colcon_core.environment:checking '/home/jetson/ros2_ws_px4/install/px4_msgs' for CMake config files
+[5.450s] Level 1:colcon.colcon_core.shell:create_environment_hook('px4_msgs', 'cmake_prefix_path')
+[5.451s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/jetson/ros2_ws_px4/install/px4_msgs/share/px4_msgs/hook/cmake_prefix_path.ps1'
+[5.452s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/jetson/ros2_ws_px4/install/px4_msgs/share/px4_msgs/hook/cmake_prefix_path.dsv'
+[5.453s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/jetson/ros2_ws_px4/install/px4_msgs/share/px4_msgs/hook/cmake_prefix_path.sh'
+[5.454s] Level 1:colcon.colcon_core.environment:checking '/home/jetson/ros2_ws_px4/install/px4_msgs/lib'
+[5.455s] Level 1:colcon.colcon_core.shell:create_environment_hook('px4_msgs', 'ld_library_path_lib')
+[5.455s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/jetson/ros2_ws_px4/install/px4_msgs/share/px4_msgs/hook/ld_library_path_lib.ps1'
+[5.456s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/jetson/ros2_ws_px4/install/px4_msgs/share/px4_msgs/hook/ld_library_path_lib.dsv'
+[5.473s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/jetson/ros2_ws_px4/install/px4_msgs/share/px4_msgs/hook/ld_library_path_lib.sh'
+[5.474s] Level 1:colcon.colcon_core.environment:checking '/home/jetson/ros2_ws_px4/install/px4_msgs/bin'
+[5.474s] Level 1:colcon.colcon_core.environment:checking '/home/jetson/ros2_ws_px4/install/px4_msgs/lib/pkgconfig/px4_msgs.pc'
+[5.475s] Level 1:colcon.colcon_core.environment:checking '/home/jetson/ros2_ws_px4/install/px4_msgs/lib/python3.10/site-packages'
+[5.475s] Level 1:colcon.colcon_core.environment:checking '/home/jetson/ros2_ws_px4/install/px4_msgs/bin'
+[5.476s] INFO:colcon.colcon_core.shell:Creating package script '/home/jetson/ros2_ws_px4/install/px4_msgs/share/px4_msgs/package.ps1'
+[5.477s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/jetson/ros2_ws_px4/install/px4_msgs/share/px4_msgs/package.dsv'
+[5.478s] INFO:colcon.colcon_core.shell:Creating package script '/home/jetson/ros2_ws_px4/install/px4_msgs/share/px4_msgs/package.sh'
+[5.479s] INFO:colcon.colcon_core.shell:Creating package script '/home/jetson/ros2_ws_px4/install/px4_msgs/share/px4_msgs/package.bash'
+[5.480s] INFO:colcon.colcon_core.shell:Creating package script '/home/jetson/ros2_ws_px4/install/px4_msgs/share/px4_msgs/package.zsh'
+[5.481s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/jetson/ros2_ws_px4/install/px4_msgs/share/colcon-core/packages/px4_msgs)
+[5.482s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(px4_msgs)
+[5.483s] Level 1:colcon.colcon_core.environment:checking '/home/jetson/ros2_ws_px4/install/px4_msgs' for CMake module files
+[5.484s] Level 1:colcon.colcon_core.environment:checking '/home/jetson/ros2_ws_px4/install/px4_msgs' for CMake config files
+[5.506s] Level 1:colcon.colcon_core.shell:create_environment_hook('px4_msgs', 'cmake_prefix_path')
+[5.507s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/jetson/ros2_ws_px4/install/px4_msgs/share/px4_msgs/hook/cmake_prefix_path.ps1'
+[5.508s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/jetson/ros2_ws_px4/install/px4_msgs/share/px4_msgs/hook/cmake_prefix_path.dsv'
+[5.522s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/jetson/ros2_ws_px4/install/px4_msgs/share/px4_msgs/hook/cmake_prefix_path.sh'
+[5.525s] Level 1:colcon.colcon_core.environment:checking '/home/jetson/ros2_ws_px4/install/px4_msgs/lib'
+[5.525s] Level 1:colcon.colcon_core.shell:create_environment_hook('px4_msgs', 'ld_library_path_lib')
+[5.526s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/jetson/ros2_ws_px4/install/px4_msgs/share/px4_msgs/hook/ld_library_path_lib.ps1'
+[5.528s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/jetson/ros2_ws_px4/install/px4_msgs/share/px4_msgs/hook/ld_library_path_lib.dsv'
+[5.531s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/jetson/ros2_ws_px4/install/px4_msgs/share/px4_msgs/hook/ld_library_path_lib.sh'
+[5.533s] Level 1:colcon.colcon_core.environment:checking '/home/jetson/ros2_ws_px4/install/px4_msgs/bin'
+[5.533s] Level 1:colcon.colcon_core.environment:checking '/home/jetson/ros2_ws_px4/install/px4_msgs/lib/pkgconfig/px4_msgs.pc'
+[5.533s] Level 1:colcon.colcon_core.environment:checking '/home/jetson/ros2_ws_px4/install/px4_msgs/lib/python3.10/site-packages'
+[5.541s] Level 1:colcon.colcon_core.environment:checking '/home/jetson/ros2_ws_px4/install/px4_msgs/bin'
+[5.542s] INFO:colcon.colcon_core.shell:Creating package script '/home/jetson/ros2_ws_px4/install/px4_msgs/share/px4_msgs/package.ps1'
+[5.544s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/jetson/ros2_ws_px4/install/px4_msgs/share/px4_msgs/package.dsv'
+[5.546s] INFO:colcon.colcon_core.shell:Creating package script '/home/jetson/ros2_ws_px4/install/px4_msgs/share/px4_msgs/package.sh'
+[5.548s] INFO:colcon.colcon_core.shell:Creating package script '/home/jetson/ros2_ws_px4/install/px4_msgs/share/px4_msgs/package.bash'
+[5.550s] INFO:colcon.colcon_core.shell:Creating package script '/home/jetson/ros2_ws_px4/install/px4_msgs/share/px4_msgs/package.zsh'
+[5.561s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/jetson/ros2_ws_px4/install/px4_msgs/share/colcon-core/packages/px4_msgs)
+[5.562s] INFO:colcon.colcon_ros.task.ament_cmake.build:Building ROS package in '/home/jetson/ros2_ws_px4/src/fastlio_to_px4' with build type 'ament_cmake'
+[5.563s] INFO:colcon.colcon_cmake.task.cmake.build:Building CMake package in '/home/jetson/ros2_ws_px4/src/fastlio_to_px4'
+[5.563s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[5.563s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[5.620s] INFO:colcon.colcon_ros.task.ament_cmake.build:Building ROS package in '/home/jetson/ros2_ws_px4/src/offboard_core_pkg' with build type 'ament_cmake'
+[5.621s] INFO:colcon.colcon_cmake.task.cmake.build:Building CMake package in '/home/jetson/ros2_ws_px4/src/offboard_core_pkg'
+[5.621s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[5.621s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[5.638s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/jetson/ros2_ws_px4/build/px4_msgs' returned '0': CMAKE_PREFIX_PATH=/home/jetson/fastlio2_ws/install/pgo:/home/jetson/fastlio2_ws/install/localizer:/home/jetson/fastlio2_ws/install/fastlio2:/home/jetson/fastlio2_ws/install/livox_ros_driver2:/home/jetson/fastlio2_ws/install/hba:/home/jetson/fastlio2_ws/install/interface:/home/jetson/fastlio2_ws/install/bringup_pkg:/opt/ros/humble:/home/jetson/fastlio2_ws/install/fastlio_to_px4:/home/jetson/ros2_ws_px4/install/trajectory_generator_pkg:/home/jetson/ros2_ws_px4/install/px4_ros_com:/home/jetson/ros2_ws_px4/install/offboard_pkg:/home/jetson/ros2_ws_px4/install/offboard_core_pkg:/home/jetson/ros2_ws_px4/install/fastlio_to_px4:/home/jetson/ros2_ws_px4/install/px4_msgs /usr/bin/cmake --install /home/jetson/ros2_ws_px4/build/px4_msgs
+[5.646s] INFO:colcon.colcon_ros.task.ament_cmake.build:Building ROS package in '/home/jetson/ros2_ws_px4/src/offboard_pkg' with build type 'ament_cmake'
+[5.646s] INFO:colcon.colcon_cmake.task.cmake.build:Building CMake package in '/home/jetson/ros2_ws_px4/src/offboard_pkg'
+[5.647s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[5.647s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[5.664s] INFO:colcon.colcon_ros.task.ament_cmake.build:Building ROS package in '/home/jetson/ros2_ws_px4/src/px4_ros_com' with build type 'ament_cmake'
+[5.664s] INFO:colcon.colcon_cmake.task.cmake.build:Building CMake package in '/home/jetson/ros2_ws_px4/src/px4_ros_com'
+[5.665s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[5.665s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[5.685s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/jetson/ros2_ws_px4/build/fastlio_to_px4': CMAKE_PREFIX_PATH=/home/jetson/ros2_ws_px4/install/px4_msgs:/home/jetson/fastlio2_ws/install/pgo:/home/jetson/fastlio2_ws/install/localizer:/home/jetson/fastlio2_ws/install/fastlio2:/home/jetson/fastlio2_ws/install/livox_ros_driver2:/home/jetson/fastlio2_ws/install/hba:/home/jetson/fastlio2_ws/install/interface:/home/jetson/fastlio2_ws/install/bringup_pkg:/opt/ros/humble:/home/jetson/fastlio2_ws/install/fastlio_to_px4:/home/jetson/ros2_ws_px4/install/trajectory_generator_pkg:/home/jetson/ros2_ws_px4/install/px4_ros_com:/home/jetson/ros2_ws_px4/install/offboard_pkg:/home/jetson/ros2_ws_px4/install/offboard_core_pkg:/home/jetson/ros2_ws_px4/install/fastlio_to_px4 LD_LIBRARY_PATH=/home/jetson/ros2_ws_px4/install/px4_msgs/lib:/usr/local/cuda-12.6/lib64:/home/jetson/fastlio2_ws/install/livox_ros_driver2/lib:/home/jetson/fastlio2_ws/install/interface/lib:/home/jetson/ros2_ws_px4/install/px4_ros_com/lib:/home/jetson/ros2_ws_px4/install/offboard_core_pkg/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/aarch64-linux-gnu:/opt/ros/humble/lib:/usr/local/cuda-12.6/lib64 /usr/bin/cmake --build /home/jetson/ros2_ws_px4/build/fastlio_to_px4 -- -j4 -l4
+[5.722s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/jetson/ros2_ws_px4/build/offboard_core_pkg': CMAKE_PREFIX_PATH=/home/jetson/ros2_ws_px4/install/px4_msgs:/home/jetson/fastlio2_ws/install/pgo:/home/jetson/fastlio2_ws/install/localizer:/home/jetson/fastlio2_ws/install/fastlio2:/home/jetson/fastlio2_ws/install/livox_ros_driver2:/home/jetson/fastlio2_ws/install/hba:/home/jetson/fastlio2_ws/install/interface:/home/jetson/fastlio2_ws/install/bringup_pkg:/opt/ros/humble:/home/jetson/fastlio2_ws/install/fastlio_to_px4:/home/jetson/ros2_ws_px4/install/trajectory_generator_pkg:/home/jetson/ros2_ws_px4/install/px4_ros_com:/home/jetson/ros2_ws_px4/install/offboard_pkg:/home/jetson/ros2_ws_px4/install/offboard_core_pkg:/home/jetson/ros2_ws_px4/install/fastlio_to_px4 LD_LIBRARY_PATH=/home/jetson/ros2_ws_px4/install/px4_msgs/lib:/usr/local/cuda-12.6/lib64:/home/jetson/fastlio2_ws/install/livox_ros_driver2/lib:/home/jetson/fastlio2_ws/install/interface/lib:/home/jetson/ros2_ws_px4/install/px4_ros_com/lib:/home/jetson/ros2_ws_px4/install/offboard_core_pkg/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/aarch64-linux-gnu:/opt/ros/humble/lib:/usr/local/cuda-12.6/lib64 /usr/bin/cmake --build /home/jetson/ros2_ws_px4/build/offboard_core_pkg -- -j4 -l4
+[5.754s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/jetson/ros2_ws_px4/build/offboard_pkg': CMAKE_PREFIX_PATH=/home/jetson/ros2_ws_px4/install/px4_msgs:/home/jetson/fastlio2_ws/install/pgo:/home/jetson/fastlio2_ws/install/localizer:/home/jetson/fastlio2_ws/install/fastlio2:/home/jetson/fastlio2_ws/install/livox_ros_driver2:/home/jetson/fastlio2_ws/install/hba:/home/jetson/fastlio2_ws/install/interface:/home/jetson/fastlio2_ws/install/bringup_pkg:/opt/ros/humble:/home/jetson/fastlio2_ws/install/fastlio_to_px4:/home/jetson/ros2_ws_px4/install/trajectory_generator_pkg:/home/jetson/ros2_ws_px4/install/px4_ros_com:/home/jetson/ros2_ws_px4/install/offboard_pkg:/home/jetson/ros2_ws_px4/install/offboard_core_pkg:/home/jetson/ros2_ws_px4/install/fastlio_to_px4 LD_LIBRARY_PATH=/home/jetson/ros2_ws_px4/install/px4_msgs/lib:/usr/local/cuda-12.6/lib64:/home/jetson/fastlio2_ws/install/livox_ros_driver2/lib:/home/jetson/fastlio2_ws/install/interface/lib:/home/jetson/ros2_ws_px4/install/px4_ros_com/lib:/home/jetson/ros2_ws_px4/install/offboard_core_pkg/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/aarch64-linux-gnu:/opt/ros/humble/lib:/usr/local/cuda-12.6/lib64 /usr/bin/cmake --build /home/jetson/ros2_ws_px4/build/offboard_pkg -- -j4 -l4
+[5.790s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/jetson/ros2_ws_px4/build/px4_ros_com': CMAKE_PREFIX_PATH=/home/jetson/ros2_ws_px4/install/px4_msgs:/home/jetson/fastlio2_ws/install/pgo:/home/jetson/fastlio2_ws/install/localizer:/home/jetson/fastlio2_ws/install/fastlio2:/home/jetson/fastlio2_ws/install/livox_ros_driver2:/home/jetson/fastlio2_ws/install/hba:/home/jetson/fastlio2_ws/install/interface:/home/jetson/fastlio2_ws/install/bringup_pkg:/opt/ros/humble:/home/jetson/fastlio2_ws/install/fastlio_to_px4:/home/jetson/ros2_ws_px4/install/trajectory_generator_pkg:/home/jetson/ros2_ws_px4/install/px4_ros_com:/home/jetson/ros2_ws_px4/install/offboard_pkg:/home/jetson/ros2_ws_px4/install/offboard_core_pkg:/home/jetson/ros2_ws_px4/install/fastlio_to_px4 LD_LIBRARY_PATH=/home/jetson/ros2_ws_px4/install/px4_msgs/lib:/usr/local/cuda-12.6/lib64:/home/jetson/fastlio2_ws/install/livox_ros_driver2/lib:/home/jetson/fastlio2_ws/install/interface/lib:/home/jetson/ros2_ws_px4/install/px4_ros_com/lib:/home/jetson/ros2_ws_px4/install/offboard_core_pkg/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/aarch64-linux-gnu:/opt/ros/humble/lib:/usr/local/cuda-12.6/lib64 /usr/bin/cmake --build /home/jetson/ros2_ws_px4/build/px4_ros_com -- -j4 -l4
+[5.935s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/jetson/ros2_ws_px4/build/fastlio_to_px4' returned '0': CMAKE_PREFIX_PATH=/home/jetson/ros2_ws_px4/install/px4_msgs:/home/jetson/fastlio2_ws/install/pgo:/home/jetson/fastlio2_ws/install/localizer:/home/jetson/fastlio2_ws/install/fastlio2:/home/jetson/fastlio2_ws/install/livox_ros_driver2:/home/jetson/fastlio2_ws/install/hba:/home/jetson/fastlio2_ws/install/interface:/home/jetson/fastlio2_ws/install/bringup_pkg:/opt/ros/humble:/home/jetson/fastlio2_ws/install/fastlio_to_px4:/home/jetson/ros2_ws_px4/install/trajectory_generator_pkg:/home/jetson/ros2_ws_px4/install/px4_ros_com:/home/jetson/ros2_ws_px4/install/offboard_pkg:/home/jetson/ros2_ws_px4/install/offboard_core_pkg:/home/jetson/ros2_ws_px4/install/fastlio_to_px4 LD_LIBRARY_PATH=/home/jetson/ros2_ws_px4/install/px4_msgs/lib:/usr/local/cuda-12.6/lib64:/home/jetson/fastlio2_ws/install/livox_ros_driver2/lib:/home/jetson/fastlio2_ws/install/interface/lib:/home/jetson/ros2_ws_px4/install/px4_ros_com/lib:/home/jetson/ros2_ws_px4/install/offboard_core_pkg/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/aarch64-linux-gnu:/opt/ros/humble/lib:/usr/local/cuda-12.6/lib64 /usr/bin/cmake --build /home/jetson/ros2_ws_px4/build/fastlio_to_px4 -- -j4 -l4
+[5.946s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/jetson/ros2_ws_px4/build/fastlio_to_px4': CMAKE_PREFIX_PATH=/home/jetson/ros2_ws_px4/install/px4_msgs:/home/jetson/fastlio2_ws/install/pgo:/home/jetson/fastlio2_ws/install/localizer:/home/jetson/fastlio2_ws/install/fastlio2:/home/jetson/fastlio2_ws/install/livox_ros_driver2:/home/jetson/fastlio2_ws/install/hba:/home/jetson/fastlio2_ws/install/interface:/home/jetson/fastlio2_ws/install/bringup_pkg:/opt/ros/humble:/home/jetson/fastlio2_ws/install/fastlio_to_px4:/home/jetson/ros2_ws_px4/install/trajectory_generator_pkg:/home/jetson/ros2_ws_px4/install/px4_ros_com:/home/jetson/ros2_ws_px4/install/offboard_pkg:/home/jetson/ros2_ws_px4/install/offboard_core_pkg:/home/jetson/ros2_ws_px4/install/fastlio_to_px4 LD_LIBRARY_PATH=/home/jetson/ros2_ws_px4/install/px4_msgs/lib:/usr/local/cuda-12.6/lib64:/home/jetson/fastlio2_ws/install/livox_ros_driver2/lib:/home/jetson/fastlio2_ws/install/interface/lib:/home/jetson/ros2_ws_px4/install/px4_ros_com/lib:/home/jetson/ros2_ws_px4/install/offboard_core_pkg/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/aarch64-linux-gnu:/opt/ros/humble/lib:/usr/local/cuda-12.6/lib64 /usr/bin/cmake --install /home/jetson/ros2_ws_px4/build/fastlio_to_px4
+[5.989s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(fastlio_to_px4)
+[5.990s] Level 1:colcon.colcon_core.environment:checking '/home/jetson/ros2_ws_px4/install/fastlio_to_px4' for CMake module files
+[5.991s] Level 1:colcon.colcon_core.environment:checking '/home/jetson/ros2_ws_px4/install/fastlio_to_px4' for CMake config files
+[5.992s] Level 1:colcon.colcon_core.shell:create_environment_hook('fastlio_to_px4', 'cmake_prefix_path')
+[5.992s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/jetson/ros2_ws_px4/install/fastlio_to_px4/share/fastlio_to_px4/hook/cmake_prefix_path.ps1'
+[5.993s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/jetson/ros2_ws_px4/install/fastlio_to_px4/share/fastlio_to_px4/hook/cmake_prefix_path.dsv'
+[5.994s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/jetson/ros2_ws_px4/build/fastlio_to_px4' returned '0': CMAKE_PREFIX_PATH=/home/jetson/ros2_ws_px4/install/px4_msgs:/home/jetson/fastlio2_ws/install/pgo:/home/jetson/fastlio2_ws/install/localizer:/home/jetson/fastlio2_ws/install/fastlio2:/home/jetson/fastlio2_ws/install/livox_ros_driver2:/home/jetson/fastlio2_ws/install/hba:/home/jetson/fastlio2_ws/install/interface:/home/jetson/fastlio2_ws/install/bringup_pkg:/opt/ros/humble:/home/jetson/fastlio2_ws/install/fastlio_to_px4:/home/jetson/ros2_ws_px4/install/trajectory_generator_pkg:/home/jetson/ros2_ws_px4/install/px4_ros_com:/home/jetson/ros2_ws_px4/install/offboard_pkg:/home/jetson/ros2_ws_px4/install/offboard_core_pkg:/home/jetson/ros2_ws_px4/install/fastlio_to_px4 LD_LIBRARY_PATH=/home/jetson/ros2_ws_px4/install/px4_msgs/lib:/usr/local/cuda-12.6/lib64:/home/jetson/fastlio2_ws/install/livox_ros_driver2/lib:/home/jetson/fastlio2_ws/install/interface/lib:/home/jetson/ros2_ws_px4/install/px4_ros_com/lib:/home/jetson/ros2_ws_px4/install/offboard_core_pkg/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/aarch64-linux-gnu:/opt/ros/humble/lib:/usr/local/cuda-12.6/lib64 /usr/bin/cmake --install /home/jetson/ros2_ws_px4/build/fastlio_to_px4
+[5.995s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/jetson/ros2_ws_px4/install/fastlio_to_px4/share/fastlio_to_px4/hook/cmake_prefix_path.sh'
+[5.997s] Level 1:colcon.colcon_core.environment:checking '/home/jetson/ros2_ws_px4/install/fastlio_to_px4/lib'
+[5.997s] Level 1:colcon.colcon_core.environment:checking '/home/jetson/ros2_ws_px4/install/fastlio_to_px4/bin'
+[5.997s] Level 1:colcon.colcon_core.environment:checking '/home/jetson/ros2_ws_px4/install/fastlio_to_px4/lib/pkgconfig/fastlio_to_px4.pc'
+[5.997s] Level 1:colcon.colcon_core.environment:checking '/home/jetson/ros2_ws_px4/install/fastlio_to_px4/lib/python3.10/site-packages'
+[5.998s] Level 1:colcon.colcon_core.environment:checking '/home/jetson/ros2_ws_px4/install/fastlio_to_px4/bin'
+[5.999s] INFO:colcon.colcon_core.shell:Creating package script '/home/jetson/ros2_ws_px4/install/fastlio_to_px4/share/fastlio_to_px4/package.ps1'
+[6.005s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/jetson/ros2_ws_px4/install/fastlio_to_px4/share/fastlio_to_px4/package.dsv'
+[6.006s] INFO:colcon.colcon_core.shell:Creating package script '/home/jetson/ros2_ws_px4/install/fastlio_to_px4/share/fastlio_to_px4/package.sh'
+[6.012s] INFO:colcon.colcon_core.shell:Creating package script '/home/jetson/ros2_ws_px4/install/fastlio_to_px4/share/fastlio_to_px4/package.bash'
+[6.013s] INFO:colcon.colcon_core.shell:Creating package script '/home/jetson/ros2_ws_px4/install/fastlio_to_px4/share/fastlio_to_px4/package.zsh'
+[6.014s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/jetson/ros2_ws_px4/install/fastlio_to_px4/share/colcon-core/packages/fastlio_to_px4)
+[6.016s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(fastlio_to_px4)
+[6.016s] Level 1:colcon.colcon_core.environment:checking '/home/jetson/ros2_ws_px4/install/fastlio_to_px4' for CMake module files
+[6.017s] Level 1:colcon.colcon_core.environment:checking '/home/jetson/ros2_ws_px4/install/fastlio_to_px4' for CMake config files
+[6.018s] Level 1:colcon.colcon_core.shell:create_environment_hook('fastlio_to_px4', 'cmake_prefix_path')
+[6.019s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/jetson/ros2_ws_px4/install/fastlio_to_px4/share/fastlio_to_px4/hook/cmake_prefix_path.ps1'
+[6.033s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/jetson/ros2_ws_px4/install/fastlio_to_px4/share/fastlio_to_px4/hook/cmake_prefix_path.dsv'
+[6.041s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/jetson/ros2_ws_px4/install/fastlio_to_px4/share/fastlio_to_px4/hook/cmake_prefix_path.sh'
+[6.050s] Level 1:colcon.colcon_core.environment:checking '/home/jetson/ros2_ws_px4/install/fastlio_to_px4/lib'
+[6.051s] Level 1:colcon.colcon_core.environment:checking '/home/jetson/ros2_ws_px4/install/fastlio_to_px4/bin'
+[6.051s] Level 1:colcon.colcon_core.environment:checking '/home/jetson/ros2_ws_px4/install/fastlio_to_px4/lib/pkgconfig/fastlio_to_px4.pc'
+[6.051s] Level 1:colcon.colcon_core.environment:checking '/home/jetson/ros2_ws_px4/install/fastlio_to_px4/lib/python3.10/site-packages'
+[6.052s] Level 1:colcon.colcon_core.environment:checking '/home/jetson/ros2_ws_px4/install/fastlio_to_px4/bin'
+[6.053s] INFO:colcon.colcon_core.shell:Creating package script '/home/jetson/ros2_ws_px4/install/fastlio_to_px4/share/fastlio_to_px4/package.ps1'
+[6.054s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/jetson/ros2_ws_px4/install/fastlio_to_px4/share/fastlio_to_px4/package.dsv'
+[6.060s] INFO:colcon.colcon_core.shell:Creating package script '/home/jetson/ros2_ws_px4/install/fastlio_to_px4/share/fastlio_to_px4/package.sh'
+[6.065s] INFO:colcon.colcon_core.shell:Creating package script '/home/jetson/ros2_ws_px4/install/fastlio_to_px4/share/fastlio_to_px4/package.bash'
+[6.067s] INFO:colcon.colcon_core.shell:Creating package script '/home/jetson/ros2_ws_px4/install/fastlio_to_px4/share/fastlio_to_px4/package.zsh'
+[6.068s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/jetson/ros2_ws_px4/install/fastlio_to_px4/share/colcon-core/packages/fastlio_to_px4)
+[6.073s] INFO:colcon.colcon_ros.task.catkin.build:Building ROS package in '/home/jetson/ros2_ws_px4/src/trajectory_generator_pkg' with build type 'catkin'
+[6.074s] INFO:colcon.colcon_cmake.task.cmake.build:Building CMake package in '/home/jetson/ros2_ws_px4/src/trajectory_generator_pkg'
+[6.074s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[6.075s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[6.171s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/jetson/ros2_ws_px4/build/trajectory_generator_pkg': CMAKE_PREFIX_PATH=/home/jetson/ros2_ws_px4/install/px4_msgs:/home/jetson/fastlio2_ws/install/pgo:/home/jetson/fastlio2_ws/install/localizer:/home/jetson/fastlio2_ws/install/fastlio2:/home/jetson/fastlio2_ws/install/livox_ros_driver2:/home/jetson/fastlio2_ws/install/hba:/home/jetson/fastlio2_ws/install/interface:/home/jetson/fastlio2_ws/install/fastlio_to_px4:/home/jetson/ros2_ws_px4/install/trajectory_generator_pkg:/home/jetson/ros2_ws_px4/install/px4_ros_com:/home/jetson/ros2_ws_px4/install/offboard_pkg:/home/jetson/ros2_ws_px4/install/offboard_core_pkg:/home/jetson/ros2_ws_px4/install/fastlio_to_px4 LD_LIBRARY_PATH=/home/jetson/ros2_ws_px4/install/px4_msgs/lib:/usr/local/cuda-12.6/lib64:/home/jetson/fastlio2_ws/install/livox_ros_driver2/lib:/home/jetson/fastlio2_ws/install/interface/lib:/home/jetson/ros2_ws_px4/install/px4_ros_com/lib:/home/jetson/ros2_ws_px4/install/offboard_core_pkg/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/aarch64-linux-gnu:/opt/ros/humble/lib:/usr/local/cuda-12.6/lib64 /usr/bin/cmake --build /home/jetson/ros2_ws_px4/build/trajectory_generator_pkg -- -j4 -l4
+[6.712s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/jetson/ros2_ws_px4/build/trajectory_generator_pkg' returned '0': CMAKE_PREFIX_PATH=/home/jetson/ros2_ws_px4/install/px4_msgs:/home/jetson/fastlio2_ws/install/pgo:/home/jetson/fastlio2_ws/install/localizer:/home/jetson/fastlio2_ws/install/fastlio2:/home/jetson/fastlio2_ws/install/livox_ros_driver2:/home/jetson/fastlio2_ws/install/hba:/home/jetson/fastlio2_ws/install/interface:/home/jetson/fastlio2_ws/install/fastlio_to_px4:/home/jetson/ros2_ws_px4/install/trajectory_generator_pkg:/home/jetson/ros2_ws_px4/install/px4_ros_com:/home/jetson/ros2_ws_px4/install/offboard_pkg:/home/jetson/ros2_ws_px4/install/offboard_core_pkg:/home/jetson/ros2_ws_px4/install/fastlio_to_px4 LD_LIBRARY_PATH=/home/jetson/ros2_ws_px4/install/px4_msgs/lib:/usr/local/cuda-12.6/lib64:/home/jetson/fastlio2_ws/install/livox_ros_driver2/lib:/home/jetson/fastlio2_ws/install/interface/lib:/home/jetson/ros2_ws_px4/install/px4_ros_com/lib:/home/jetson/ros2_ws_px4/install/offboard_core_pkg/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/aarch64-linux-gnu:/opt/ros/humble/lib:/usr/local/cuda-12.6/lib64 /usr/bin/cmake --build /home/jetson/ros2_ws_px4/build/trajectory_generator_pkg -- -j4 -l4
+[6.720s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/jetson/ros2_ws_px4/build/trajectory_generator_pkg': CMAKE_PREFIX_PATH=/home/jetson/ros2_ws_px4/install/px4_msgs:/home/jetson/fastlio2_ws/install/pgo:/home/jetson/fastlio2_ws/install/localizer:/home/jetson/fastlio2_ws/install/fastlio2:/home/jetson/fastlio2_ws/install/livox_ros_driver2:/home/jetson/fastlio2_ws/install/hba:/home/jetson/fastlio2_ws/install/interface:/home/jetson/fastlio2_ws/install/fastlio_to_px4:/home/jetson/ros2_ws_px4/install/trajectory_generator_pkg:/home/jetson/ros2_ws_px4/install/px4_ros_com:/home/jetson/ros2_ws_px4/install/offboard_pkg:/home/jetson/ros2_ws_px4/install/offboard_core_pkg:/home/jetson/ros2_ws_px4/install/fastlio_to_px4 LD_LIBRARY_PATH=/home/jetson/ros2_ws_px4/install/px4_msgs/lib:/usr/local/cuda-12.6/lib64:/home/jetson/fastlio2_ws/install/livox_ros_driver2/lib:/home/jetson/fastlio2_ws/install/interface/lib:/home/jetson/ros2_ws_px4/install/px4_ros_com/lib:/home/jetson/ros2_ws_px4/install/offboard_core_pkg/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/aarch64-linux-gnu:/opt/ros/humble/lib:/usr/local/cuda-12.6/lib64 /usr/bin/cmake --install /home/jetson/ros2_ws_px4/build/trajectory_generator_pkg
+[6.779s] Level 1:colcon.colcon_core.shell:create_environment_hook('trajectory_generator_pkg', 'ros_package_path')
+[6.779s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/jetson/ros2_ws_px4/install/trajectory_generator_pkg/share/trajectory_generator_pkg/hook/ros_package_path.ps1'
+[6.780s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/jetson/ros2_ws_px4/install/trajectory_generator_pkg/share/trajectory_generator_pkg/hook/ros_package_path.dsv'
+[6.781s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/jetson/ros2_ws_px4/install/trajectory_generator_pkg/share/trajectory_generator_pkg/hook/ros_package_path.sh'
+[6.782s] Level 1:colcon.colcon_core.shell:create_environment_hook('trajectory_generator_pkg', 'pkg_config_path')
+[6.783s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/jetson/ros2_ws_px4/install/trajectory_generator_pkg/share/trajectory_generator_pkg/hook/pkg_config_path.ps1'
+[6.784s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/jetson/ros2_ws_px4/install/trajectory_generator_pkg/share/trajectory_generator_pkg/hook/pkg_config_path.dsv'
+[6.790s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/jetson/ros2_ws_px4/build/trajectory_generator_pkg' returned '0': CMAKE_PREFIX_PATH=/home/jetson/ros2_ws_px4/install/px4_msgs:/home/jetson/fastlio2_ws/install/pgo:/home/jetson/fastlio2_ws/install/localizer:/home/jetson/fastlio2_ws/install/fastlio2:/home/jetson/fastlio2_ws/install/livox_ros_driver2:/home/jetson/fastlio2_ws/install/hba:/home/jetson/fastlio2_ws/install/interface:/home/jetson/fastlio2_ws/install/fastlio_to_px4:/home/jetson/ros2_ws_px4/install/trajectory_generator_pkg:/home/jetson/ros2_ws_px4/install/px4_ros_com:/home/jetson/ros2_ws_px4/install/offboard_pkg:/home/jetson/ros2_ws_px4/install/offboard_core_pkg:/home/jetson/ros2_ws_px4/install/fastlio_to_px4 LD_LIBRARY_PATH=/home/jetson/ros2_ws_px4/install/px4_msgs/lib:/usr/local/cuda-12.6/lib64:/home/jetson/fastlio2_ws/install/livox_ros_driver2/lib:/home/jetson/fastlio2_ws/install/interface/lib:/home/jetson/ros2_ws_px4/install/px4_ros_com/lib:/home/jetson/ros2_ws_px4/install/offboard_core_pkg/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/aarch64-linux-gnu:/opt/ros/humble/lib:/usr/local/cuda-12.6/lib64 /usr/bin/cmake --install /home/jetson/ros2_ws_px4/build/trajectory_generator_pkg
+[6.790s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/jetson/ros2_ws_px4/install/trajectory_generator_pkg/share/trajectory_generator_pkg/hook/pkg_config_path.sh'
+[6.807s] Level 1:colcon.colcon_core.shell:create_environment_hook('trajectory_generator_pkg', 'pkg_config_path_multiarch')
+[6.808s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/jetson/ros2_ws_px4/install/trajectory_generator_pkg/share/trajectory_generator_pkg/hook/pkg_config_path_multiarch.ps1'
+[6.809s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/jetson/ros2_ws_px4/install/trajectory_generator_pkg/share/trajectory_generator_pkg/hook/pkg_config_path_multiarch.dsv'
+[6.810s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/jetson/ros2_ws_px4/install/trajectory_generator_pkg/share/trajectory_generator_pkg/hook/pkg_config_path_multiarch.sh'
+[6.812s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(trajectory_generator_pkg)
+[6.813s] Level 1:colcon.colcon_core.environment:checking '/home/jetson/ros2_ws_px4/install/trajectory_generator_pkg' for CMake module files
+[6.814s] Level 1:colcon.colcon_core.environment:checking '/home/jetson/ros2_ws_px4/install/trajectory_generator_pkg' for CMake config files
+[6.814s] Level 1:colcon.colcon_core.shell:create_environment_hook('trajectory_generator_pkg', 'cmake_prefix_path')
+[6.815s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/jetson/ros2_ws_px4/install/trajectory_generator_pkg/share/trajectory_generator_pkg/hook/cmake_prefix_path.ps1'
+[6.816s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/jetson/ros2_ws_px4/install/trajectory_generator_pkg/share/trajectory_generator_pkg/hook/cmake_prefix_path.dsv'
+[6.820s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/jetson/ros2_ws_px4/install/trajectory_generator_pkg/share/trajectory_generator_pkg/hook/cmake_prefix_path.sh'
+[6.822s] Level 1:colcon.colcon_core.environment:checking '/home/jetson/ros2_ws_px4/install/trajectory_generator_pkg/lib'
+[6.822s] Level 1:colcon.colcon_core.environment:checking '/home/jetson/ros2_ws_px4/install/trajectory_generator_pkg/bin'
+[6.822s] Level 1:colcon.colcon_core.environment:checking '/home/jetson/ros2_ws_px4/install/trajectory_generator_pkg/lib/pkgconfig/trajectory_generator_pkg.pc'
+[6.823s] Level 1:colcon.colcon_core.environment:checking '/home/jetson/ros2_ws_px4/install/trajectory_generator_pkg/lib/python3.10/site-packages'
+[6.824s] Level 1:colcon.colcon_core.environment:checking '/home/jetson/ros2_ws_px4/install/trajectory_generator_pkg/bin'
+[6.829s] INFO:colcon.colcon_core.shell:Creating package script '/home/jetson/ros2_ws_px4/install/trajectory_generator_pkg/share/trajectory_generator_pkg/package.ps1'
+[6.830s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/jetson/ros2_ws_px4/install/trajectory_generator_pkg/share/trajectory_generator_pkg/package.dsv'
+[6.834s] INFO:colcon.colcon_core.shell:Creating package script '/home/jetson/ros2_ws_px4/install/trajectory_generator_pkg/share/trajectory_generator_pkg/package.sh'
+[6.840s] INFO:colcon.colcon_core.shell:Creating package script '/home/jetson/ros2_ws_px4/install/trajectory_generator_pkg/share/trajectory_generator_pkg/package.bash'
+[6.845s] INFO:colcon.colcon_core.shell:Creating package script '/home/jetson/ros2_ws_px4/install/trajectory_generator_pkg/share/trajectory_generator_pkg/package.zsh'
+[6.846s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/jetson/ros2_ws_px4/install/trajectory_generator_pkg/share/colcon-core/packages/trajectory_generator_pkg)
+[8.483s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/jetson/ros2_ws_px4/build/px4_ros_com' returned '0': CMAKE_PREFIX_PATH=/home/jetson/ros2_ws_px4/install/px4_msgs:/home/jetson/fastlio2_ws/install/pgo:/home/jetson/fastlio2_ws/install/localizer:/home/jetson/fastlio2_ws/install/fastlio2:/home/jetson/fastlio2_ws/install/livox_ros_driver2:/home/jetson/fastlio2_ws/install/hba:/home/jetson/fastlio2_ws/install/interface:/home/jetson/fastlio2_ws/install/bringup_pkg:/opt/ros/humble:/home/jetson/fastlio2_ws/install/fastlio_to_px4:/home/jetson/ros2_ws_px4/install/trajectory_generator_pkg:/home/jetson/ros2_ws_px4/install/px4_ros_com:/home/jetson/ros2_ws_px4/install/offboard_pkg:/home/jetson/ros2_ws_px4/install/offboard_core_pkg:/home/jetson/ros2_ws_px4/install/fastlio_to_px4 LD_LIBRARY_PATH=/home/jetson/ros2_ws_px4/install/px4_msgs/lib:/usr/local/cuda-12.6/lib64:/home/jetson/fastlio2_ws/install/livox_ros_driver2/lib:/home/jetson/fastlio2_ws/install/interface/lib:/home/jetson/ros2_ws_px4/install/px4_ros_com/lib:/home/jetson/ros2_ws_px4/install/offboard_core_pkg/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/aarch64-linux-gnu:/opt/ros/humble/lib:/usr/local/cuda-12.6/lib64 /usr/bin/cmake --build /home/jetson/ros2_ws_px4/build/px4_ros_com -- -j4 -l4
+[8.499s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/jetson/ros2_ws_px4/build/px4_ros_com': CMAKE_PREFIX_PATH=/home/jetson/ros2_ws_px4/install/px4_msgs:/home/jetson/fastlio2_ws/install/pgo:/home/jetson/fastlio2_ws/install/localizer:/home/jetson/fastlio2_ws/install/fastlio2:/home/jetson/fastlio2_ws/install/livox_ros_driver2:/home/jetson/fastlio2_ws/install/hba:/home/jetson/fastlio2_ws/install/interface:/home/jetson/fastlio2_ws/install/bringup_pkg:/opt/ros/humble:/home/jetson/fastlio2_ws/install/fastlio_to_px4:/home/jetson/ros2_ws_px4/install/trajectory_generator_pkg:/home/jetson/ros2_ws_px4/install/px4_ros_com:/home/jetson/ros2_ws_px4/install/offboard_pkg:/home/jetson/ros2_ws_px4/install/offboard_core_pkg:/home/jetson/ros2_ws_px4/install/fastlio_to_px4 LD_LIBRARY_PATH=/home/jetson/ros2_ws_px4/install/px4_msgs/lib:/usr/local/cuda-12.6/lib64:/home/jetson/fastlio2_ws/install/livox_ros_driver2/lib:/home/jetson/fastlio2_ws/install/interface/lib:/home/jetson/ros2_ws_px4/install/px4_ros_com/lib:/home/jetson/ros2_ws_px4/install/offboard_core_pkg/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/aarch64-linux-gnu:/opt/ros/humble/lib:/usr/local/cuda-12.6/lib64 /usr/bin/cmake --install /home/jetson/ros2_ws_px4/build/px4_ros_com
+[8.809s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(px4_ros_com)
+[8.810s] Level 1:colcon.colcon_core.environment:checking '/home/jetson/ros2_ws_px4/install/px4_ros_com' for CMake module files
+[8.811s] Level 1:colcon.colcon_core.environment:checking '/home/jetson/ros2_ws_px4/install/px4_ros_com' for CMake config files
+[8.812s] Level 1:colcon.colcon_core.shell:create_environment_hook('px4_ros_com', 'cmake_prefix_path')
+[8.812s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/jetson/ros2_ws_px4/install/px4_ros_com/share/px4_ros_com/hook/cmake_prefix_path.ps1'
+[8.814s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/jetson/ros2_ws_px4/install/px4_ros_com/share/px4_ros_com/hook/cmake_prefix_path.dsv'
+[8.815s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/jetson/ros2_ws_px4/install/px4_ros_com/share/px4_ros_com/hook/cmake_prefix_path.sh'
+[8.816s] Level 1:colcon.colcon_core.environment:checking '/home/jetson/ros2_ws_px4/install/px4_ros_com/lib'
+[8.818s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/jetson/ros2_ws_px4/build/px4_ros_com' returned '0': CMAKE_PREFIX_PATH=/home/jetson/ros2_ws_px4/install/px4_msgs:/home/jetson/fastlio2_ws/install/pgo:/home/jetson/fastlio2_ws/install/localizer:/home/jetson/fastlio2_ws/install/fastlio2:/home/jetson/fastlio2_ws/install/livox_ros_driver2:/home/jetson/fastlio2_ws/install/hba:/home/jetson/fastlio2_ws/install/interface:/home/jetson/fastlio2_ws/install/bringup_pkg:/opt/ros/humble:/home/jetson/fastlio2_ws/install/fastlio_to_px4:/home/jetson/ros2_ws_px4/install/trajectory_generator_pkg:/home/jetson/ros2_ws_px4/install/px4_ros_com:/home/jetson/ros2_ws_px4/install/offboard_pkg:/home/jetson/ros2_ws_px4/install/offboard_core_pkg:/home/jetson/ros2_ws_px4/install/fastlio_to_px4 LD_LIBRARY_PATH=/home/jetson/ros2_ws_px4/install/px4_msgs/lib:/usr/local/cuda-12.6/lib64:/home/jetson/fastlio2_ws/install/livox_ros_driver2/lib:/home/jetson/fastlio2_ws/install/interface/lib:/home/jetson/ros2_ws_px4/install/px4_ros_com/lib:/home/jetson/ros2_ws_px4/install/offboard_core_pkg/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/aarch64-linux-gnu:/opt/ros/humble/lib:/usr/local/cuda-12.6/lib64 /usr/bin/cmake --install /home/jetson/ros2_ws_px4/build/px4_ros_com
+[8.821s] Level 1:colcon.colcon_core.shell:create_environment_hook('px4_ros_com', 'ld_library_path_lib')
+[8.822s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/jetson/ros2_ws_px4/install/px4_ros_com/share/px4_ros_com/hook/ld_library_path_lib.ps1'
+[8.823s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/jetson/ros2_ws_px4/install/px4_ros_com/share/px4_ros_com/hook/ld_library_path_lib.dsv'
+[8.824s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/jetson/ros2_ws_px4/install/px4_ros_com/share/px4_ros_com/hook/ld_library_path_lib.sh'
+[8.825s] Level 1:colcon.colcon_core.environment:checking '/home/jetson/ros2_ws_px4/install/px4_ros_com/bin'
+[8.825s] Level 1:colcon.colcon_core.environment:checking '/home/jetson/ros2_ws_px4/install/px4_ros_com/lib/pkgconfig/px4_ros_com.pc'
+[8.826s] Level 1:colcon.colcon_core.environment:checking '/home/jetson/ros2_ws_px4/install/px4_ros_com/lib/python3.10/site-packages'
+[8.826s] Level 1:colcon.colcon_core.environment:checking '/home/jetson/ros2_ws_px4/install/px4_ros_com/bin'
+[8.827s] INFO:colcon.colcon_core.shell:Creating package script '/home/jetson/ros2_ws_px4/install/px4_ros_com/share/px4_ros_com/package.ps1'
+[8.850s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/jetson/ros2_ws_px4/install/px4_ros_com/share/px4_ros_com/package.dsv'
+[8.873s] INFO:colcon.colcon_core.shell:Creating package script '/home/jetson/ros2_ws_px4/install/px4_ros_com/share/px4_ros_com/package.sh'
+[8.874s] INFO:colcon.colcon_core.shell:Creating package script '/home/jetson/ros2_ws_px4/install/px4_ros_com/share/px4_ros_com/package.bash'
+[8.875s] INFO:colcon.colcon_core.shell:Creating package script '/home/jetson/ros2_ws_px4/install/px4_ros_com/share/px4_ros_com/package.zsh'
+[8.876s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/jetson/ros2_ws_px4/install/px4_ros_com/share/colcon-core/packages/px4_ros_com)
+[8.877s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(px4_ros_com)
+[8.878s] Level 1:colcon.colcon_core.environment:checking '/home/jetson/ros2_ws_px4/install/px4_ros_com' for CMake module files
+[8.879s] Level 1:colcon.colcon_core.environment:checking '/home/jetson/ros2_ws_px4/install/px4_ros_com' for CMake config files
+[8.880s] Level 1:colcon.colcon_core.shell:create_environment_hook('px4_ros_com', 'cmake_prefix_path')
+[8.897s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/jetson/ros2_ws_px4/install/px4_ros_com/share/px4_ros_com/hook/cmake_prefix_path.ps1'
+[8.898s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/jetson/ros2_ws_px4/install/px4_ros_com/share/px4_ros_com/hook/cmake_prefix_path.dsv'
+[8.899s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/jetson/ros2_ws_px4/install/px4_ros_com/share/px4_ros_com/hook/cmake_prefix_path.sh'
+[8.900s] Level 1:colcon.colcon_core.environment:checking '/home/jetson/ros2_ws_px4/install/px4_ros_com/lib'
+[8.901s] Level 1:colcon.colcon_core.shell:create_environment_hook('px4_ros_com', 'ld_library_path_lib')
+[8.901s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/jetson/ros2_ws_px4/install/px4_ros_com/share/px4_ros_com/hook/ld_library_path_lib.ps1'
+[8.902s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/jetson/ros2_ws_px4/install/px4_ros_com/share/px4_ros_com/hook/ld_library_path_lib.dsv'
+[8.903s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/jetson/ros2_ws_px4/install/px4_ros_com/share/px4_ros_com/hook/ld_library_path_lib.sh'
+[8.904s] Level 1:colcon.colcon_core.environment:checking '/home/jetson/ros2_ws_px4/install/px4_ros_com/bin'
+[8.920s] Level 1:colcon.colcon_core.environment:checking '/home/jetson/ros2_ws_px4/install/px4_ros_com/lib/pkgconfig/px4_ros_com.pc'
+[8.921s] Level 1:colcon.colcon_core.environment:checking '/home/jetson/ros2_ws_px4/install/px4_ros_com/lib/python3.10/site-packages'
+[8.922s] Level 1:colcon.colcon_core.environment:checking '/home/jetson/ros2_ws_px4/install/px4_ros_com/bin'
+[8.923s] INFO:colcon.colcon_core.shell:Creating package script '/home/jetson/ros2_ws_px4/install/px4_ros_com/share/px4_ros_com/package.ps1'
+[8.924s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/jetson/ros2_ws_px4/install/px4_ros_com/share/px4_ros_com/package.dsv'
+[8.926s] INFO:colcon.colcon_core.shell:Creating package script '/home/jetson/ros2_ws_px4/install/px4_ros_com/share/px4_ros_com/package.sh'
+[8.927s] INFO:colcon.colcon_core.shell:Creating package script '/home/jetson/ros2_ws_px4/install/px4_ros_com/share/px4_ros_com/package.bash'
+[8.928s] INFO:colcon.colcon_core.shell:Creating package script '/home/jetson/ros2_ws_px4/install/px4_ros_com/share/px4_ros_com/package.zsh'
+[8.929s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/jetson/ros2_ws_px4/install/px4_ros_com/share/colcon-core/packages/px4_ros_com)
+[20.167s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/jetson/ros2_ws_px4/build/offboard_core_pkg' returned '2': CMAKE_PREFIX_PATH=/home/jetson/ros2_ws_px4/install/px4_msgs:/home/jetson/fastlio2_ws/install/pgo:/home/jetson/fastlio2_ws/install/localizer:/home/jetson/fastlio2_ws/install/fastlio2:/home/jetson/fastlio2_ws/install/livox_ros_driver2:/home/jetson/fastlio2_ws/install/hba:/home/jetson/fastlio2_ws/install/interface:/home/jetson/fastlio2_ws/install/bringup_pkg:/opt/ros/humble:/home/jetson/fastlio2_ws/install/fastlio_to_px4:/home/jetson/ros2_ws_px4/install/trajectory_generator_pkg:/home/jetson/ros2_ws_px4/install/px4_ros_com:/home/jetson/ros2_ws_px4/install/offboard_pkg:/home/jetson/ros2_ws_px4/install/offboard_core_pkg:/home/jetson/ros2_ws_px4/install/fastlio_to_px4 LD_LIBRARY_PATH=/home/jetson/ros2_ws_px4/install/px4_msgs/lib:/usr/local/cuda-12.6/lib64:/home/jetson/fastlio2_ws/install/livox_ros_driver2/lib:/home/jetson/fastlio2_ws/install/interface/lib:/home/jetson/ros2_ws_px4/install/px4_ros_com/lib:/home/jetson/ros2_ws_px4/install/offboard_core_pkg/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/aarch64-linux-gnu:/opt/ros/humble/lib:/usr/local/cuda-12.6/lib64 /usr/bin/cmake --build /home/jetson/ros2_ws_px4/build/offboard_core_pkg -- -j4 -l4
+[20.169s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(offboard_core_pkg)
+[20.170s] Level 1:colcon.colcon_core.environment:checking '/home/jetson/ros2_ws_px4/install/offboard_core_pkg' for CMake module files
+[20.171s] Level 1:colcon.colcon_core.environment:checking '/home/jetson/ros2_ws_px4/install/offboard_core_pkg' for CMake config files
+[20.172s] Level 1:colcon.colcon_core.shell:create_environment_hook('offboard_core_pkg', 'cmake_prefix_path')
+[20.172s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/jetson/ros2_ws_px4/install/offboard_core_pkg/share/offboard_core_pkg/hook/cmake_prefix_path.ps1'
+[20.174s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/jetson/ros2_ws_px4/install/offboard_core_pkg/share/offboard_core_pkg/hook/cmake_prefix_path.dsv'
+[20.175s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/jetson/ros2_ws_px4/install/offboard_core_pkg/share/offboard_core_pkg/hook/cmake_prefix_path.sh'
+[20.177s] Level 1:colcon.colcon_core.environment:checking '/home/jetson/ros2_ws_px4/install/offboard_core_pkg/lib'
+[20.178s] Level 1:colcon.colcon_core.environment:checking '/home/jetson/ros2_ws_px4/install/offboard_core_pkg/bin'
+[20.178s] Level 1:colcon.colcon_core.environment:checking '/home/jetson/ros2_ws_px4/install/offboard_core_pkg/lib/pkgconfig/offboard_core_pkg.pc'
+[20.179s] Level 1:colcon.colcon_core.environment:checking '/home/jetson/ros2_ws_px4/install/offboard_core_pkg/lib/python3.10/site-packages'
+[20.180s] Level 1:colcon.colcon_core.environment:checking '/home/jetson/ros2_ws_px4/install/offboard_core_pkg/bin'
+[20.181s] INFO:colcon.colcon_core.shell:Creating package script '/home/jetson/ros2_ws_px4/install/offboard_core_pkg/share/offboard_core_pkg/package.ps1'
+[20.183s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/jetson/ros2_ws_px4/install/offboard_core_pkg/share/offboard_core_pkg/package.dsv'
+[20.185s] INFO:colcon.colcon_core.shell:Creating package script '/home/jetson/ros2_ws_px4/install/offboard_core_pkg/share/offboard_core_pkg/package.sh'
+[20.186s] INFO:colcon.colcon_core.shell:Creating package script '/home/jetson/ros2_ws_px4/install/offboard_core_pkg/share/offboard_core_pkg/package.bash'
+[20.188s] INFO:colcon.colcon_core.shell:Creating package script '/home/jetson/ros2_ws_px4/install/offboard_core_pkg/share/offboard_core_pkg/package.zsh'
+[20.190s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/jetson/ros2_ws_px4/install/offboard_core_pkg/share/colcon-core/packages/offboard_core_pkg)
+[34.288s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:closing loop
+[34.289s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:loop closed
+[34.289s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete finished with '2'
+[34.289s] DEBUG:colcon.colcon_core.event_reactor:joining thread
+[34.302s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.terminal_notifier': Not used on non-Darwin systems
+[34.302s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.win32': Not used on non-Windows systems
+[34.303s] INFO:colcon.colcon_notification.desktop_notification:Sending desktop notification using 'notify2'
+[34.331s] DEBUG:colcon.colcon_notification.desktop_notification.notify2:Failed to initialize notify2: org.freedesktop.DBus.Error.Spawn.ChildExited: Process org.freedesktop.Notifications exited with status 1
+[34.332s] DEBUG:colcon.colcon_core.event_reactor:joined thread
+[34.332s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/jetson/ros2_ws_px4/install/local_setup.ps1'
+[34.335s] INFO:colcon.colcon_core.shell:Creating prefix util module '/home/jetson/ros2_ws_px4/install/_local_setup_util_ps1.py'
+[34.338s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/jetson/ros2_ws_px4/install/setup.ps1'
+[34.341s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/jetson/ros2_ws_px4/install/local_setup.sh'
+[34.343s] INFO:colcon.colcon_core.shell:Creating prefix util module '/home/jetson/ros2_ws_px4/install/_local_setup_util_sh.py'
+[34.344s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/jetson/ros2_ws_px4/install/setup.sh'
+[34.347s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/jetson/ros2_ws_px4/install/local_setup.bash'
+[34.349s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/jetson/ros2_ws_px4/install/setup.bash'
+[34.352s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/jetson/ros2_ws_px4/install/local_setup.zsh'
+[34.353s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/jetson/ros2_ws_px4/install/setup.zsh'

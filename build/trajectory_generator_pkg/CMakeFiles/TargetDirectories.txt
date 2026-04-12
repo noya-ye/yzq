@@ -1,0 +1,10 @@
+/home/jetson/ros2_ws_px4/build/trajectory_generator_pkg/CMakeFiles/uninstall.dir
+/home/jetson/ros2_ws_px4/build/trajectory_generator_pkg/CMakeFiles/trajectory_generator_pkg_uninstall.dir
+/home/jetson/ros2_ws_px4/build/trajectory_generator_pkg/CMakeFiles/trajectory_node.dir
+/home/jetson/ros2_ws_px4/build/trajectory_generator_pkg/CMakeFiles/test.dir
+/home/jetson/ros2_ws_px4/build/trajectory_generator_pkg/CMakeFiles/edit_cache.dir
+/home/jetson/ros2_ws_px4/build/trajectory_generator_pkg/CMakeFiles/rebuild_cache.dir
+/home/jetson/ros2_ws_px4/build/trajectory_generator_pkg/CMakeFiles/list_install_components.dir
+/home/jetson/ros2_ws_px4/build/trajectory_generator_pkg/CMakeFiles/install.dir
+/home/jetson/ros2_ws_px4/build/trajectory_generator_pkg/CMakeFiles/install/local.dir
+/home/jetson/ros2_ws_px4/build/trajectory_generator_pkg/CMakeFiles/install/strip.dir

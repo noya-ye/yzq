@@ -1,0 +1,201 @@
+cmake_minimum_required(VERSION 3.8)
+project(offboard_core_pkg)
+
+if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+  add_compile_options(-Wall -Wextra -Wpedantic)
+endif()
+
+# ========================
+# dependencies
+# ========================
+find_package(ament_cmake REQUIRED)
+find_package(rclcpp REQUIRED)
+find_package(std_msgs REQUIRED)
+find_package(px4_msgs REQUIRED)
+find_package(nlohmann_json REQUIRED)
+find_package(glog REQUIRED)
+find_package(Eigen3 REQUIRED)
+
+# ========================
+# include
+# ========================
+include_directories(
+  include
+  third_party/mav_trajectory_generation/include
+  third_party/mav_trajectory_generation/src
+  ${EIGEN3_INCLUDE_DIRS} 
+)
+
+# ========================
+# core library
+# ========================
+add_library(offboard_core
+  src/grid.cpp
+
+  # ===== planners =====
+  src/planners/min_snap_planner.cpp
+  src/planners/tsp_min_snap_planner.cpp
+
+  # ===== mav trajectory =====
+  ${MAV_TRAJ_SRC}
+
+  # ===== tasks =====
+  src/tasks/arm_task.cpp
+  src/tasks/disarm_task.cpp
+  src/tasks/grid_goto_dwell_task.cpp
+  src/tasks/home_stabilize_task.cpp
+  src/tasks/hover_task.cpp
+  src/tasks/px4_land_mode_task.cpp
+  src/tasks/presetpoint_task.cpp
+  src/tasks/return_home_task.cpp
+  src/tasks/set_offboard_task.cpp
+  src/tasks/takeoff_task.cpp
+  src/tasks/wait_home_task.cpp
+  src/tasks/yaw_spin_task.cpp
+)
+ament_target_dependencies(offboard_core
+  rclcpp
+  std_msgs
+  px4_msgs
+  nlohmann_json
+)
+
+target_include_directories(offboard_core PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>
+)
+
+target_compile_features(offboard_core PUBLIC cxx_std_17)
+
+
+# ========================
+# mav trajectory source
+# ========================
+set(MAV_TRAJ_SRC
+  third_party/mav_trajectory_generation/src/polynomial.cpp
+  third_party/mav_trajectory_generation/src/segment.cpp
+  third_party/mav_trajectory_generation/src/trajectory.cpp
+  third_party/mav_trajectory_generation/src/vertex.cpp
+  third_party/mav_trajectory_generation/src/timing.cpp
+  third_party/mav_trajectory_generation/src/io.cpp
+  third_party/mav_trajectory_generation/src/motion_defines.cpp
+  third_party/mav_trajectory_generation/src/polynomial_timing_evaluation.cpp
+  third_party/mav_trajectory_generation/src/trajectory_sampling.cpp
+
+  # ⭐最关键（否则直接炸）
+  third_party/mav_trajectory_generation/src/polynomial_optimization_linear.cpp
+
+  # ⭐rpoly（必须）
+  third_party/mav_trajectory_generation/src/rpoly/rpoly_ak1.cpp
+)
+target_link_libraries(offboard_core
+  glog
+  Eigen3::Eigen
+)
+# ========================
+# node: offboard_test1
+# ========================
+add_executable(offboard_test1_node
+  src/nodes/offboard_test1.cpp
+)
+
+target_link_libraries(offboard_test1_node
+  offboard_core
+)
+
+ament_target_dependencies(offboard_test1_node
+  rclcpp
+  std_msgs
+  px4_msgs
+  nlohmann_json
+  Eigen3  
+)
+
+target_include_directories(offboard_test1_node PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>
+)
+
+target_compile_features(offboard_test1_node PUBLIC cxx_std_17)
+
+
+# ========================
+# node: offboard_test2
+# ========================
+add_executable(offboard_test2_node
+  src/nodes/offboard_test2.cpp
+)
+
+target_link_libraries(offboard_test2_node
+  offboard_core
+)
+
+ament_target_dependencies(offboard_test2_node
+  rclcpp
+  std_msgs
+  px4_msgs
+  nlohmann_json
+  Eigen3
+)
+
+target_include_directories(offboard_test2_node PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>
+)
+
+target_compile_features(offboard_test2_node PUBLIC cxx_std_17)
+
+# # ========================
+# # node: offboard_mission1
+# # ========================
+# add_executable(offboard_mission1_node
+#   src/nodes/offboard_mission1.cpp
+# )
+
+# target_link_libraries(offboard_mission1_node
+#   offboard_core
+# )
+
+# ament_target_dependencies(offboard_mission1_node
+#   rclcpp
+#   std_msgs
+#   px4_msgs
+#   nlohmann_json
+# )
+
+# target_include_directories(offboard_mission1_node PUBLIC
+#   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+#   $<INSTALL_INTERFACE:include>
+# )
+
+# target_compile_features(offboard_mission1_node PUBLIC cxx_std_17)
+
+# ========================
+# install
+# ========================
+install(
+  TARGETS
+    offboard_core
+    offboard_test1_node
+    offboard_test2_node
+    # offboard_mission1_node
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION lib/${PROJECT_NAME}
+)
+
+install(
+  DIRECTORY include/
+  DESTINATION include
+)
+
+# 如果你后面有 launch 文件，再打开
+# install(
+#   DIRECTORY launch/
+#   DESTINATION share/${PROJECT_NAME}/launch
+# )
+
+ament_export_include_directories(include)
+ament_export_libraries(offboard_core)
+
+ament_package()

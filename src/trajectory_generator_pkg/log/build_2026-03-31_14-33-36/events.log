@@ -1,0 +1,287 @@
+[0.000000] (-) TimerEvent: {}
+[0.000882] (trajectory_generator_pkg) JobQueued: {'identifier': 'trajectory_generator_pkg', 'dependencies': OrderedDict()}
+[0.001194] (trajectory_generator_pkg) JobStarted: {'identifier': 'trajectory_generator_pkg'}
+[0.021783] (trajectory_generator_pkg) JobProgress: {'identifier': 'trajectory_generator_pkg', 'progress': 'cmake'}
+[0.022844] (trajectory_generator_pkg) Command: {'cmd': ['/usr/bin/cmake', '/home/jetson/ros2_ws_px4/src/trajectory_generator_pkg', '-DCATKIN_INSTALL_INTO_PREFIX_ROOT=0', '-DCMAKE_INSTALL_PREFIX=/home/jetson/ros2_ws_px4/src/trajectory_generator_pkg/install/trajectory_generator_pkg'], 'cwd': '/home/jetson/ros2_ws_px4/src/trajectory_generator_pkg/build/trajectory_generator_pkg', 'env': OrderedDict([('LESSOPEN', '| /usr/bin/lesspipe %s'), ('USER', 'jetson'), ('SSH_CLIENT', '192.168.43.93 34945 22'), ('all_proxy', 'socks5://192.168.177.1:7897'), ('ROS_PACKAGE_PATH', '/home/jetson/fastlio2_ws/install/fastlio_to_px4/share'), ('XDG_SESSION_TYPE', 'tty'), ('GIT_ASKPASS', '/home/jetson/.vscode-server/cli/servers/Stable-cfbea10c5ffb233ea9177d34726e6056e89913dc/server/extensions/git/dist/askpass.sh'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/usr/local/cuda-12.6/lib64:/home/jetson/fastlio2_ws/install/livox_ros_driver2/lib:/home/jetson/fastlio2_ws/install/interface/lib:/home/jetson/ros2_ws_px4/install/px4_ros_com/lib:/home/jetson/ros2_ws_px4/install/offboard_core_pkg/lib:/home/jetson/ros2_ws_px4/install/px4_msgs/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/aarch64-linux-gnu:/opt/ros/humble/lib:/usr/local/cuda-12.6/lib64:'), ('BROWSER', '/home/jetson/.vscode-server/cli/servers/Stable-cfbea10c5ffb233ea9177d34726e6056e89913dc/server/bin/helpers/browser.sh'), ('MOTD_SHOWN', 'pam'), ('HOME', '/home/jetson'), ('OLDPWD', '/home/jetson/third_party/mav_trajectory_generation'), ('TERM_PROGRAM_VERSION', '1.113.0'), ('VSCODE_IPC_HOOK_CLI', '/run/user/1000/vscode-ipc-571e5e2e-e42b-462e-8a3c-1462c5fa92ad.sock'), ('ROS_PYTHON_VERSION', '3'), ('VSCODE_GIT_ASKPASS_MAIN', '/home/jetson/.vscode-server/cli/servers/Stable-cfbea10c5ffb233ea9177d34726e6056e89913dc/server/extensions/git/dist/askpass-main.js'), ('VSCODE_GIT_ASKPASS_NODE', '/home/jetson/.vscode-server/cli/servers/Stable-cfbea10c5ffb233ea9177d34726e6056e89913dc/server/node'), ('VSCODE_PYTHON_AUTOACTIVATE_GUARD', '1'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('COLORTERM', 'truecolor'), ('https_proxy', 'http://192.168.177.1:7897'), ('COLCON_PREFIX_PATH', '/home/jetson/fastlio2_ws/install:/home/jetson/ros2_ws_px4/install'), ('ROS_DISTRO', 'humble'), ('LOGNAME', 'jetson'), ('http_proxy', 'http://192.168.177.1:7897'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('PKG_CONFIG_PATH', '/home/jetson/fastlio2_ws/install/fastlio_to_px4/lib/aarch64-linux-gnu/pkgconfig:/home/jetson/fastlio2_ws/install/fastlio_to_px4/lib/pkgconfig'), ('XDG_SESSION_CLASS', 'user'), ('TERM', 'xterm-256color'), ('XDG_SESSION_ID', '4'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/home/jetson/.local/bin:/usr/local/cuda-12.6/bin:/home/jetson/.vscode-server/data/User/globalStorage/github.copilot-chat/debugCommand:/home/jetson/.vscode-server/data/User/globalStorage/github.copilot-chat/copilotCli:/home/jetson/.vscode-server/cli/servers/Stable-cfbea10c5ffb233ea9177d34726e6056e89913dc/server/bin/remote-cli:/home/jetson/.local/bin:/home/jetson/.local/bin:/opt/ros/humble/bin:/usr/local/cuda-12.6/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin'), ('XDG_RUNTIME_DIR', '/run/user/1000'), ('LANG', 'zh_CN.UTF-8'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('VSCODE_GIT_IPC_HANDLE', '/run/user/1000/vscode-git-6c5b97095b.sock'), ('TERM_PROGRAM', 'vscode'), ('ROSDISTRO_INDEX_URL', 'https://mirrors.tuna.tsinghua.edu.cn/rosdistro/index-v4.yaml'), ('AMENT_PREFIX_PATH', '/home/jetson/fastlio2_ws/install/pgo:/home/jetson/fastlio2_ws/install/localizer:/home/jetson/fastlio2_ws/install/fastlio2:/home/jetson/fastlio2_ws/install/livox_ros_driver2:/home/jetson/fastlio2_ws/install/hba:/home/jetson/fastlio2_ws/install/interface:/home/jetson/fastlio2_ws/install/bringup_pkg:/home/jetson/ros2_ws_px4/install/px4_ros_com:/home/jetson/ros2_ws_px4/install/offboard_pkg:/home/jetson/ros2_ws_px4/install/offboard_core_pkg:/home/jetson/ros2_ws_px4/install/fastlio_to_px4:/home/jetson/ros2_ws_px4/install/px4_msgs:/opt/ros/humble'), ('SHELL', '/bin/bash'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('VSCODE_GIT_ASKPASS_EXTRA_ARGS', ''), ('PWD', '/home/jetson/ros2_ws_px4/src/trajectory_generator_pkg/build/trajectory_generator_pkg'), ('SSH_CONNECTION', '192.168.43.93 34945 192.168.43.30 22'), ('XDG_DATA_DIRS', '/usr/share/gnome:/usr/local/share:/usr/share:/var/lib/snapd/desktop'), ('PYTHONPATH', '/home/jetson/fastlio2_ws/install/livox_ros_driver2/local/lib/python3.10/dist-packages:/home/jetson/fastlio2_ws/install/interface/local/lib/python3.10/dist-packages:/home/jetson/fastlio2_ws/install/bringup_pkg/lib/python3.10/site-packages:/home/jetson/ros2_ws_px4/install/px4_ros_com/local/lib/python3.10/dist-packages:/home/jetson/ros2_ws_px4/install/px4_msgs/local/lib/python3.10/dist-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('COLCON', '1'), ('CMAKE_PREFIX_PATH', '/home/jetson/fastlio2_ws/install/pgo:/home/jetson/fastlio2_ws/install/localizer:/home/jetson/fastlio2_ws/install/fastlio2:/home/jetson/fastlio2_ws/install/livox_ros_driver2:/home/jetson/fastlio2_ws/install/hba:/home/jetson/fastlio2_ws/install/interface:/home/jetson/fastlio2_ws/install/fastlio_to_px4:/home/jetson/ros2_ws_px4/install/px4_ros_com:/home/jetson/ros2_ws_px4/install/offboard_pkg:/home/jetson/ros2_ws_px4/install/offboard_core_pkg:/home/jetson/ros2_ws_px4/install/fastlio_to_px4:/home/jetson/ros2_ws_px4/install/px4_msgs')]), 'shell': False}
+[0.099431] (-) TimerEvent: {}
+[0.168021] (trajectory_generator_pkg) StdoutLine: {'line': b'-- The C compiler identification is GNU 11.4.0\n'}
+[0.199593] (-) TimerEvent: {}
+[0.291983] (trajectory_generator_pkg) StdoutLine: {'line': b'-- The CXX compiler identification is GNU 11.4.0\n'}
+[0.299712] (-) TimerEvent: {}
+[0.309379] (trajectory_generator_pkg) StdoutLine: {'line': b'-- Detecting C compiler ABI info\n'}
+[0.399876] (-) TimerEvent: {}
+[0.443971] (trajectory_generator_pkg) StdoutLine: {'line': b'-- Detecting C compiler ABI info - done\n'}
+[0.454585] (trajectory_generator_pkg) StdoutLine: {'line': b'-- Check for working C compiler: /usr/bin/cc - skipped\n'}
+[0.455328] (trajectory_generator_pkg) StdoutLine: {'line': b'-- Detecting C compile features\n'}
+[0.456413] (trajectory_generator_pkg) StdoutLine: {'line': b'-- Detecting C compile features - done\n'}
+[0.462935] (trajectory_generator_pkg) StdoutLine: {'line': b'-- Detecting CXX compiler ABI info\n'}
+[0.500030] (-) TimerEvent: {}
+[0.600600] (-) TimerEvent: {}
+[0.610478] (trajectory_generator_pkg) StdoutLine: {'line': b'-- Detecting CXX compiler ABI info - done\n'}
+[0.621974] (trajectory_generator_pkg) StdoutLine: {'line': b'-- Check for working CXX compiler: /usr/bin/c++ - skipped\n'}
+[0.622496] (trajectory_generator_pkg) StdoutLine: {'line': b'-- Detecting CXX compile features\n'}
+[0.623345] (trajectory_generator_pkg) StdoutLine: {'line': b'-- Detecting CXX compile features - done\n'}
+[0.642868] (trajectory_generator_pkg) StdoutLine: {'line': b'-- Found ament_cmake: 1.3.13 (/opt/ros/humble/share/ament_cmake/cmake)\n'}
+[0.700746] (-) TimerEvent: {}
+[0.801326] (-) TimerEvent: {}
+[0.901885] (-) TimerEvent: {}
+[1.002415] (-) TimerEvent: {}
+[1.020643] (trajectory_generator_pkg) StdoutLine: {'line': b'-- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter \n'}
+[1.102649] (-) TimerEvent: {}
+[1.203194] (-) TimerEvent: {}
+[1.304380] (-) TimerEvent: {}
+[1.318077] (trajectory_generator_pkg) StdoutLine: {'line': b'-- Found rclcpp: 16.0.18 (/opt/ros/humble/share/rclcpp/cmake)\n'}
+[1.404541] (-) TimerEvent: {}
+[1.445358] (trajectory_generator_pkg) StdoutLine: {'line': b'-- Found rosidl_generator_c: 3.1.8 (/opt/ros/humble/share/rosidl_generator_c/cmake)\n'}
+[1.462307] (trajectory_generator_pkg) StdoutLine: {'line': b'-- Found rosidl_adapter: 3.1.8 (/opt/ros/humble/share/rosidl_adapter/cmake)\n'}
+[1.489236] (trajectory_generator_pkg) StdoutLine: {'line': b'-- Found rosidl_generator_cpp: 3.1.8 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)\n'}
+[1.504679] (-) TimerEvent: {}
+[1.538583] (trajectory_generator_pkg) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c\n'}
+[1.590967] (trajectory_generator_pkg) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp\n'}
+[1.604773] (-) TimerEvent: {}
+[1.705227] (-) TimerEvent: {}
+[1.723162] (trajectory_generator_pkg) StdoutLine: {'line': b'-- Found rmw_implementation_cmake: 6.1.2 (/opt/ros/humble/share/rmw_implementation_cmake/cmake)\n'}
+[1.733930] (trajectory_generator_pkg) StdoutLine: {'line': b'-- Found rmw_fastrtps_cpp: 6.2.10 (/opt/ros/humble/share/rmw_fastrtps_cpp/cmake)\n'}
+[1.805379] (-) TimerEvent: {}
+[1.905912] (-) TimerEvent: {}
+[1.943761] (trajectory_generator_pkg) StdoutLine: {'line': b'-- Found OpenSSL: /usr/lib/aarch64-linux-gnu/libcrypto.so (found version "3.0.2")  \n'}
+[1.999029] (trajectory_generator_pkg) StdoutLine: {'line': b'-- Found FastRTPS: /opt/ros/humble/include  \n'}
+[2.006047] (-) TimerEvent: {}
+[2.087601] (trajectory_generator_pkg) StdoutLine: {'line': b"-- Using RMW implementation 'rmw_fastrtps_cpp' as default\n"}
+[2.106294] (-) TimerEvent: {}
+[2.120262] (trajectory_generator_pkg) StdoutLine: {'line': b'-- Looking for pthread.h\n'}
+[2.206426] (-) TimerEvent: {}
+[2.262922] (trajectory_generator_pkg) StdoutLine: {'line': b'-- Looking for pthread.h - found\n'}
+[2.263323] (trajectory_generator_pkg) StdoutLine: {'line': b'-- Performing Test CMAKE_HAVE_LIBC_PTHREAD\n'}
+[2.306567] (-) TimerEvent: {}
+[2.407114] (-) TimerEvent: {}
+[2.412672] (trajectory_generator_pkg) StdoutLine: {'line': b'-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success\n'}
+[2.413062] (trajectory_generator_pkg) StdoutLine: {'line': b'-- Found Threads: TRUE  \n'}
+[2.507276] (-) TimerEvent: {}
+[2.547894] (trajectory_generator_pkg) StdoutLine: {'line': b'-- Found px4_msgs: 2.0.1 (/home/jetson/ros2_ws_px4/install/px4_msgs/share/px4_msgs/cmake)\n'}
+[2.607406] (-) TimerEvent: {}
+[2.707926] (-) TimerEvent: {}
+[2.771064] (trajectory_generator_pkg) StdoutLine: {'line': b'-- Configuring done\n'}
+[2.808112] (-) TimerEvent: {}
+[2.821941] (trajectory_generator_pkg) StdoutLine: {'line': b'-- Generating done\n'}
+[2.826711] (trajectory_generator_pkg) StderrLine: {'line': b'\x1b[33mCMake Warning:\n'}
+[2.827144] (trajectory_generator_pkg) StderrLine: {'line': b'  Manually-specified variables were not used by the project:\n'}
+[2.827318] (trajectory_generator_pkg) StderrLine: {'line': b'\n'}
+[2.827458] (trajectory_generator_pkg) StderrLine: {'line': b'    CATKIN_INSTALL_INTO_PREFIX_ROOT\n'}
+[2.827590] (trajectory_generator_pkg) StderrLine: {'line': b'\n'}
+[2.827716] (trajectory_generator_pkg) StderrLine: {'line': b'\x1b[0m\n'}
+[2.837361] (trajectory_generator_pkg) StdoutLine: {'line': b'-- Build files have been written to: /home/jetson/ros2_ws_px4/src/trajectory_generator_pkg/build/trajectory_generator_pkg\n'}
+[2.860938] (trajectory_generator_pkg) CommandEnded: {'returncode': 0}
+[2.861686] (trajectory_generator_pkg) JobProgress: {'identifier': 'trajectory_generator_pkg', 'progress': 'build'}
+[2.861751] (trajectory_generator_pkg) Command: {'cmd': ['/usr/bin/cmake', '--build', '/home/jetson/ros2_ws_px4/src/trajectory_generator_pkg/build/trajectory_generator_pkg', '--', '-j4', '-l4'], 'cwd': '/home/jetson/ros2_ws_px4/src/trajectory_generator_pkg/build/trajectory_generator_pkg', 'env': OrderedDict([('LESSOPEN', '| /usr/bin/lesspipe %s'), ('USER', 'jetson'), ('SSH_CLIENT', '192.168.43.93 34945 22'), ('all_proxy', 'socks5://192.168.177.1:7897'), ('ROS_PACKAGE_PATH', '/home/jetson/fastlio2_ws/install/fastlio_to_px4/share'), ('XDG_SESSION_TYPE', 'tty'), ('GIT_ASKPASS', '/home/jetson/.vscode-server/cli/servers/Stable-cfbea10c5ffb233ea9177d34726e6056e89913dc/server/extensions/git/dist/askpass.sh'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/usr/local/cuda-12.6/lib64:/home/jetson/fastlio2_ws/install/livox_ros_driver2/lib:/home/jetson/fastlio2_ws/install/interface/lib:/home/jetson/ros2_ws_px4/install/px4_ros_com/lib:/home/jetson/ros2_ws_px4/install/offboard_core_pkg/lib:/home/jetson/ros2_ws_px4/install/px4_msgs/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/aarch64-linux-gnu:/opt/ros/humble/lib:/usr/local/cuda-12.6/lib64:'), ('BROWSER', '/home/jetson/.vscode-server/cli/servers/Stable-cfbea10c5ffb233ea9177d34726e6056e89913dc/server/bin/helpers/browser.sh'), ('MOTD_SHOWN', 'pam'), ('HOME', '/home/jetson'), ('OLDPWD', '/home/jetson/third_party/mav_trajectory_generation'), ('TERM_PROGRAM_VERSION', '1.113.0'), ('VSCODE_IPC_HOOK_CLI', '/run/user/1000/vscode-ipc-571e5e2e-e42b-462e-8a3c-1462c5fa92ad.sock'), ('ROS_PYTHON_VERSION', '3'), ('VSCODE_GIT_ASKPASS_MAIN', '/home/jetson/.vscode-server/cli/servers/Stable-cfbea10c5ffb233ea9177d34726e6056e89913dc/server/extensions/git/dist/askpass-main.js'), ('VSCODE_GIT_ASKPASS_NODE', '/home/jetson/.vscode-server/cli/servers/Stable-cfbea10c5ffb233ea9177d34726e6056e89913dc/server/node'), ('VSCODE_PYTHON_AUTOACTIVATE_GUARD', '1'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('COLORTERM', 'truecolor'), ('https_proxy', 'http://192.168.177.1:7897'), ('COLCON_PREFIX_PATH', '/home/jetson/fastlio2_ws/install:/home/jetson/ros2_ws_px4/install'), ('ROS_DISTRO', 'humble'), ('LOGNAME', 'jetson'), ('http_proxy', 'http://192.168.177.1:7897'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('PKG_CONFIG_PATH', '/home/jetson/fastlio2_ws/install/fastlio_to_px4/lib/aarch64-linux-gnu/pkgconfig:/home/jetson/fastlio2_ws/install/fastlio_to_px4/lib/pkgconfig'), ('XDG_SESSION_CLASS', 'user'), ('TERM', 'xterm-256color'), ('XDG_SESSION_ID', '4'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/home/jetson/.local/bin:/usr/local/cuda-12.6/bin:/home/jetson/.vscode-server/data/User/globalStorage/github.copilot-chat/debugCommand:/home/jetson/.vscode-server/data/User/globalStorage/github.copilot-chat/copilotCli:/home/jetson/.vscode-server/cli/servers/Stable-cfbea10c5ffb233ea9177d34726e6056e89913dc/server/bin/remote-cli:/home/jetson/.local/bin:/home/jetson/.local/bin:/opt/ros/humble/bin:/usr/local/cuda-12.6/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin'), ('XDG_RUNTIME_DIR', '/run/user/1000'), ('LANG', 'zh_CN.UTF-8'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('VSCODE_GIT_IPC_HANDLE', '/run/user/1000/vscode-git-6c5b97095b.sock'), ('TERM_PROGRAM', 'vscode'), ('ROSDISTRO_INDEX_URL', 'https://mirrors.tuna.tsinghua.edu.cn/rosdistro/index-v4.yaml'), ('AMENT_PREFIX_PATH', '/home/jetson/fastlio2_ws/install/pgo:/home/jetson/fastlio2_ws/install/localizer:/home/jetson/fastlio2_ws/install/fastlio2:/home/jetson/fastlio2_ws/install/livox_ros_driver2:/home/jetson/fastlio2_ws/install/hba:/home/jetson/fastlio2_ws/install/interface:/home/jetson/fastlio2_ws/install/bringup_pkg:/home/jetson/ros2_ws_px4/install/px4_ros_com:/home/jetson/ros2_ws_px4/install/offboard_pkg:/home/jetson/ros2_ws_px4/install/offboard_core_pkg:/home/jetson/ros2_ws_px4/install/fastlio_to_px4:/home/jetson/ros2_ws_px4/install/px4_msgs:/opt/ros/humble'), ('SHELL', '/bin/bash'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('VSCODE_GIT_ASKPASS_EXTRA_ARGS', ''), ('PWD', '/home/jetson/ros2_ws_px4/src/trajectory_generator_pkg/build/trajectory_generator_pkg'), ('SSH_CONNECTION', '192.168.43.93 34945 192.168.43.30 22'), ('XDG_DATA_DIRS', '/usr/share/gnome:/usr/local/share:/usr/share:/var/lib/snapd/desktop'), ('PYTHONPATH', '/home/jetson/fastlio2_ws/install/livox_ros_driver2/local/lib/python3.10/dist-packages:/home/jetson/fastlio2_ws/install/interface/local/lib/python3.10/dist-packages:/home/jetson/fastlio2_ws/install/bringup_pkg/lib/python3.10/site-packages:/home/jetson/ros2_ws_px4/install/px4_ros_com/local/lib/python3.10/dist-packages:/home/jetson/ros2_ws_px4/install/px4_msgs/local/lib/python3.10/dist-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('COLCON', '1'), ('CMAKE_PREFIX_PATH', '/home/jetson/fastlio2_ws/install/pgo:/home/jetson/fastlio2_ws/install/localizer:/home/jetson/fastlio2_ws/install/fastlio2:/home/jetson/fastlio2_ws/install/livox_ros_driver2:/home/jetson/fastlio2_ws/install/hba:/home/jetson/fastlio2_ws/install/interface:/home/jetson/fastlio2_ws/install/fastlio_to_px4:/home/jetson/ros2_ws_px4/install/px4_ros_com:/home/jetson/ros2_ws_px4/install/offboard_pkg:/home/jetson/ros2_ws_px4/install/offboard_core_pkg:/home/jetson/ros2_ws_px4/install/fastlio_to_px4:/home/jetson/ros2_ws_px4/install/px4_msgs')]), 'shell': False}
+[2.908283] (-) TimerEvent: {}
+[2.991410] (trajectory_generator_pkg) StdoutLine: {'line': b'[  8%] \x1b[32mBuilding CXX object CMakeFiles/trajectory_node.dir/src/trajectory_node.cpp.o\x1b[0m\n'}
+[3.008449] (-) TimerEvent: {}
+[3.008938] (trajectory_generator_pkg) StdoutLine: {'line': b'[ 16%] \x1b[32mBuilding CXX object CMakeFiles/trajectory_node.dir/third_party/mav_trajectory_generation/src/io.cpp.o\x1b[0m\n'}
+[3.026792] (trajectory_generator_pkg) StdoutLine: {'line': b'[ 25%] \x1b[32mBuilding CXX object CMakeFiles/trajectory_node.dir/src/generator.cpp.o\x1b[0m\n'}
+[3.028384] (trajectory_generator_pkg) StdoutLine: {'line': b'[ 33%] \x1b[32mBuilding CXX object CMakeFiles/trajectory_node.dir/third_party/mav_trajectory_generation/src/motion_defines.cpp.o\x1b[0m\n'}
+[3.108826] (-) TimerEvent: {}
+[3.214312] (-) TimerEvent: {}
+[3.314894] (-) TimerEvent: {}
+[3.415488] (-) TimerEvent: {}
+[3.516076] (-) TimerEvent: {}
+[3.616677] (-) TimerEvent: {}
+[3.717236] (-) TimerEvent: {}
+[3.817850] (-) TimerEvent: {}
+[3.918470] (-) TimerEvent: {}
+[4.019032] (-) TimerEvent: {}
+[4.092671] (trajectory_generator_pkg) StdoutLine: {'line': b'[ 41%] \x1b[32mBuilding CXX object CMakeFiles/trajectory_node.dir/third_party/mav_trajectory_generation/src/polynomial.cpp.o\x1b[0m\n'}
+[4.118791] (trajectory_generator_pkg) StderrLine: {'line': b'In file included from \x1b[01m\x1b[K/home/jetson/ros2_ws_px4/src/trajectory_generator_pkg/third_party/mav_trajectory_generation/src/io.cpp:22\x1b[m\x1b[K:\n'}
+[4.119268] (-) TimerEvent: {}
+[4.119508] (trajectory_generator_pkg) StderrLine: {'line': b'\x1b[01m\x1b[K/home/jetson/ros2_ws_px4/src/trajectory_generator_pkg/third_party/mav_trajectory_generation/include/mav_trajectory_generation/trajectory_sampling.h:24:10:\x1b[m\x1b[K \x1b[01;31m\x1b[Kfatal error: \x1b[m\x1b[Kmav_msgs/eigen_mav_msgs.h: \xe6\xb2\xa1\xe6\x9c\x89\xe9\x82\xa3\xe4\xb8\xaa\xe6\x96\x87\xe4\xbb\xb6\xe6\x88\x96\xe7\x9b\xae\xe5\xbd\x95\n'}
+[4.119690] (trajectory_generator_pkg) StderrLine: {'line': b'   24 | #include \x1b[01;31m\x1b[K<mav_msgs/eigen_mav_msgs.h>\x1b[m\x1b[K\n'}
+[4.119834] (trajectory_generator_pkg) StderrLine: {'line': b'      |          \x1b[01;31m\x1b[K^~~~~~~~~~~~~~~~~~~~~~~~~~~\x1b[m\x1b[K\n'}
+[4.119968] (trajectory_generator_pkg) StderrLine: {'line': b'compilation terminated.\n'}
+[4.123444] (trajectory_generator_pkg) StderrLine: {'line': b'gmake[2]: *** [CMakeFiles/trajectory_node.dir/build.make:104\xef\xbc\x9aCMakeFiles/trajectory_node.dir/third_party/mav_trajectory_generation/src/io.cpp.o] \xe9\x94\x99\xe8\xaf\xaf 1\n'}
+[4.123785] (trajectory_generator_pkg) StderrLine: {'line': b'gmake[2]: *** \xe6\xad\xa3\xe5\x9c\xa8\xe7\xad\x89\xe5\xbe\x85\xe6\x9c\xaa\xe5\xae\x8c\xe6\x88\x90\xe7\x9a\x84\xe4\xbb\xbb\xe5\x8a\xa1....\n'}
+[4.219461] (-) TimerEvent: {}
+[4.320028] (-) TimerEvent: {}
+[4.420602] (-) TimerEvent: {}
+[4.521197] (-) TimerEvent: {}
+[4.621784] (-) TimerEvent: {}
+[4.722422] (-) TimerEvent: {}
+[4.823028] (-) TimerEvent: {}
+[4.923643] (-) TimerEvent: {}
+[5.024255] (-) TimerEvent: {}
+[5.124849] (-) TimerEvent: {}
+[5.225476] (-) TimerEvent: {}
+[5.326081] (-) TimerEvent: {}
+[5.426701] (-) TimerEvent: {}
+[5.527399] (-) TimerEvent: {}
+[5.629126] (-) TimerEvent: {}
+[5.730187] (-) TimerEvent: {}
+[5.830774] (-) TimerEvent: {}
+[5.931371] (-) TimerEvent: {}
+[6.031968] (-) TimerEvent: {}
+[6.132561] (-) TimerEvent: {}
+[6.233152] (-) TimerEvent: {}
+[6.333753] (-) TimerEvent: {}
+[6.434371] (-) TimerEvent: {}
+[6.534974] (-) TimerEvent: {}
+[6.635564] (-) TimerEvent: {}
+[6.736118] (-) TimerEvent: {}
+[6.836716] (-) TimerEvent: {}
+[6.937308] (-) TimerEvent: {}
+[7.037903] (-) TimerEvent: {}
+[7.138500] (-) TimerEvent: {}
+[7.239039] (-) TimerEvent: {}
+[7.339621] (-) TimerEvent: {}
+[7.440220] (-) TimerEvent: {}
+[7.540801] (-) TimerEvent: {}
+[7.641374] (-) TimerEvent: {}
+[7.741940] (-) TimerEvent: {}
+[7.842509] (-) TimerEvent: {}
+[7.943040] (-) TimerEvent: {}
+[8.046271] (-) TimerEvent: {}
+[8.146809] (-) TimerEvent: {}
+[8.247335] (-) TimerEvent: {}
+[8.347952] (-) TimerEvent: {}
+[8.448477] (-) TimerEvent: {}
+[8.549002] (-) TimerEvent: {}
+[8.649569] (-) TimerEvent: {}
+[8.750089] (-) TimerEvent: {}
+[8.850662] (-) TimerEvent: {}
+[8.951217] (-) TimerEvent: {}
+[9.051804] (-) TimerEvent: {}
+[9.152389] (-) TimerEvent: {}
+[9.194199] (trajectory_generator_pkg) StderrLine: {'line': b'In file included from \x1b[01m\x1b[K/home/jetson/ros2_ws_px4/src/trajectory_generator_pkg/src/generator.cpp:4\x1b[m\x1b[K:\n'}
+[9.194619] (trajectory_generator_pkg) StderrLine: {'line': b'/home/jetson/ros2_ws_px4/src/trajectory_generator_pkg/third_party/mav_trajectory_generation/include/mav_trajectory_generation/polynomial_optimization_linear.h: In instantiation of \xe2\x80\x98\x1b[01m\x1b[Kclass mav_trajectory_generation::PolynomialOptimization<7>\x1b[m\x1b[K\xe2\x80\x99:\n'}
+[9.194821] (trajectory_generator_pkg) StderrLine: {'line': b'\x1b[01m\x1b[K/home/jetson/ros2_ws_px4/src/trajectory_generator_pkg/src/generator.cpp:33:71:\x1b[m\x1b[K   required from here\n'}
+[9.194965] (trajectory_generator_pkg) StderrLine: {'line': b'\x1b[01m\x1b[K/home/jetson/ros2_ws_px4/src/trajectory_generator_pkg/third_party/mav_trajectory_generation/include/mav_trajectory_generation/polynomial_optimization_linear.h:47:24:\x1b[m\x1b[K \x1b[01;31m\x1b[Kerror: \x1b[m\x1b[Kstatic assertion failed: The number of coefficients has to be even.\n'}
+[9.195125] (trajectory_generator_pkg) StderrLine: {'line': b'   47 |   static_assert(\x1b[01;31m\x1b[K_N % 2 == 0\x1b[m\x1b[K, "The number of coefficients has to be even.");\n'}
+[9.195260] (trajectory_generator_pkg) StderrLine: {'line': b'      |                 \x1b[01;31m\x1b[K~~~~~~~^~~~\x1b[m\x1b[K\n'}
+[9.195495] (trajectory_generator_pkg) StderrLine: {'line': b'\x1b[01m\x1b[K/home/jetson/ros2_ws_px4/src/trajectory_generator_pkg/third_party/mav_trajectory_generation/include/mav_trajectory_generation/polynomial_optimization_linear.h:47:24:\x1b[m\x1b[K \x1b[01;36m\x1b[Knote: \x1b[m\x1b[K\xe2\x80\x98\x1b[01m\x1b[K((7 % 2) == 0)\x1b[m\x1b[K\xe2\x80\x99 evaluates to false\n'}
+[9.252552] (-) TimerEvent: {}
+[9.353130] (-) TimerEvent: {}
+[9.453723] (-) TimerEvent: {}
+[9.554294] (-) TimerEvent: {}
+[9.654873] (-) TimerEvent: {}
+[9.755467] (-) TimerEvent: {}
+[9.856069] (-) TimerEvent: {}
+[9.956681] (-) TimerEvent: {}
+[10.057275] (-) TimerEvent: {}
+[10.157856] (-) TimerEvent: {}
+[10.258575] (-) TimerEvent: {}
+[10.359163] (-) TimerEvent: {}
+[10.459752] (-) TimerEvent: {}
+[10.560358] (-) TimerEvent: {}
+[10.660961] (-) TimerEvent: {}
+[10.761566] (-) TimerEvent: {}
+[10.862186] (-) TimerEvent: {}
+[10.963201] (-) TimerEvent: {}
+[11.063786] (-) TimerEvent: {}
+[11.164400] (-) TimerEvent: {}
+[11.264993] (-) TimerEvent: {}
+[11.365548] (-) TimerEvent: {}
+[11.466078] (-) TimerEvent: {}
+[11.566640] (-) TimerEvent: {}
+[11.667171] (-) TimerEvent: {}
+[11.767862] (-) TimerEvent: {}
+[11.868406] (-) TimerEvent: {}
+[11.968978] (-) TimerEvent: {}
+[12.069560] (-) TimerEvent: {}
+[12.170740] (-) TimerEvent: {}
+[12.271324] (-) TimerEvent: {}
+[12.371908] (-) TimerEvent: {}
+[12.472510] (-) TimerEvent: {}
+[12.573127] (-) TimerEvent: {}
+[12.673890] (-) TimerEvent: {}
+[12.774504] (-) TimerEvent: {}
+[12.875089] (-) TimerEvent: {}
+[12.975676] (-) TimerEvent: {}
+[13.076255] (-) TimerEvent: {}
+[13.176831] (-) TimerEvent: {}
+[13.277423] (-) TimerEvent: {}
+[13.378006] (-) TimerEvent: {}
+[13.478613] (-) TimerEvent: {}
+[13.579179] (-) TimerEvent: {}
+[13.679753] (-) TimerEvent: {}
+[13.780323] (-) TimerEvent: {}
+[13.880909] (-) TimerEvent: {}
+[13.981476] (-) TimerEvent: {}
+[14.082063] (-) TimerEvent: {}
+[14.182653] (-) TimerEvent: {}
+[14.283223] (-) TimerEvent: {}
+[14.383801] (-) TimerEvent: {}
+[14.484384] (-) TimerEvent: {}
+[14.544304] (trajectory_generator_pkg) StderrLine: {'line': b'gmake[2]: *** [CMakeFiles/trajectory_node.dir/build.make:90\xef\xbc\x9aCMakeFiles/trajectory_node.dir/src/generator.cpp.o] \xe9\x94\x99\xe8\xaf\xaf 1\n'}
+[14.584543] (-) TimerEvent: {}
+[14.635392] (trajectory_generator_pkg) StderrLine: {'line': b'\x1b[01m\x1b[K/home/jetson/ros2_ws_px4/src/trajectory_generator_pkg/src/trajectory_node.cpp:\x1b[m\x1b[K In member function \xe2\x80\x98\x1b[01m\x1b[Kvoid TrajectoryNode::onTimer()\x1b[m\x1b[K\xe2\x80\x99:\n'}
+[14.635911] (trajectory_generator_pkg) StderrLine: {'line': b'\x1b[01m\x1b[K/home/jetson/ros2_ws_px4/src/trajectory_generator_pkg/src/trajectory_node.cpp:53:30:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Knarrowing conversion of \xe2\x80\x98\x1b[01m\x1b[K((Eigen::DenseCoeffsBase<Eigen::Matrix<double, 3, 1>, 1>*)(& pos))->Eigen::DenseCoeffsBase<Eigen::Matrix<double, 3, 1>, 1>::x()\x1b[m\x1b[K\xe2\x80\x99 from \xe2\x80\x98\x1b[01m\x1b[KEigen::DenseCoeffsBase<Eigen::Matrix<double, 3, 1>, 1>::Scalar\x1b[m\x1b[K\xe2\x80\x99 {aka \xe2\x80\x98\x1b[01m\x1b[Kdouble\x1b[m\x1b[K\xe2\x80\x99} to \xe2\x80\x98\x1b[01m\x1b[Kfloat\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K\x1b]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wnarrowing\x07-Wnarrowing\x1b]8;;\x07\x1b[m\x1b[K]\n'}
+[14.636126] (trajectory_generator_pkg) StderrLine: {'line': b'   53 |         msg.position = {\x1b[01;35m\x1b[Kpos.x()\x1b[m\x1b[K, pos.y(), pos.z()};\n'}
+[14.636277] (trajectory_generator_pkg) StderrLine: {'line': b'      |                         \x1b[01;35m\x1b[K~~~~~^~\x1b[m\x1b[K\n'}
+[14.636415] (trajectory_generator_pkg) StderrLine: {'line': b'\x1b[01m\x1b[K/home/jetson/ros2_ws_px4/src/trajectory_generator_pkg/src/trajectory_node.cpp:53:39:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Knarrowing conversion of \xe2\x80\x98\x1b[01m\x1b[K((Eigen::DenseCoeffsBase<Eigen::Matrix<double, 3, 1>, 1>*)(& pos))->Eigen::DenseCoeffsBase<Eigen::Matrix<double, 3, 1>, 1>::y()\x1b[m\x1b[K\xe2\x80\x99 from \xe2\x80\x98\x1b[01m\x1b[KEigen::DenseCoeffsBase<Eigen::Matrix<double, 3, 1>, 1>::Scalar\x1b[m\x1b[K\xe2\x80\x99 {aka \xe2\x80\x98\x1b[01m\x1b[Kdouble\x1b[m\x1b[K\xe2\x80\x99} to \xe2\x80\x98\x1b[01m\x1b[Kfloat\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K\x1b]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wnarrowing\x07-Wnarrowing\x1b]8;;\x07\x1b[m\x1b[K]\n'}
+[14.636557] (trajectory_generator_pkg) StderrLine: {'line': b'   53 |         msg.position = {pos.x(), \x1b[01;35m\x1b[Kpos.y()\x1b[m\x1b[K, pos.z()};\n'}
+[14.636684] (trajectory_generator_pkg) StderrLine: {'line': b'      |                                  \x1b[01;35m\x1b[K~~~~~^~\x1b[m\x1b[K\n'}
+[14.636808] (trajectory_generator_pkg) StderrLine: {'line': b'\x1b[01m\x1b[K/home/jetson/ros2_ws_px4/src/trajectory_generator_pkg/src/trajectory_node.cpp:53:48:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Knarrowing conversion of \xe2\x80\x98\x1b[01m\x1b[K((Eigen::DenseCoeffsBase<Eigen::Matrix<double, 3, 1>, 1>*)(& pos))->Eigen::DenseCoeffsBase<Eigen::Matrix<double, 3, 1>, 1>::z()\x1b[m\x1b[K\xe2\x80\x99 from \xe2\x80\x98\x1b[01m\x1b[KEigen::DenseCoeffsBase<Eigen::Matrix<double, 3, 1>, 1>::Scalar\x1b[m\x1b[K\xe2\x80\x99 {aka \xe2\x80\x98\x1b[01m\x1b[Kdouble\x1b[m\x1b[K\xe2\x80\x99} to \xe2\x80\x98\x1b[01m\x1b[Kfloat\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K\x1b]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wnarrowing\x07-Wnarrowing\x1b]8;;\x07\x1b[m\x1b[K]\n'}
+[14.636972] (trajectory_generator_pkg) StderrLine: {'line': b'   53 |         msg.position = {pos.x(), pos.y(), \x1b[01;35m\x1b[Kpos.z()\x1b[m\x1b[K};\n'}
+[14.637097] (trajectory_generator_pkg) StderrLine: {'line': b'      |                                           \x1b[01;35m\x1b[K~~~~~^~\x1b[m\x1b[K\n'}
+[14.637217] (trajectory_generator_pkg) StderrLine: {'line': b'\x1b[01m\x1b[K/home/jetson/ros2_ws_px4/src/trajectory_generator_pkg/src/trajectory_node.cpp:54:30:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Knarrowing conversion of \xe2\x80\x98\x1b[01m\x1b[K((Eigen::DenseCoeffsBase<Eigen::Matrix<double, 3, 1>, 1>*)(& vel))->Eigen::DenseCoeffsBase<Eigen::Matrix<double, 3, 1>, 1>::x()\x1b[m\x1b[K\xe2\x80\x99 from \xe2\x80\x98\x1b[01m\x1b[KEigen::DenseCoeffsBase<Eigen::Matrix<double, 3, 1>, 1>::Scalar\x1b[m\x1b[K\xe2\x80\x99 {aka \xe2\x80\x98\x1b[01m\x1b[Kdouble\x1b[m\x1b[K\xe2\x80\x99} to \xe2\x80\x98\x1b[01m\x1b[Kfloat\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K\x1b]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wnarrowing\x07-Wnarrowing\x1b]8;;\x07\x1b[m\x1b[K]\n'}
+[14.637345] (trajectory_generator_pkg) StderrLine: {'line': b'   54 |         msg.velocity = {\x1b[01;35m\x1b[Kvel.x()\x1b[m\x1b[K, vel.y(), vel.z()};\n'}
+[14.637463] (trajectory_generator_pkg) StderrLine: {'line': b'      |                         \x1b[01;35m\x1b[K~~~~~^~\x1b[m\x1b[K\n'}
+[14.637578] (trajectory_generator_pkg) StderrLine: {'line': b'\x1b[01m\x1b[K/home/jetson/ros2_ws_px4/src/trajectory_generator_pkg/src/trajectory_node.cpp:54:39:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Knarrowing conversion of \xe2\x80\x98\x1b[01m\x1b[K((Eigen::DenseCoeffsBase<Eigen::Matrix<double, 3, 1>, 1>*)(& vel))->Eigen::DenseCoeffsBase<Eigen::Matrix<double, 3, 1>, 1>::y()\x1b[m\x1b[K\xe2\x80\x99 from \xe2\x80\x98\x1b[01m\x1b[KEigen::DenseCoeffsBase<Eigen::Matrix<double, 3, 1>, 1>::Scalar\x1b[m\x1b[K\xe2\x80\x99 {aka \xe2\x80\x98\x1b[01m\x1b[Kdouble\x1b[m\x1b[K\xe2\x80\x99} to \xe2\x80\x98\x1b[01m\x1b[Kfloat\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K\x1b]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wnarrowing\x07-Wnarrowing\x1b]8;;\x07\x1b[m\x1b[K]\n'}
+[14.637727] (trajectory_generator_pkg) StderrLine: {'line': b'   54 |         msg.velocity = {vel.x(), \x1b[01;35m\x1b[Kvel.y()\x1b[m\x1b[K, vel.z()};\n'}
+[14.637844] (trajectory_generator_pkg) StderrLine: {'line': b'      |                                  \x1b[01;35m\x1b[K~~~~~^~\x1b[m\x1b[K\n'}
+[14.637959] (trajectory_generator_pkg) StderrLine: {'line': b'\x1b[01m\x1b[K/home/jetson/ros2_ws_px4/src/trajectory_generator_pkg/src/trajectory_node.cpp:54:48:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Knarrowing conversion of \xe2\x80\x98\x1b[01m\x1b[K((Eigen::DenseCoeffsBase<Eigen::Matrix<double, 3, 1>, 1>*)(& vel))->Eigen::DenseCoeffsBase<Eigen::Matrix<double, 3, 1>, 1>::z()\x1b[m\x1b[K\xe2\x80\x99 from \xe2\x80\x98\x1b[01m\x1b[KEigen::DenseCoeffsBase<Eigen::Matrix<double, 3, 1>, 1>::Scalar\x1b[m\x1b[K\xe2\x80\x99 {aka \xe2\x80\x98\x1b[01m\x1b[Kdouble\x1b[m\x1b[K\xe2\x80\x99} to \xe2\x80\x98\x1b[01m\x1b[Kfloat\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K\x1b]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wnarrowing\x07-Wnarrowing\x1b]8;;\x07\x1b[m\x1b[K]\n'}
+[14.638085] (trajectory_generator_pkg) StderrLine: {'line': b'   54 |         msg.velocity = {vel.x(), vel.y(), \x1b[01;35m\x1b[Kvel.z()\x1b[m\x1b[K};\n'}
+[14.638239] (trajectory_generator_pkg) StderrLine: {'line': b'      |                                           \x1b[01;35m\x1b[K~~~~~^~\x1b[m\x1b[K\n'}
+[14.684690] (-) TimerEvent: {}
+[14.785254] (-) TimerEvent: {}
+[14.885822] (-) TimerEvent: {}
+[14.986451] (-) TimerEvent: {}
+[15.087006] (-) TimerEvent: {}
+[15.187570] (-) TimerEvent: {}
+[15.288136] (-) TimerEvent: {}
+[15.388722] (-) TimerEvent: {}
+[15.489310] (-) TimerEvent: {}
+[15.589869] (-) TimerEvent: {}
+[15.690437] (-) TimerEvent: {}
+[15.790979] (-) TimerEvent: {}
+[15.891533] (-) TimerEvent: {}
+[15.992105] (-) TimerEvent: {}
+[16.092666] (-) TimerEvent: {}
+[16.193219] (-) TimerEvent: {}
+[16.293771] (-) TimerEvent: {}
+[16.394378] (-) TimerEvent: {}
+[16.494962] (-) TimerEvent: {}
+[16.595531] (-) TimerEvent: {}
+[16.696092] (-) TimerEvent: {}
+[16.796665] (-) TimerEvent: {}
+[16.897250] (-) TimerEvent: {}
+[16.997813] (-) TimerEvent: {}
+[17.098403] (-) TimerEvent: {}
+[17.198958] (-) TimerEvent: {}
+[17.299506] (-) TimerEvent: {}
+[17.400043] (-) TimerEvent: {}
+[17.500578] (-) TimerEvent: {}
+[17.601088] (-) TimerEvent: {}
+[17.701643] (-) TimerEvent: {}
+[17.802205] (-) TimerEvent: {}
+[17.902752] (-) TimerEvent: {}
+[18.003296] (-) TimerEvent: {}
+[18.103837] (-) TimerEvent: {}
+[18.204378] (-) TimerEvent: {}
+[18.304920] (-) TimerEvent: {}
+[18.405456] (-) TimerEvent: {}
+[18.505993] (-) TimerEvent: {}
+[18.606552] (-) TimerEvent: {}
+[18.707082] (-) TimerEvent: {}
+[18.807608] (-) TimerEvent: {}
+[18.908140] (-) TimerEvent: {}
+[19.008686] (-) TimerEvent: {}
+[19.109215] (-) TimerEvent: {}
+[19.209781] (-) TimerEvent: {}
+[19.310369] (-) TimerEvent: {}
+[19.410928] (-) TimerEvent: {}
+[19.511487] (-) TimerEvent: {}
+[19.551430] (trajectory_generator_pkg) StderrLine: {'line': b'gmake[1]: *** [CMakeFiles/Makefile2:137\xef\xbc\x9aCMakeFiles/trajectory_node.dir/all] \xe9\x94\x99\xe8\xaf\xaf 2\n'}
+[19.552165] (trajectory_generator_pkg) StderrLine: {'line': b'gmake: *** [Makefile:146\xef\xbc\x9aall] \xe9\x94\x99\xe8\xaf\xaf 2\n'}
+[19.557341] (trajectory_generator_pkg) CommandEnded: {'returncode': 2}
+[19.604650] (trajectory_generator_pkg) JobEnded: {'identifier': 'trajectory_generator_pkg', 'rc': 2}
+[19.611575] (-) TimerEvent: {}
+[19.615897] (-) EventReactorShutdown: {}

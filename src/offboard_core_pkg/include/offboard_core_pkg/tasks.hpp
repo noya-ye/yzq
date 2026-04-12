@@ -1,0 +1,15 @@
+#pragma once
+
+#include "offboard_core_pkg/tasks/arm_task.hpp"
+#include "offboard_core_pkg/tasks/disarm_task.hpp"
+#include "offboard_core_pkg/tasks/grid_goto_dwell_task.hpp"
+#include "offboard_core_pkg/tasks/home_stabilize_task.hpp"
+#include "offboard_core_pkg/tasks/hover_task.hpp"
+#include "offboard_core_pkg/tasks/px4_land_mode_task.hpp"
+#include "offboard_core_pkg/tasks/presetpoint_task.hpp"
+#include "offboard_core_pkg/tasks/return_home_task.hpp"
+#include "offboard_core_pkg/tasks/set_offboard_task.hpp"
+#include "offboard_core_pkg/tasks/takeoff_task.hpp"
+#include "offboard_core_pkg/tasks/wait_home_task.hpp"
+#include "offboard_core_pkg/tasks/yaw_spin_task.hpp"
+#include "offboard_core_pkg/tasks/tsp_grid_task.hpp"

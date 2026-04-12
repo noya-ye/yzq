@@ -1,0 +1,196 @@
+[0.232s] DEBUG:colcon:Command line arguments: ['/usr/bin/colcon', 'build', '--packages-select', 'trajectory_generator_pkg']
+[0.233s] DEBUG:colcon:Parsed command line arguments: Namespace(log_base=None, log_level=None, verb_name='build', build_base='build', install_base='install', merge_install=False, symlink_install=False, test_result_base=None, continue_on_error=False, executor='parallel', parallel_workers=4, event_handlers=None, ignore_user_meta=False, metas=['./colcon.meta'], base_paths=['.'], packages_ignore=None, packages_ignore_regex=None, paths=None, packages_up_to=None, packages_up_to_regex=None, packages_above=None, packages_above_and_dependencies=None, packages_above_depth=None, packages_select_by_dep=None, packages_skip_by_dep=None, packages_skip_up_to=None, packages_select_build_failed=False, packages_skip_build_finished=False, packages_select_test_failures=False, packages_skip_test_passed=False, packages_select=['trajectory_generator_pkg'], packages_skip=None, packages_select_regex=None, packages_skip_regex=None, packages_start=None, packages_end=None, allow_overriding=[], cmake_args=None, cmake_target=None, cmake_target_skip_unavailable=False, cmake_clean_cache=False, cmake_clean_first=False, cmake_force_configure=False, ament_cmake_args=None, catkin_cmake_args=None, catkin_skip_building_tests=False, verb_parser=<colcon_defaults.argument_parser.defaults.DefaultArgumentsDecorator object at 0xffff818612a0>, verb_extension=<colcon_core.verb.build.BuildVerb object at 0xffff81860be0>, main=<bound method BuildVerb.main of <colcon_core.verb.build.BuildVerb object at 0xffff81860be0>>)
+[0.592s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) check parameters
+[0.592s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) check parameters
+[0.592s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) check parameters
+[0.592s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) check parameters
+[0.592s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) discover
+[0.592s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) discover
+[0.592s] INFO:colcon.colcon_core.package_discovery:Crawling recursively for packages in '/home/jetson/ros2_ws_px4'
+[0.593s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ignore', 'ignore_ament_install']
+[0.593s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore'
+[0.593s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore_ament_install'
+[0.593s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_pkg']
+[0.593s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_pkg'
+[0.593s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_meta']
+[0.593s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_meta'
+[0.594s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ros']
+[0.594s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ros'
+[0.617s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['cmake', 'python']
+[0.617s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'cmake'
+[0.617s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'python'
+[0.617s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['python_setup_py']
+[0.618s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'python_setup_py'
+[0.618s] Level 1:colcon.colcon_core.package_identification:_identify(build) by extensions ['ignore', 'ignore_ament_install']
+[0.618s] Level 1:colcon.colcon_core.package_identification:_identify(build) by extension 'ignore'
+[0.618s] Level 1:colcon.colcon_core.package_identification:_identify(build) ignored
+[0.618s] Level 1:colcon.colcon_core.package_identification:_identify(install) by extensions ['ignore', 'ignore_ament_install']
+[0.619s] Level 1:colcon.colcon_core.package_identification:_identify(install) by extension 'ignore'
+[0.619s] Level 1:colcon.colcon_core.package_identification:_identify(install) ignored
+[0.619s] Level 1:colcon.colcon_core.package_identification:_identify(log) by extensions ['ignore', 'ignore_ament_install']
+[0.619s] Level 1:colcon.colcon_core.package_identification:_identify(log) by extension 'ignore'
+[0.619s] Level 1:colcon.colcon_core.package_identification:_identify(log) ignored
+[0.619s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['ignore', 'ignore_ament_install']
+[0.620s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'ignore'
+[0.620s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'ignore_ament_install'
+[0.620s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['colcon_pkg']
+[0.620s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'colcon_pkg'
+[0.620s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['colcon_meta']
+[0.620s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'colcon_meta'
+[0.620s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['ros']
+[0.620s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'ros'
+[0.620s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['cmake', 'python']
+[0.621s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'cmake'
+[0.621s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'python'
+[0.621s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['python_setup_py']
+[0.621s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'python_setup_py'
+[0.621s] Level 1:colcon.colcon_core.package_identification:_identify(src/fastlio_to_px4) by extensions ['ignore', 'ignore_ament_install']
+[0.621s] Level 1:colcon.colcon_core.package_identification:_identify(src/fastlio_to_px4) by extension 'ignore'
+[0.621s] Level 1:colcon.colcon_core.package_identification:_identify(src/fastlio_to_px4) by extension 'ignore_ament_install'
+[0.621s] Level 1:colcon.colcon_core.package_identification:_identify(src/fastlio_to_px4) by extensions ['colcon_pkg']
+[0.622s] Level 1:colcon.colcon_core.package_identification:_identify(src/fastlio_to_px4) by extension 'colcon_pkg'
+[0.622s] Level 1:colcon.colcon_core.package_identification:_identify(src/fastlio_to_px4) by extensions ['colcon_meta']
+[0.622s] Level 1:colcon.colcon_core.package_identification:_identify(src/fastlio_to_px4) by extension 'colcon_meta'
+[0.622s] Level 1:colcon.colcon_core.package_identification:_identify(src/fastlio_to_px4) by extensions ['ros']
+[0.622s] Level 1:colcon.colcon_core.package_identification:_identify(src/fastlio_to_px4) by extension 'ros'
+[0.627s] DEBUG:colcon.colcon_core.package_identification:Package 'src/fastlio_to_px4' with type 'ros.ament_cmake' and name 'fastlio_to_px4'
+[0.627s] Level 1:colcon.colcon_core.package_identification:_identify(src/offboard_core_pkg) by extensions ['ignore', 'ignore_ament_install']
+[0.627s] Level 1:colcon.colcon_core.package_identification:_identify(src/offboard_core_pkg) by extension 'ignore'
+[0.628s] Level 1:colcon.colcon_core.package_identification:_identify(src/offboard_core_pkg) by extension 'ignore_ament_install'
+[0.628s] Level 1:colcon.colcon_core.package_identification:_identify(src/offboard_core_pkg) by extensions ['colcon_pkg']
+[0.628s] Level 1:colcon.colcon_core.package_identification:_identify(src/offboard_core_pkg) by extension 'colcon_pkg'
+[0.628s] Level 1:colcon.colcon_core.package_identification:_identify(src/offboard_core_pkg) by extensions ['colcon_meta']
+[0.628s] Level 1:colcon.colcon_core.package_identification:_identify(src/offboard_core_pkg) by extension 'colcon_meta'
+[0.628s] Level 1:colcon.colcon_core.package_identification:_identify(src/offboard_core_pkg) by extensions ['ros']
+[0.628s] Level 1:colcon.colcon_core.package_identification:_identify(src/offboard_core_pkg) by extension 'ros'
+[0.630s] DEBUG:colcon.colcon_core.package_identification:Package 'src/offboard_core_pkg' with type 'ros.ament_cmake' and name 'offboard_core_pkg'
+[0.630s] Level 1:colcon.colcon_core.package_identification:_identify(src/offboard_pkg) by extensions ['ignore', 'ignore_ament_install']
+[0.630s] Level 1:colcon.colcon_core.package_identification:_identify(src/offboard_pkg) by extension 'ignore'
+[0.631s] Level 1:colcon.colcon_core.package_identification:_identify(src/offboard_pkg) by extension 'ignore_ament_install'
+[0.631s] Level 1:colcon.colcon_core.package_identification:_identify(src/offboard_pkg) by extensions ['colcon_pkg']
+[0.631s] Level 1:colcon.colcon_core.package_identification:_identify(src/offboard_pkg) by extension 'colcon_pkg'
+[0.631s] Level 1:colcon.colcon_core.package_identification:_identify(src/offboard_pkg) by extensions ['colcon_meta']
+[0.631s] Level 1:colcon.colcon_core.package_identification:_identify(src/offboard_pkg) by extension 'colcon_meta'
+[0.631s] Level 1:colcon.colcon_core.package_identification:_identify(src/offboard_pkg) by extensions ['ros']
+[0.631s] Level 1:colcon.colcon_core.package_identification:_identify(src/offboard_pkg) by extension 'ros'
+[0.632s] DEBUG:colcon.colcon_core.package_identification:Package 'src/offboard_pkg' with type 'ros.ament_cmake' and name 'offboard_pkg'
+[0.633s] Level 1:colcon.colcon_core.package_identification:_identify(src/px4_msgs) by extensions ['ignore', 'ignore_ament_install']
+[0.633s] Level 1:colcon.colcon_core.package_identification:_identify(src/px4_msgs) by extension 'ignore'
+[0.633s] Level 1:colcon.colcon_core.package_identification:_identify(src/px4_msgs) by extension 'ignore_ament_install'
+[0.633s] Level 1:colcon.colcon_core.package_identification:_identify(src/px4_msgs) by extensions ['colcon_pkg']
+[0.633s] Level 1:colcon.colcon_core.package_identification:_identify(src/px4_msgs) by extension 'colcon_pkg'
+[0.633s] Level 1:colcon.colcon_core.package_identification:_identify(src/px4_msgs) by extensions ['colcon_meta']
+[0.633s] Level 1:colcon.colcon_core.package_identification:_identify(src/px4_msgs) by extension 'colcon_meta'
+[0.633s] Level 1:colcon.colcon_core.package_identification:_identify(src/px4_msgs) by extensions ['ros']
+[0.634s] Level 1:colcon.colcon_core.package_identification:_identify(src/px4_msgs) by extension 'ros'
+[0.635s] DEBUG:colcon.colcon_core.package_identification:Package 'src/px4_msgs' with type 'ros.ament_cmake' and name 'px4_msgs'
+[0.635s] Level 1:colcon.colcon_core.package_identification:_identify(src/px4_ros_com) by extensions ['ignore', 'ignore_ament_install']
+[0.635s] Level 1:colcon.colcon_core.package_identification:_identify(src/px4_ros_com) by extension 'ignore'
+[0.635s] Level 1:colcon.colcon_core.package_identification:_identify(src/px4_ros_com) by extension 'ignore_ament_install'
+[0.636s] Level 1:colcon.colcon_core.package_identification:_identify(src/px4_ros_com) by extensions ['colcon_pkg']
+[0.636s] Level 1:colcon.colcon_core.package_identification:_identify(src/px4_ros_com) by extension 'colcon_pkg'
+[0.636s] Level 1:colcon.colcon_core.package_identification:_identify(src/px4_ros_com) by extensions ['colcon_meta']
+[0.636s] Level 1:colcon.colcon_core.package_identification:_identify(src/px4_ros_com) by extension 'colcon_meta'
+[0.636s] Level 1:colcon.colcon_core.package_identification:_identify(src/px4_ros_com) by extensions ['ros']
+[0.636s] Level 1:colcon.colcon_core.package_identification:_identify(src/px4_ros_com) by extension 'ros'
+[0.638s] DEBUG:colcon.colcon_core.package_identification:Package 'src/px4_ros_com' with type 'ros.ament_cmake' and name 'px4_ros_com'
+[0.639s] Level 1:colcon.colcon_core.package_identification:_identify(src/trajectory_generator_pkg) by extensions ['ignore', 'ignore_ament_install']
+[0.639s] Level 1:colcon.colcon_core.package_identification:_identify(src/trajectory_generator_pkg) by extension 'ignore'
+[0.639s] Level 1:colcon.colcon_core.package_identification:_identify(src/trajectory_generator_pkg) by extension 'ignore_ament_install'
+[0.639s] Level 1:colcon.colcon_core.package_identification:_identify(src/trajectory_generator_pkg) by extensions ['colcon_pkg']
+[0.639s] Level 1:colcon.colcon_core.package_identification:_identify(src/trajectory_generator_pkg) by extension 'colcon_pkg'
+[0.639s] Level 1:colcon.colcon_core.package_identification:_identify(src/trajectory_generator_pkg) by extensions ['colcon_meta']
+[0.639s] Level 1:colcon.colcon_core.package_identification:_identify(src/trajectory_generator_pkg) by extension 'colcon_meta'
+[0.639s] Level 1:colcon.colcon_core.package_identification:_identify(src/trajectory_generator_pkg) by extensions ['ros']
+[0.639s] Level 1:colcon.colcon_core.package_identification:_identify(src/trajectory_generator_pkg) by extension 'ros'
+[0.641s] DEBUG:colcon.colcon_core.package_identification:Package 'src/trajectory_generator_pkg' with type 'ros.catkin' and name 'trajectory_generator_pkg'
+[0.641s] Level 1:colcon.colcon_core.package_identification:_identify(src/vision_node_pkg) by extensions ['ignore', 'ignore_ament_install']
+[0.641s] Level 1:colcon.colcon_core.package_identification:_identify(src/vision_node_pkg) by extension 'ignore'
+[0.641s] Level 1:colcon.colcon_core.package_identification:_identify(src/vision_node_pkg) by extension 'ignore_ament_install'
+[0.641s] Level 1:colcon.colcon_core.package_identification:_identify(src/vision_node_pkg) by extensions ['colcon_pkg']
+[0.641s] Level 1:colcon.colcon_core.package_identification:_identify(src/vision_node_pkg) by extension 'colcon_pkg'
+[0.642s] Level 1:colcon.colcon_core.package_identification:_identify(src/vision_node_pkg) by extensions ['colcon_meta']
+[0.642s] Level 1:colcon.colcon_core.package_identification:_identify(src/vision_node_pkg) by extension 'colcon_meta'
+[0.642s] Level 1:colcon.colcon_core.package_identification:_identify(src/vision_node_pkg) by extensions ['ros']
+[0.642s] Level 1:colcon.colcon_core.package_identification:_identify(src/vision_node_pkg) by extension 'ros'
+[0.643s] DEBUG:colcon.colcon_core.package_identification:Package 'src/vision_node_pkg' with type 'ros.ament_python' and name 'vision_node_pkg'
+[0.643s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) using defaults
+[0.644s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) discover
+[0.644s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) using defaults
+[0.644s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) discover
+[0.644s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) using defaults
+[0.709s] INFO:colcon.colcon_core.package_selection:Skipping not selected package 'px4_msgs' in 'src/px4_msgs'
+[0.709s] INFO:colcon.colcon_core.package_selection:Skipping not selected package 'vision_node_pkg' in 'src/vision_node_pkg'
+[0.710s] INFO:colcon.colcon_core.package_selection:Skipping not selected package 'fastlio_to_px4' in 'src/fastlio_to_px4'
+[0.710s] INFO:colcon.colcon_core.package_selection:Skipping not selected package 'offboard_core_pkg' in 'src/offboard_core_pkg'
+[0.710s] INFO:colcon.colcon_core.package_selection:Skipping not selected package 'offboard_pkg' in 'src/offboard_pkg'
+[0.710s] INFO:colcon.colcon_core.package_selection:Skipping not selected package 'px4_ros_com' in 'src/px4_ros_com'
+[0.711s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) check parameters
+[0.711s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) discover
+[0.716s] DEBUG:colcon.colcon_installed_package_information.package_discovery:Found 8 installed packages in /home/jetson/fastlio2_ws/install
+[0.717s] DEBUG:colcon.colcon_installed_package_information.package_discovery:Found 6 installed packages in /home/jetson/ros2_ws_px4/install
+[0.720s] DEBUG:colcon.colcon_installed_package_information.package_discovery:Found 274 installed packages in /opt/ros/humble
+[0.723s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) using defaults
+[0.805s] Level 5:colcon.colcon_core.verb:set package 'trajectory_generator_pkg' build argument 'cmake_args' from command line to 'None'
+[0.805s] Level 5:colcon.colcon_core.verb:set package 'trajectory_generator_pkg' build argument 'cmake_target' from command line to 'None'
+[0.805s] Level 5:colcon.colcon_core.verb:set package 'trajectory_generator_pkg' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.805s] Level 5:colcon.colcon_core.verb:set package 'trajectory_generator_pkg' build argument 'cmake_clean_cache' from command line to 'False'
+[0.805s] Level 5:colcon.colcon_core.verb:set package 'trajectory_generator_pkg' build argument 'cmake_clean_first' from command line to 'False'
+[0.805s] Level 5:colcon.colcon_core.verb:set package 'trajectory_generator_pkg' build argument 'cmake_force_configure' from command line to 'False'
+[0.805s] Level 5:colcon.colcon_core.verb:set package 'trajectory_generator_pkg' build argument 'ament_cmake_args' from command line to 'None'
+[0.805s] Level 5:colcon.colcon_core.verb:set package 'trajectory_generator_pkg' build argument 'catkin_cmake_args' from command line to 'None'
+[0.805s] Level 5:colcon.colcon_core.verb:set package 'trajectory_generator_pkg' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.806s] DEBUG:colcon.colcon_core.verb:Building package 'trajectory_generator_pkg' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/jetson/ros2_ws_px4/build/trajectory_generator_pkg', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/jetson/ros2_ws_px4/install/trajectory_generator_pkg', 'merge_install': False, 'path': '/home/jetson/ros2_ws_px4/src/trajectory_generator_pkg', 'symlink_install': False, 'test_result_base': None}
+[0.806s] INFO:colcon.colcon_core.executor:Executing jobs using 'parallel' executor
+[0.808s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete
+[0.808s] INFO:colcon.colcon_ros.task.catkin.build:Building ROS package in '/home/jetson/ros2_ws_px4/src/trajectory_generator_pkg' with build type 'catkin'
+[0.808s] INFO:colcon.colcon_cmake.task.cmake.build:Building CMake package in '/home/jetson/ros2_ws_px4/src/trajectory_generator_pkg'
+[0.813s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_core.shell.bat': Not used on non-Windows systems
+[0.813s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.814s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.834s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/jetson/ros2_ws_px4/build/trajectory_generator_pkg': CMAKE_PREFIX_PATH=/home/jetson/ros2_ws_px4/install/px4_msgs:/home/jetson/fastlio2_ws/install/pgo:/home/jetson/fastlio2_ws/install/localizer:/home/jetson/fastlio2_ws/install/fastlio2:/home/jetson/fastlio2_ws/install/livox_ros_driver2:/home/jetson/fastlio2_ws/install/hba:/home/jetson/fastlio2_ws/install/interface:/home/jetson/fastlio2_ws/install/fastlio_to_px4:/home/jetson/ros2_ws_px4/install/px4_ros_com:/home/jetson/ros2_ws_px4/install/offboard_pkg:/home/jetson/ros2_ws_px4/install/offboard_core_pkg:/home/jetson/ros2_ws_px4/install/fastlio_to_px4 LD_LIBRARY_PATH=/home/jetson/ros2_ws_px4/install/px4_msgs/lib:/usr/local/cuda-12.6/lib64:/home/jetson/fastlio2_ws/install/livox_ros_driver2/lib:/home/jetson/fastlio2_ws/install/interface/lib:/home/jetson/ros2_ws_px4/install/px4_ros_com/lib:/home/jetson/ros2_ws_px4/install/offboard_core_pkg/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/aarch64-linux-gnu:/opt/ros/humble/lib:/usr/local/cuda-12.6/lib64 /usr/bin/cmake --build /home/jetson/ros2_ws_px4/build/trajectory_generator_pkg -- -j4 -l4
+[18.299s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/jetson/ros2_ws_px4/build/trajectory_generator_pkg' returned '2': CMAKE_PREFIX_PATH=/home/jetson/ros2_ws_px4/install/px4_msgs:/home/jetson/fastlio2_ws/install/pgo:/home/jetson/fastlio2_ws/install/localizer:/home/jetson/fastlio2_ws/install/fastlio2:/home/jetson/fastlio2_ws/install/livox_ros_driver2:/home/jetson/fastlio2_ws/install/hba:/home/jetson/fastlio2_ws/install/interface:/home/jetson/fastlio2_ws/install/fastlio_to_px4:/home/jetson/ros2_ws_px4/install/px4_ros_com:/home/jetson/ros2_ws_px4/install/offboard_pkg:/home/jetson/ros2_ws_px4/install/offboard_core_pkg:/home/jetson/ros2_ws_px4/install/fastlio_to_px4 LD_LIBRARY_PATH=/home/jetson/ros2_ws_px4/install/px4_msgs/lib:/usr/local/cuda-12.6/lib64:/home/jetson/fastlio2_ws/install/livox_ros_driver2/lib:/home/jetson/fastlio2_ws/install/interface/lib:/home/jetson/ros2_ws_px4/install/px4_ros_com/lib:/home/jetson/ros2_ws_px4/install/offboard_core_pkg/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/aarch64-linux-gnu:/opt/ros/humble/lib:/usr/local/cuda-12.6/lib64 /usr/bin/cmake --build /home/jetson/ros2_ws_px4/build/trajectory_generator_pkg -- -j4 -l4
+[18.300s] Level 1:colcon.colcon_core.shell:create_environment_hook('trajectory_generator_pkg', 'ros_package_path')
+[18.300s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/jetson/ros2_ws_px4/install/trajectory_generator_pkg/share/trajectory_generator_pkg/hook/ros_package_path.ps1'
+[18.302s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/jetson/ros2_ws_px4/install/trajectory_generator_pkg/share/trajectory_generator_pkg/hook/ros_package_path.dsv'
+[18.303s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/jetson/ros2_ws_px4/install/trajectory_generator_pkg/share/trajectory_generator_pkg/hook/ros_package_path.sh'
+[18.305s] Level 1:colcon.colcon_core.shell:create_environment_hook('trajectory_generator_pkg', 'pkg_config_path')
+[18.306s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/jetson/ros2_ws_px4/install/trajectory_generator_pkg/share/trajectory_generator_pkg/hook/pkg_config_path.ps1'
+[18.307s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/jetson/ros2_ws_px4/install/trajectory_generator_pkg/share/trajectory_generator_pkg/hook/pkg_config_path.dsv'
+[18.308s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/jetson/ros2_ws_px4/install/trajectory_generator_pkg/share/trajectory_generator_pkg/hook/pkg_config_path.sh'
+[18.313s] Level 1:colcon.colcon_core.shell:create_environment_hook('trajectory_generator_pkg', 'pkg_config_path_multiarch')
+[18.314s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/jetson/ros2_ws_px4/install/trajectory_generator_pkg/share/trajectory_generator_pkg/hook/pkg_config_path_multiarch.ps1'
+[18.315s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/jetson/ros2_ws_px4/install/trajectory_generator_pkg/share/trajectory_generator_pkg/hook/pkg_config_path_multiarch.dsv'
+[18.316s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/jetson/ros2_ws_px4/install/trajectory_generator_pkg/share/trajectory_generator_pkg/hook/pkg_config_path_multiarch.sh'
+[18.319s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(trajectory_generator_pkg)
+[18.327s] Level 1:colcon.colcon_core.environment:checking '/home/jetson/ros2_ws_px4/install/trajectory_generator_pkg' for CMake module files
+[18.329s] Level 1:colcon.colcon_core.environment:checking '/home/jetson/ros2_ws_px4/install/trajectory_generator_pkg' for CMake config files
+[18.330s] Level 1:colcon.colcon_core.environment:checking '/home/jetson/ros2_ws_px4/install/trajectory_generator_pkg/bin'
+[18.330s] Level 1:colcon.colcon_core.environment:checking '/home/jetson/ros2_ws_px4/install/trajectory_generator_pkg/lib/pkgconfig/trajectory_generator_pkg.pc'
+[18.331s] Level 1:colcon.colcon_core.environment:checking '/home/jetson/ros2_ws_px4/install/trajectory_generator_pkg/lib/python3.10/site-packages'
+[18.333s] Level 1:colcon.colcon_core.environment:checking '/home/jetson/ros2_ws_px4/install/trajectory_generator_pkg/bin'
+[18.334s] INFO:colcon.colcon_core.shell:Creating package script '/home/jetson/ros2_ws_px4/install/trajectory_generator_pkg/share/trajectory_generator_pkg/package.ps1'
+[18.337s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/jetson/ros2_ws_px4/install/trajectory_generator_pkg/share/trajectory_generator_pkg/package.dsv'
+[18.338s] INFO:colcon.colcon_core.shell:Creating package script '/home/jetson/ros2_ws_px4/install/trajectory_generator_pkg/share/trajectory_generator_pkg/package.sh'
+[18.340s] INFO:colcon.colcon_core.shell:Creating package script '/home/jetson/ros2_ws_px4/install/trajectory_generator_pkg/share/trajectory_generator_pkg/package.bash'
+[18.343s] INFO:colcon.colcon_core.shell:Creating package script '/home/jetson/ros2_ws_px4/install/trajectory_generator_pkg/share/trajectory_generator_pkg/package.zsh'
+[18.344s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/jetson/ros2_ws_px4/install/trajectory_generator_pkg/share/colcon-core/packages/trajectory_generator_pkg)
+[18.355s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:closing loop
+[18.356s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:loop closed
+[18.356s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete finished with '2'
+[18.356s] DEBUG:colcon.colcon_core.event_reactor:joining thread
+[18.374s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.terminal_notifier': Not used on non-Darwin systems
+[18.375s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.win32': Not used on non-Windows systems
+[18.375s] INFO:colcon.colcon_notification.desktop_notification:Sending desktop notification using 'notify2'
+[18.400s] DEBUG:colcon.colcon_notification.desktop_notification.notify2:Failed to initialize notify2: org.freedesktop.DBus.Error.Spawn.ChildExited: Process org.freedesktop.Notifications exited with status 1
+[18.400s] DEBUG:colcon.colcon_core.event_reactor:joined thread
+[18.401s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/jetson/ros2_ws_px4/install/local_setup.ps1'
+[18.404s] INFO:colcon.colcon_core.shell:Creating prefix util module '/home/jetson/ros2_ws_px4/install/_local_setup_util_ps1.py'
+[18.407s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/jetson/ros2_ws_px4/install/setup.ps1'
+[18.413s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/jetson/ros2_ws_px4/install/local_setup.sh'
+[18.414s] INFO:colcon.colcon_core.shell:Creating prefix util module '/home/jetson/ros2_ws_px4/install/_local_setup_util_sh.py'
+[18.415s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/jetson/ros2_ws_px4/install/setup.sh'
+[18.421s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/jetson/ros2_ws_px4/install/local_setup.bash'
+[18.422s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/jetson/ros2_ws_px4/install/setup.bash'
+[18.425s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/jetson/ros2_ws_px4/install/local_setup.zsh'
+[18.427s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/jetson/ros2_ws_px4/install/setup.zsh'

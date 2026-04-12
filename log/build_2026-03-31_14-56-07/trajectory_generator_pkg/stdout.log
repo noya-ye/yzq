@@ -1,0 +1,7 @@
+[35m[1mConsolidate compiler generated dependencies of target trajectory_node[0m
+[ 11%] [32mBuilding CXX object CMakeFiles/trajectory_node.dir/third_party/mav_trajectory_generation/src/trajectory.cpp.o[0m
+[ 22%] [32mBuilding CXX object CMakeFiles/trajectory_node.dir/third_party/mav_trajectory_generation/src/polynomial.cpp.o[0m
+[ 33%] [32mBuilding CXX object CMakeFiles/trajectory_node.dir/third_party/mav_trajectory_generation/src/vertex.cpp.o[0m
+[ 44%] [32mBuilding CXX object CMakeFiles/trajectory_node.dir/third_party/mav_trajectory_generation/src/timing.cpp.o[0m
+[ 55%] [32mBuilding CXX object CMakeFiles/trajectory_node.dir/third_party/mav_trajectory_generation/src/rpoly/rpoly_ak1.cpp.o[0m
+[ 66%] [32m[1mLinking CXX executable trajectory_node[0m

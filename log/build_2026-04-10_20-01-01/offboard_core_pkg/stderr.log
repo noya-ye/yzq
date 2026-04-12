@@ -1,0 +1,367 @@
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/src/grid.cpp:[m[K In static member function ‘[01m[Kstatic Grid::Waypoint Grid::cell_center(const Context&, int, int)[m[K’:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/src/grid.cpp:61:66:[m[K [01;36m[Knote: [m[Kparameter passing for argument of type ‘[01m[Kstd::pair<float, float>[m[K’ when C++17 is enabled changed to match C++14 ]8;;https://gcc.gnu.org/gcc-10/changes.html#empty_basein GCC 10.1]8;;
+   61 | Grid::Waypoint Grid::cell_center(const Context& ctx, int r, int c[01;36m[K)[m[K
+      |                                                                  [01;36m[K^[m[K
+In file included from [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/arm_task.hpp:5[m[K,
+                 from [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/src/tasks/arm_task.cpp:1[m[K:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:[m[K In member function ‘[01m[Kvirtual void ITask::onEnter(Context&)[m[K’:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:12:33:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   12 |   virtual void onEnter([01;35m[KContext& ctx[m[K) {}
+      |                        [01;35m[K~~~~~~~~~^~~[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:[m[K In member function ‘[01m[Kvirtual void ITask::onExit(Context&)[m[K’:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:14:32:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   14 |   virtual void onExit([01;35m[KContext& ctx[m[K) {}
+      |                       [01;35m[K~~~~~~~~~^~~[m[K
+In file included from [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/disarm_task.hpp:7[m[K,
+                 from [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/src/tasks/disarm_task.cpp:1[m[K:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:[m[K In member function ‘[01m[Kvirtual void ITask::onEnter(Context&)[m[K’:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:12:33:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   12 |   virtual void onEnter([01;35m[KContext& ctx[m[K) {}
+      |                        [01;35m[K~~~~~~~~~^~~[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:[m[K In member function ‘[01m[Kvirtual void ITask::onExit(Context&)[m[K’:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:14:32:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   14 |   virtual void onExit([01;35m[KContext& ctx[m[K) {}
+      |                       [01;35m[K~~~~~~~~~^~~[m[K
+In file included from [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/grid_goto_dwell_task.hpp:8[m[K,
+                 from [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/src/tasks/grid_goto_dwell_task.cpp:1[m[K:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:[m[K In member function ‘[01m[Kvirtual void ITask::onEnter(Context&)[m[K’:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:12:33:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   12 |   virtual void onEnter([01;35m[KContext& ctx[m[K) {}
+      |                        [01;35m[K~~~~~~~~~^~~[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:[m[K In member function ‘[01m[Kvirtual void ITask::onExit(Context&)[m[K’:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:14:32:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   14 |   virtual void onExit([01;35m[KContext& ctx[m[K) {}
+      |                       [01;35m[K~~~~~~~~~^~~[m[K
+In file included from [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/src/tasks/grid_goto_dwell_task.cpp:1[m[K:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/grid_goto_dwell_task.hpp:[m[K In member function ‘[01m[Kvirtual void GridGotoDwellTask::on_task_enter(Context&)[m[K’:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/grid_goto_dwell_task.hpp:35:39:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   35 |   virtual void on_task_enter([01;35m[KContext& ctx[m[K) {}
+      |                              [01;35m[K~~~~~~~~~^~~[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/grid_goto_dwell_task.hpp:[m[K In member function ‘[01m[Kvirtual void GridGotoDwellTask::on_before_goto(Context&, int, int, float, float)[m[K’:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/grid_goto_dwell_task.hpp:36:40:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   36 |   virtual void on_before_goto([01;35m[KContext& ctx[m[K, int r, int c, float tx, float ty) {}
+      |                               [01;35m[K~~~~~~~~~^~~[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/grid_goto_dwell_task.hpp:36:49:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kr[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   36 |   virtual void on_before_goto(Context& ctx, [01;35m[Kint r[m[K, int c, float tx, float ty) {}
+      |                                             [01;35m[K~~~~^[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/grid_goto_dwell_task.hpp:36:56:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kc[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   36 |   virtual void on_before_goto(Context& ctx, int r, [01;35m[Kint c[m[K, float tx, float ty) {}
+      |                                                    [01;35m[K~~~~^[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/grid_goto_dwell_task.hpp:36:65:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Ktx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   36 |   virtual void on_before_goto(Context& ctx, int r, int c, [01;35m[Kfloat tx[m[K, float ty) {}
+      |                                                           [01;35m[K~~~~~~^~[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/grid_goto_dwell_task.hpp:36:75:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kty[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   36 |   virtual void on_before_goto(Context& ctx, int r, int c, float tx, [01;35m[Kfloat ty[m[K) {}
+      |                                                                     [01;35m[K~~~~~~^~[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/grid_goto_dwell_task.hpp:[m[K In member function ‘[01m[Kvirtual void GridGotoDwellTask::on_cell_enter(Context&, int, int)[m[K’:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/grid_goto_dwell_task.hpp:37:39:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   37 |   virtual void on_cell_enter([01;35m[KContext& ctx[m[K, int r, int c) {}
+      |                              [01;35m[K~~~~~~~~~^~~[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/grid_goto_dwell_task.hpp:37:48:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kr[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   37 |   virtual void on_cell_enter(Context& ctx, [01;35m[Kint r[m[K, int c) {}
+      |                                            [01;35m[K~~~~^[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/grid_goto_dwell_task.hpp:37:55:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kc[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   37 |   virtual void on_cell_enter(Context& ctx, int r, [01;35m[Kint c[m[K) {}
+      |                                                   [01;35m[K~~~~^[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/grid_goto_dwell_task.hpp:[m[K In member function ‘[01m[Kvirtual void GridGotoDwellTask::on_cell_dwell(Context&, int, int, double, double)[m[K’:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/grid_goto_dwell_task.hpp:38:39:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   38 |   virtual void on_cell_dwell([01;35m[KContext& ctx[m[K, int r, int c, double dwell_t, double dt) {}
+      |                              [01;35m[K~~~~~~~~~^~~[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/grid_goto_dwell_task.hpp:38:48:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kr[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   38 |   virtual void on_cell_dwell(Context& ctx, [01;35m[Kint r[m[K, int c, double dwell_t, double dt) {}
+      |                                            [01;35m[K~~~~^[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/grid_goto_dwell_task.hpp:38:55:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kc[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   38 |   virtual void on_cell_dwell(Context& ctx, int r, [01;35m[Kint c[m[K, double dwell_t, double dt) {}
+      |                                                   [01;35m[K~~~~^[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/grid_goto_dwell_task.hpp:38:65:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kdwell_t[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   38 |   virtual void on_cell_dwell(Context& ctx, int r, int c, [01;35m[Kdouble dwell_t[m[K, double dt) {}
+      |                                                          [01;35m[K~~~~~~~^~~~~~~[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/grid_goto_dwell_task.hpp:38:81:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kdt[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   38 |   virtual void on_cell_dwell(Context& ctx, int r, int c, double dwell_t, [01;35m[Kdouble dt[m[K) {}
+      |                                                                          [01;35m[K~~~~~~~^~[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/grid_goto_dwell_task.hpp:[m[K In member function ‘[01m[Kvirtual void GridGotoDwellTask::on_cell_leave(Context&, int, int)[m[K’:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/grid_goto_dwell_task.hpp:39:39:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   39 |   virtual void on_cell_leave([01;35m[KContext& ctx[m[K, int r, int c) {}
+      |                              [01;35m[K~~~~~~~~~^~~[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/grid_goto_dwell_task.hpp:39:48:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kr[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   39 |   virtual void on_cell_leave(Context& ctx, [01;35m[Kint r[m[K, int c) {}
+      |                                            [01;35m[K~~~~^[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/grid_goto_dwell_task.hpp:39:55:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kc[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   39 |   virtual void on_cell_leave(Context& ctx, int r, [01;35m[Kint c[m[K) {}
+      |                                                   [01;35m[K~~~~^[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/grid_goto_dwell_task.hpp:[m[K In member function ‘[01m[Kvirtual void GridGotoDwellTask::on_task_finish(Context&)[m[K’:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/grid_goto_dwell_task.hpp:40:40:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   40 |   virtual void on_task_finish([01;35m[KContext& ctx[m[K) {}
+      |                               [01;35m[K~~~~~~~~~^~~[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/grid_goto_dwell_task.hpp:[m[K In member function ‘[01m[Kvirtual bool GridGotoDwellTask::should_finish_early(Context&)[m[K’:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/grid_goto_dwell_task.hpp:41:45:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   41 |   virtual bool should_finish_early([01;35m[KContext& ctx[m[K) { return false; }
+      |                                    [01;35m[K~~~~~~~~~^~~[m[K
+In file included from [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/home_stabilize_task.hpp:7[m[K,
+                 from [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/src/tasks/home_stabilize_task.cpp:1[m[K:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:[m[K In member function ‘[01m[Kvirtual void ITask::onEnter(Context&)[m[K’:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:12:33:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   12 |   virtual void onEnter([01;35m[KContext& ctx[m[K) {}
+      |                        [01;35m[K~~~~~~~~~^~~[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:[m[K In member function ‘[01m[Kvirtual void ITask::onExit(Context&)[m[K’:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:14:32:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   14 |   virtual void onExit([01;35m[KContext& ctx[m[K) {}
+      |                       [01;35m[K~~~~~~~~~^~~[m[K
+In file included from [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/hover_task.hpp:4[m[K,
+                 from [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/src/tasks/hover_task.cpp:1[m[K:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:[m[K In member function ‘[01m[Kvirtual void ITask::onEnter(Context&)[m[K’:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:12:33:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   12 |   virtual void onEnter([01;35m[KContext& ctx[m[K) {}
+      |                        [01;35m[K~~~~~~~~~^~~[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:[m[K In member function ‘[01m[Kvirtual void ITask::onExit(Context&)[m[K’:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:14:32:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   14 |   virtual void onExit([01;35m[KContext& ctx[m[K) {}
+      |                       [01;35m[K~~~~~~~~~^~~[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/src/tasks/hover_task.cpp:[m[K In member function ‘[01m[Kvirtual void HoverTask::onEnter(Context&)[m[K’:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/src/tasks/hover_task.cpp:12:34:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   12 | void HoverTask::onEnter([01;35m[KContext& ctx[m[K)
+      |                         [01;35m[K~~~~~~~~~^~~[m[K
+In file included from [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/px4_land_mode_task.hpp:4[m[K,
+                 from [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/src/tasks/px4_land_mode_task.cpp:1[m[K:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:[m[K In member function ‘[01m[Kvirtual void ITask::onEnter(Context&)[m[K’:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:12:33:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   12 |   virtual void onEnter([01;35m[KContext& ctx[m[K) {}
+      |                        [01;35m[K~~~~~~~~~^~~[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:[m[K In member function ‘[01m[Kvirtual void ITask::onExit(Context&)[m[K’:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:14:32:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   14 |   virtual void onExit([01;35m[KContext& ctx[m[K) {}
+      |                       [01;35m[K~~~~~~~~~^~~[m[K
+In file included from [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/presetpoint_task.hpp:4[m[K,
+                 from [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/src/tasks/presetpoint_task.cpp:1[m[K:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:[m[K In member function ‘[01m[Kvirtual void ITask::onEnter(Context&)[m[K’:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:12:33:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   12 |   virtual void onEnter([01;35m[KContext& ctx[m[K) {}
+      |                        [01;35m[K~~~~~~~~~^~~[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:[m[K In member function ‘[01m[Kvirtual void ITask::onExit(Context&)[m[K’:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:14:32:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   14 |   virtual void onExit([01;35m[KContext& ctx[m[K) {}
+      |                       [01;35m[K~~~~~~~~~^~~[m[K
+In file included from [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/return_home_task.hpp:7[m[K,
+                 from [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/src/tasks/return_home_task.cpp:1[m[K:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:[m[K In member function ‘[01m[Kvirtual void ITask::onEnter(Context&)[m[K’:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:12:33:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   12 |   virtual void onEnter([01;35m[KContext& ctx[m[K) {}
+      |                        [01;35m[K~~~~~~~~~^~~[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:[m[K In member function ‘[01m[Kvirtual void ITask::onExit(Context&)[m[K’:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:14:32:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   14 |   virtual void onExit([01;35m[KContext& ctx[m[K) {}
+      |                       [01;35m[K~~~~~~~~~^~~[m[K
+In file included from [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/set_offboard_task.hpp:4[m[K,
+                 from [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/src/tasks/set_offboard_task.cpp:1[m[K:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:[m[K In member function ‘[01m[Kvirtual void ITask::onEnter(Context&)[m[K’:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:12:33:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   12 |   virtual void onEnter([01;35m[KContext& ctx[m[K) {}
+      |                        [01;35m[K~~~~~~~~~^~~[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:[m[K In member function ‘[01m[Kvirtual void ITask::onExit(Context&)[m[K’:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:14:32:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   14 |   virtual void onExit([01;35m[KContext& ctx[m[K) {}
+      |                       [01;35m[K~~~~~~~~~^~~[m[K
+In file included from [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/src/tasks/set_offboard_task.cpp:1[m[K:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/set_offboard_task.hpp:[m[K In constructor ‘[01m[KSetOffboardTask::SetOffboardTask(rclcpp::Logger, Px4Iface&)[m[K’:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/set_offboard_task.hpp:24:20:[m[K [01;35m[Kwarning: [m[K‘[01m[KSetOffboardTask::lg_[m[K’ will be initialized after [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wreorder-Wreorder]8;;[m[K]
+   24 |     rclcpp::Logger [01;35m[Klg_[m[K;
+      |                    [01;35m[K^~~[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/set_offboard_task.hpp:20:15:[m[K [01;35m[Kwarning: [m[K  ‘[01m[KPx4Iface& SetOffboardTask::px4_[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wreorder-Wreorder]8;;[m[K]
+   20 |     Px4Iface& [01;35m[Kpx4_[m[K;
+      |               [01;35m[K^~~~[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/src/tasks/set_offboard_task.cpp:4:1:[m[K [01;35m[Kwarning: [m[K  when initialized here [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wreorder-Wreorder]8;;[m[K]
+    4 | [01;35m[KSetOffboardTask[m[K::SetOffboardTask(rclcpp::Logger lg, Px4Iface& px4)
+      | [01;35m[K^~~~~~~~~~~~~~~[m[K
+In file included from [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/takeoff_task.hpp:4[m[K,
+                 from [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/src/tasks/takeoff_task.cpp:1[m[K:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:[m[K In member function ‘[01m[Kvirtual void ITask::onEnter(Context&)[m[K’:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:12:33:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   12 |   virtual void onEnter([01;35m[KContext& ctx[m[K) {}
+      |                        [01;35m[K~~~~~~~~~^~~[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:[m[K In member function ‘[01m[Kvirtual void ITask::onExit(Context&)[m[K’:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:14:32:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   14 |   virtual void onExit([01;35m[KContext& ctx[m[K) {}
+      |                       [01;35m[K~~~~~~~~~^~~[m[K
+In file included from [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/src/tasks/takeoff_task.cpp:1[m[K:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/takeoff_task.hpp:[m[K In constructor ‘[01m[KTakeoffTask::TakeoffTask(rclcpp::Logger, Px4Iface&, double)[m[K’:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/takeoff_task.hpp:20:20:[m[K [01;35m[Kwarning: [m[K‘[01m[KTakeoffTask::lg_[m[K’ will be initialized after [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wreorder-Wreorder]8;;[m[K]
+   20 |     rclcpp::Logger [01;35m[Klg_[m[K;
+      |                    [01;35m[K^~~[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/takeoff_task.hpp:19:15:[m[K [01;35m[Kwarning: [m[K  ‘[01m[KPx4Iface& TakeoffTask::px4_[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wreorder-Wreorder]8;;[m[K]
+   19 |     Px4Iface& [01;35m[Kpx4_[m[K;
+      |               [01;35m[K^~~~[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/src/tasks/takeoff_task.cpp:3:1:[m[K [01;35m[Kwarning: [m[K  when initialized here [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wreorder-Wreorder]8;;[m[K]
+    3 | [01;35m[KTakeoffTask[m[K::TakeoffTask(rclcpp::Logger lg, Px4Iface& px4, double arrival_error_max)
+      | [01;35m[K^~~~~~~~~~~[m[K
+In file included from [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/wait_home_task.hpp:4[m[K,
+                 from [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/src/tasks/wait_home_task.cpp:1[m[K:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:[m[K In member function ‘[01m[Kvirtual void ITask::onEnter(Context&)[m[K’:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:12:33:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   12 |   virtual void onEnter([01;35m[KContext& ctx[m[K) {}
+      |                        [01;35m[K~~~~~~~~~^~~[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:[m[K In member function ‘[01m[Kvirtual void ITask::onExit(Context&)[m[K’:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:14:32:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   14 |   virtual void onExit([01;35m[KContext& ctx[m[K) {}
+      |                       [01;35m[K~~~~~~~~~^~~[m[K
+In file included from [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/yaw_spin_task.hpp:5[m[K,
+                 from [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/src/tasks/yaw_spin_task.cpp:1[m[K:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:[m[K In member function ‘[01m[Kvirtual void ITask::onEnter(Context&)[m[K’:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:12:33:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   12 |   virtual void onEnter([01;35m[KContext& ctx[m[K) {}
+      |                        [01;35m[K~~~~~~~~~^~~[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:[m[K In member function ‘[01m[Kvirtual void ITask::onExit(Context&)[m[K’:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:14:32:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   14 |   virtual void onExit([01;35m[KContext& ctx[m[K) {}
+      |                       [01;35m[K~~~~~~~~~^~~[m[K
+In file included from [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/scheduler.hpp:5[m[K,
+                 from [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/src/nodes/offboard_test2.cpp:22[m[K:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:[m[K In member function ‘[01m[Kvirtual void ITask::onEnter(Context&)[m[K’:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:12:33:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   12 |   virtual void onEnter([01;35m[KContext& ctx[m[K) {}
+      |                        [01;35m[K~~~~~~~~~^~~[m[K
+In file included from [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/scheduler.hpp:5[m[K,
+                 from [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/src/nodes/offboard_test1.cpp:23[m[K:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:[m[K In member function ‘[01m[Kvirtual void ITask::onEnter(Context&)[m[K’:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:12:33:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   12 |   virtual void onEnter([01;35m[KContext& ctx[m[K) {}
+      |                        [01;35m[K~~~~~~~~~^~~[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:[m[K In member function ‘[01m[Kvirtual void ITask::onExit(Context&)[m[K’:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:14:32:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   14 |   virtual void onExit([01;35m[KContext& ctx[m[K) {}
+      |                       [01;35m[K~~~~~~~~~^~~[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:[m[K In member function ‘[01m[Kvirtual void ITask::onExit(Context&)[m[K’:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:14:32:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   14 |   virtual void onExit([01;35m[KContext& ctx[m[K) {}
+      |                       [01;35m[K~~~~~~~~~^~~[m[K
+In file included from [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks.hpp:5[m[K,
+                 from [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/src/nodes/offboard_test1.cpp:26[m[K:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/grid_goto_dwell_task.hpp:[m[K In member function ‘[01m[Kvirtual void GridGotoDwellTask::on_task_enter(Context&)[m[K’:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/grid_goto_dwell_task.hpp:35:39:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   35 |   virtual void on_task_enter([01;35m[KContext& ctx[m[K) {}
+      |                              [01;35m[K~~~~~~~~~^~~[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/grid_goto_dwell_task.hpp:[m[K In member function ‘[01m[Kvirtual void GridGotoDwellTask::on_before_goto(Context&, int, int, float, float)[m[K’:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/grid_goto_dwell_task.hpp:36:40:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   36 |   virtual void on_before_goto([01;35m[KContext& ctx[m[K, int r, int c, float tx, float ty) {}
+      |                               [01;35m[K~~~~~~~~~^~~[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/grid_goto_dwell_task.hpp:36:49:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kr[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   36 |   virtual void on_before_goto(Context& ctx, [01;35m[Kint r[m[K, int c, float tx, float ty) {}
+      |                                             [01;35m[K~~~~^[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/grid_goto_dwell_task.hpp:36:56:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kc[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   36 |   virtual void on_before_goto(Context& ctx, int r, [01;35m[Kint c[m[K, float tx, float ty) {}
+      |                                                    [01;35m[K~~~~^[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/grid_goto_dwell_task.hpp:36:65:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Ktx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   36 |   virtual void on_before_goto(Context& ctx, int r, int c, [01;35m[Kfloat tx[m[K, float ty) {}
+      |                                                           [01;35m[K~~~~~~^~[m[K
+In file included from [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks.hpp:5[m[K,
+                 from [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/src/nodes/offboard_test2.cpp:25[m[K:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/grid_goto_dwell_task.hpp:[m[K In member function ‘[01m[Kvirtual void GridGotoDwellTask::on_task_enter(Context&)[m[K’:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/grid_goto_dwell_task.hpp:35:39:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   35 |   virtual void on_task_enter([01;35m[KContext& ctx[m[K) {}
+      |                              [01;35m[K~~~~~~~~~^~~[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/grid_goto_dwell_task.hpp:36:75:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kty[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   36 |   virtual void on_before_goto(Context& ctx, int r, int c, float tx, [01;35m[Kfloat ty[m[K) {}
+      |                                                                     [01;35m[K~~~~~~^~[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/grid_goto_dwell_task.hpp:[m[K In member function ‘[01m[Kvirtual void GridGotoDwellTask::on_cell_enter(Context&, int, int)[m[K’:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/grid_goto_dwell_task.hpp:37:39:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   37 |   virtual void on_cell_enter([01;35m[KContext& ctx[m[K, int r, int c) {}
+      |                              [01;35m[K~~~~~~~~~^~~[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/grid_goto_dwell_task.hpp:[m[K In member function ‘[01m[Kvirtual void GridGotoDwellTask::on_before_goto(Context&, int, int, float, float)[m[K’:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/grid_goto_dwell_task.hpp:36:40:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   36 |   virtual void on_before_goto([01;35m[KContext& ctx[m[K, int r, int c, float tx, float ty) {}
+      |                               [01;35m[K~~~~~~~~~^~~[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/grid_goto_dwell_task.hpp:37:48:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kr[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   37 |   virtual void on_cell_enter(Context& ctx, [01;35m[Kint r[m[K, int c) {}
+      |                                            [01;35m[K~~~~^[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/grid_goto_dwell_task.hpp:37:55:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kc[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   37 |   virtual void on_cell_enter(Context& ctx, int r, [01;35m[Kint c[m[K) {}
+      |                                                   [01;35m[K~~~~^[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/grid_goto_dwell_task.hpp:36:49:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kr[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   36 |   virtual void on_before_goto(Context& ctx, [01;35m[Kint r[m[K, int c, float tx, float ty) {}
+      |                                             [01;35m[K~~~~^[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/grid_goto_dwell_task.hpp:36:56:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kc[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   36 |   virtual void on_before_goto(Context& ctx, int r, [01;35m[Kint c[m[K, float tx, float ty) {}
+      |                                                    [01;35m[K~~~~^[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/grid_goto_dwell_task.hpp:36:65:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Ktx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   36 |   virtual void on_before_goto(Context& ctx, int r, int c, [01;35m[Kfloat tx[m[K, float ty) {}
+      |                                                           [01;35m[K~~~~~~^~[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/grid_goto_dwell_task.hpp:[m[K In member function ‘[01m[Kvirtual void GridGotoDwellTask::on_cell_dwell(Context&, int, int, double, double)[m[K’:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/grid_goto_dwell_task.hpp:38:39:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   38 |   virtual void on_cell_dwell([01;35m[KContext& ctx[m[K, int r, int c, double dwell_t, double dt) {}
+      |                              [01;35m[K~~~~~~~~~^~~[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/grid_goto_dwell_task.hpp:36:75:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kty[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   36 |   virtual void on_before_goto(Context& ctx, int r, int c, float tx, [01;35m[Kfloat ty[m[K) {}
+      |                                                                     [01;35m[K~~~~~~^~[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/grid_goto_dwell_task.hpp:38:48:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kr[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   38 |   virtual void on_cell_dwell(Context& ctx, [01;35m[Kint r[m[K, int c, double dwell_t, double dt) {}
+      |                                            [01;35m[K~~~~^[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/grid_goto_dwell_task.hpp:38:55:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kc[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   38 |   virtual void on_cell_dwell(Context& ctx, int r, [01;35m[Kint c[m[K, double dwell_t, double dt) {}
+      |                                                   [01;35m[K~~~~^[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/grid_goto_dwell_task.hpp:[m[K In member function ‘[01m[Kvirtual void GridGotoDwellTask::on_cell_enter(Context&, int, int)[m[K’:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/grid_goto_dwell_task.hpp:37:39:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   37 |   virtual void on_cell_enter([01;35m[KContext& ctx[m[K, int r, int c) {}
+      |                              [01;35m[K~~~~~~~~~^~~[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/grid_goto_dwell_task.hpp:38:65:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kdwell_t[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   38 |   virtual void on_cell_dwell(Context& ctx, int r, int c, [01;35m[Kdouble dwell_t[m[K, double dt) {}
+      |                                                          [01;35m[K~~~~~~~^~~~~~~[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/grid_goto_dwell_task.hpp:37:48:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kr[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   37 |   virtual void on_cell_enter(Context& ctx, [01;35m[Kint r[m[K, int c) {}
+      |                                            [01;35m[K~~~~^[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/grid_goto_dwell_task.hpp:38:81:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kdt[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   38 |   virtual void on_cell_dwell(Context& ctx, int r, int c, double dwell_t, [01;35m[Kdouble dt[m[K) {}
+      |                                                                          [01;35m[K~~~~~~~^~[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/grid_goto_dwell_task.hpp:37:55:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kc[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   37 |   virtual void on_cell_enter(Context& ctx, int r, [01;35m[Kint c[m[K) {}
+      |                                                   [01;35m[K~~~~^[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/grid_goto_dwell_task.hpp:[m[K In member function ‘[01m[Kvirtual void GridGotoDwellTask::on_cell_leave(Context&, int, int)[m[K’:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/grid_goto_dwell_task.hpp:39:39:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   39 |   virtual void on_cell_leave([01;35m[KContext& ctx[m[K, int r, int c) {}
+      |                              [01;35m[K~~~~~~~~~^~~[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/grid_goto_dwell_task.hpp:[m[K In member function ‘[01m[Kvirtual void GridGotoDwellTask::on_cell_dwell(Context&, int, int, double, double)[m[K’:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/grid_goto_dwell_task.hpp:38:39:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   38 |   virtual void on_cell_dwell([01;35m[KContext& ctx[m[K, int r, int c, double dwell_t, double dt) {}
+      |                              [01;35m[K~~~~~~~~~^~~[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/grid_goto_dwell_task.hpp:39:48:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kr[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   39 |   virtual void on_cell_leave(Context& ctx, [01;35m[Kint r[m[K, int c) {}
+      |                                            [01;35m[K~~~~^[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/grid_goto_dwell_task.hpp:38:48:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kr[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   38 |   virtual void on_cell_dwell(Context& ctx, [01;35m[Kint r[m[K, int c, double dwell_t, double dt) {}
+      |                                            [01;35m[K~~~~^[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/grid_goto_dwell_task.hpp:39:55:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kc[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   39 |   virtual void on_cell_leave(Context& ctx, int r, [01;35m[Kint c[m[K) {}
+      |                                                   [01;35m[K~~~~^[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/grid_goto_dwell_task.hpp:38:55:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kc[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   38 |   virtual void on_cell_dwell(Context& ctx, int r, [01;35m[Kint c[m[K, double dwell_t, double dt) {}
+      |                                                   [01;35m[K~~~~^[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/grid_goto_dwell_task.hpp:38:65:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kdwell_t[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   38 |   virtual void on_cell_dwell(Context& ctx, int r, int c, [01;35m[Kdouble dwell_t[m[K, double dt) {}
+      |                                                          [01;35m[K~~~~~~~^~~~~~~[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/grid_goto_dwell_task.hpp:[m[K In member function ‘[01m[Kvirtual void GridGotoDwellTask::on_task_finish(Context&)[m[K’:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/grid_goto_dwell_task.hpp:40:40:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   40 |   virtual void on_task_finish([01;35m[KContext& ctx[m[K) {}
+      |                               [01;35m[K~~~~~~~~~^~~[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/grid_goto_dwell_task.hpp:38:81:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kdt[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   38 |   virtual void on_cell_dwell(Context& ctx, int r, int c, double dwell_t, [01;35m[Kdouble dt[m[K) {}
+      |                                                                          [01;35m[K~~~~~~~^~[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/grid_goto_dwell_task.hpp:[m[K In member function ‘[01m[Kvirtual void GridGotoDwellTask::on_cell_leave(Context&, int, int)[m[K’:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/grid_goto_dwell_task.hpp:39:39:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   39 |   virtual void on_cell_leave([01;35m[KContext& ctx[m[K, int r, int c) {}
+      |                              [01;35m[K~~~~~~~~~^~~[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/grid_goto_dwell_task.hpp:[m[K In member function ‘[01m[Kvirtual bool GridGotoDwellTask::should_finish_early(Context&)[m[K’:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/grid_goto_dwell_task.hpp:41:45:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   41 |   virtual bool should_finish_early([01;35m[KContext& ctx[m[K) { return false; }
+      |                                    [01;35m[K~~~~~~~~~^~~[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/grid_goto_dwell_task.hpp:39:48:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kr[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   39 |   virtual void on_cell_leave(Context& ctx, [01;35m[Kint r[m[K, int c) {}
+      |                                            [01;35m[K~~~~^[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/grid_goto_dwell_task.hpp:39:55:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kc[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   39 |   virtual void on_cell_leave(Context& ctx, int r, [01;35m[Kint c[m[K) {}
+      |                                                   [01;35m[K~~~~^[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/grid_goto_dwell_task.hpp:[m[K In member function ‘[01m[Kvirtual void GridGotoDwellTask::on_task_finish(Context&)[m[K’:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/grid_goto_dwell_task.hpp:40:40:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   40 |   virtual void on_task_finish([01;35m[KContext& ctx[m[K) {}
+      |                               [01;35m[K~~~~~~~~~^~~[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/grid_goto_dwell_task.hpp:[m[K In member function ‘[01m[Kvirtual bool GridGotoDwellTask::should_finish_early(Context&)[m[K’:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/grid_goto_dwell_task.hpp:41:45:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   41 |   virtual bool should_finish_early([01;35m[KContext& ctx[m[K) { return false; }
+      |                                    [01;35m[K~~~~~~~~~^~~[m[K

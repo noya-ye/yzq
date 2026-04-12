@@ -1,0 +1,57 @@
+[0.079s] Invoking command in '/home/jetson/ros2_ws_px4/build/offboard_core_pkg': CMAKE_PREFIX_PATH=/home/jetson/ros2_ws_px4/install/px4_msgs:/home/jetson/fastlio2_ws/install/pgo:/home/jetson/fastlio2_ws/install/localizer:/home/jetson/fastlio2_ws/install/fastlio2:/home/jetson/fastlio2_ws/install/livox_ros_driver2:/home/jetson/fastlio2_ws/install/hba:/home/jetson/fastlio2_ws/install/interface:/home/jetson/fastlio2_ws/install/bringup_pkg:/opt/ros/humble:/home/jetson/fastlio2_ws/install/fastlio_to_px4:/home/jetson/ros2_ws_px4/install/trajectory_generator_pkg:/home/jetson/ros2_ws_px4/install/px4_ros_com:/home/jetson/ros2_ws_px4/install/offboard_pkg:/home/jetson/ros2_ws_px4/install/offboard_core_pkg:/home/jetson/ros2_ws_px4/install/fastlio_to_px4 LD_LIBRARY_PATH=/home/jetson/ros2_ws_px4/install/px4_msgs/lib:/usr/local/cuda-12.6/lib64:/home/jetson/fastlio2_ws/install/livox_ros_driver2/lib:/home/jetson/fastlio2_ws/install/interface/lib:/home/jetson/ros2_ws_px4/install/px4_ros_com/lib:/home/jetson/ros2_ws_px4/install/offboard_core_pkg/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/aarch64-linux-gnu:/opt/ros/humble/lib:/usr/local/cuda-12.6/lib64 /usr/bin/cmake --build /home/jetson/ros2_ws_px4/build/offboard_core_pkg -- -j4 -l4
+[0.403s] [  6%] [32mBuilding CXX object CMakeFiles/offboard_core.dir/src/tasks/arm_task.cpp.o[0m
+[0.423s] [ 13%] [32mBuilding CXX object CMakeFiles/offboard_core.dir/src/tasks/disarm_task.cpp.o[0m
+[0.430s] [ 20%] [32mBuilding CXX object CMakeFiles/offboard_core.dir/src/tasks/home_stabilize_task.cpp.o[0m
+[0.460s] [ 26%] [32mBuilding CXX object CMakeFiles/offboard_core.dir/src/tasks/hover_task.cpp.o[0m
+[9.840s] In file included from [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/home_stabilize_task.hpp:7[m[K,
+[9.840s]                  from [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/src/tasks/home_stabilize_task.cpp:1[m[K:
+[9.840s] [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:[m[K In member function ‘[01m[Kvirtual void ITask::onEnter(Context&)[m[K’:
+[9.840s] [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:12:33:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+[9.841s]    12 |   virtual void onEnter([01;35m[KContext& ctx[m[K) {}
+[9.841s]       |                        [01;35m[K~~~~~~~~~^~~[m[K
+[9.843s] [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:[m[K In member function ‘[01m[Kvirtual void ITask::onExit(Context&)[m[K’:
+[9.843s] [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:14:32:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+[9.843s]    14 |   virtual void onExit([01;35m[KContext& ctx[m[K) {}
+[9.844s]       |                       [01;35m[K~~~~~~~~~^~~[m[K
+[10.296s] In file included from [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/arm_task.hpp:5[m[K,
+[10.297s]                  from [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/src/tasks/arm_task.cpp:1[m[K:
+[10.297s] [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:[m[K In member function ‘[01m[Kvirtual void ITask::onEnter(Context&)[m[K’:
+[10.298s] [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:12:33:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+[10.299s]    12 |   virtual void onEnter([01;35m[KContext& ctx[m[K) {}
+[10.300s]       |                        [01;35m[K~~~~~~~~~^~~[m[K
+[10.301s] [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:[m[K In member function ‘[01m[Kvirtual void ITask::onExit(Context&)[m[K’:
+[10.301s] [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:14:32:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+[10.302s]    14 |   virtual void onExit([01;35m[KContext& ctx[m[K) {}
+[10.303s]       |                       [01;35m[K~~~~~~~~~^~~[m[K
+[10.581s] In file included from [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/hover_task.hpp:4[m[K,
+[10.581s]                  from [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/src/tasks/hover_task.cpp:1[m[K:
+[10.581s] [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:[m[K In member function ‘[01m[Kvirtual void ITask::onEnter(Context&)[m[K’:
+[10.581s] [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:12:33:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+[10.581s]    12 |   virtual void onEnter([01;35m[KContext& ctx[m[K) {}
+[10.582s]       |                        [01;35m[K~~~~~~~~~^~~[m[K
+[10.584s] [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:[m[K In member function ‘[01m[Kvirtual void ITask::onExit(Context&)[m[K’:
+[10.584s] [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:14:32:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+[10.585s]    14 |   virtual void onExit([01;35m[KContext& ctx[m[K) {}
+[10.585s]       |                       [01;35m[K~~~~~~~~~^~~[m[K
+[10.967s] [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/src/tasks/hover_task.cpp:[m[K In member function ‘[01m[Kvirtual void HoverTask::onEnter(Context&)[m[K’:
+[10.968s] [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/src/tasks/hover_task.cpp:12:34:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+[10.969s]    12 | void HoverTask::onEnter([01;35m[KContext& ctx[m[K)
+[10.970s]       |                         [01;35m[K~~~~~~~~~^~~[m[K
+[11.073s] In file included from [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/disarm_task.hpp:7[m[K,
+[11.073s]                  from [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/src/tasks/disarm_task.cpp:1[m[K:
+[11.073s] [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:[m[K In member function ‘[01m[Kvirtual void ITask::onEnter(Context&)[m[K’:
+[11.073s] [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:12:33:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+[11.073s]    12 |   virtual void onEnter([01;35m[KContext& ctx[m[K) {}
+[11.074s]       |                        [01;35m[K~~~~~~~~~^~~[m[K
+[11.074s] [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:[m[K In member function ‘[01m[Kvirtual void ITask::onExit(Context&)[m[K’:
+[11.074s] [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:14:32:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+[11.074s]    14 |   virtual void onExit([01;35m[KContext& ctx[m[K) {}
+[11.074s]       |                       [01;35m[K~~~~~~~~~^~~[m[K
+[12.097s] [ 33%] [32mBuilding CXX object CMakeFiles/offboard_core.dir/src/tasks/land_decend_task.cpp.o[0m
+[12.127s] [01m[Kcc1plus:[m[K [01;31m[Kfatal error: [m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/src/tasks/land_decend_task.cpp: 没有那个文件或目录
+[12.127s] compilation terminated.
+[12.132s] gmake[2]: *** [CMakeFiles/offboard_core.dir/build.make:160：CMakeFiles/offboard_core.dir/src/tasks/land_decend_task.cpp.o] 错误 1
+[12.132s] gmake[2]: *** 正在等待未完成的任务....
+[14.521s] gmake[1]: *** [CMakeFiles/Makefile2:139：CMakeFiles/offboard_core.dir/all] 错误 2
+[14.521s] gmake: *** [Makefile:146：all] 错误 2
+[14.525s] Invoked command in '/home/jetson/ros2_ws_px4/build/offboard_core_pkg' returned '2': CMAKE_PREFIX_PATH=/home/jetson/ros2_ws_px4/install/px4_msgs:/home/jetson/fastlio2_ws/install/pgo:/home/jetson/fastlio2_ws/install/localizer:/home/jetson/fastlio2_ws/install/fastlio2:/home/jetson/fastlio2_ws/install/livox_ros_driver2:/home/jetson/fastlio2_ws/install/hba:/home/jetson/fastlio2_ws/install/interface:/home/jetson/fastlio2_ws/install/bringup_pkg:/opt/ros/humble:/home/jetson/fastlio2_ws/install/fastlio_to_px4:/home/jetson/ros2_ws_px4/install/trajectory_generator_pkg:/home/jetson/ros2_ws_px4/install/px4_ros_com:/home/jetson/ros2_ws_px4/install/offboard_pkg:/home/jetson/ros2_ws_px4/install/offboard_core_pkg:/home/jetson/ros2_ws_px4/install/fastlio_to_px4 LD_LIBRARY_PATH=/home/jetson/ros2_ws_px4/install/px4_msgs/lib:/usr/local/cuda-12.6/lib64:/home/jetson/fastlio2_ws/install/livox_ros_driver2/lib:/home/jetson/fastlio2_ws/install/interface/lib:/home/jetson/ros2_ws_px4/install/px4_ros_com/lib:/home/jetson/ros2_ws_px4/install/offboard_core_pkg/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/aarch64-linux-gnu:/opt/ros/humble/lib:/usr/local/cuda-12.6/lib64 /usr/bin/cmake --build /home/jetson/ros2_ws_px4/build/offboard_core_pkg -- -j4 -l4

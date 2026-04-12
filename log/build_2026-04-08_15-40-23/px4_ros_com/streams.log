@@ -1,0 +1,70 @@
+[0.018s] Invoking command in '/home/jetson/ros2_ws_px4/build/px4_ros_com': CMAKE_PREFIX_PATH=/home/jetson/ros2_ws_px4/install/px4_msgs:/home/jetson/fastlio2_ws/install/pgo:/home/jetson/fastlio2_ws/install/localizer:/home/jetson/fastlio2_ws/install/fastlio2:/home/jetson/fastlio2_ws/install/livox_ros_driver2:/home/jetson/fastlio2_ws/install/hba:/home/jetson/fastlio2_ws/install/interface:/home/jetson/fastlio2_ws/install/bringup_pkg:/opt/ros/humble:/home/jetson/fastlio2_ws/install/fastlio_to_px4:/home/jetson/ros2_ws_px4/install/trajectory_generator_pkg:/home/jetson/ros2_ws_px4/install/px4_ros_com:/home/jetson/ros2_ws_px4/install/offboard_pkg:/home/jetson/ros2_ws_px4/install/offboard_core_pkg:/home/jetson/ros2_ws_px4/install/fastlio_to_px4 LD_LIBRARY_PATH=/home/jetson/ros2_ws_px4/install/px4_msgs/lib:/usr/local/cuda-12.6/lib64:/home/jetson/fastlio2_ws/install/livox_ros_driver2/lib:/home/jetson/fastlio2_ws/install/interface/lib:/home/jetson/ros2_ws_px4/install/px4_ros_com/lib:/home/jetson/ros2_ws_px4/install/offboard_core_pkg/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/aarch64-linux-gnu:/opt/ros/humble/lib:/usr/local/cuda-12.6/lib64 /usr/bin/cmake --build /home/jetson/ros2_ws_px4/build/px4_ros_com -- -j4 -l4
+[0.197s] [ 16%] Built target debug_vect_advertiser
+[0.213s] [ 33%] Built target frame_transforms
+[0.222s] [ 50%] Built target sensor_combined_listener
+[0.254s] [ 66%] Built target vehicle_gps_position_listener
+[0.323s] [ 83%] Built target offboard_control
+[0.356s] [100%] Built target offboard_control_srv
+[0.373s] [100%] Built target ament_cmake_python_copy_px4_ros_com
+[0.945s] running egg_info
+[0.945s] writing px4_ros_com.egg-info/PKG-INFO
+[0.945s] writing dependency_links to px4_ros_com.egg-info/dependency_links.txt
+[0.946s] writing top-level names to px4_ros_com.egg-info/top_level.txt
+[0.954s] reading manifest file 'px4_ros_com.egg-info/SOURCES.txt'
+[0.954s] writing manifest file 'px4_ros_com.egg-info/SOURCES.txt'
+[1.036s] [100%] Built target ament_cmake_python_build_px4_ros_com_egg
+[1.064s] Invoked command in '/home/jetson/ros2_ws_px4/build/px4_ros_com' returned '0': CMAKE_PREFIX_PATH=/home/jetson/ros2_ws_px4/install/px4_msgs:/home/jetson/fastlio2_ws/install/pgo:/home/jetson/fastlio2_ws/install/localizer:/home/jetson/fastlio2_ws/install/fastlio2:/home/jetson/fastlio2_ws/install/livox_ros_driver2:/home/jetson/fastlio2_ws/install/hba:/home/jetson/fastlio2_ws/install/interface:/home/jetson/fastlio2_ws/install/bringup_pkg:/opt/ros/humble:/home/jetson/fastlio2_ws/install/fastlio_to_px4:/home/jetson/ros2_ws_px4/install/trajectory_generator_pkg:/home/jetson/ros2_ws_px4/install/px4_ros_com:/home/jetson/ros2_ws_px4/install/offboard_pkg:/home/jetson/ros2_ws_px4/install/offboard_core_pkg:/home/jetson/ros2_ws_px4/install/fastlio_to_px4 LD_LIBRARY_PATH=/home/jetson/ros2_ws_px4/install/px4_msgs/lib:/usr/local/cuda-12.6/lib64:/home/jetson/fastlio2_ws/install/livox_ros_driver2/lib:/home/jetson/fastlio2_ws/install/interface/lib:/home/jetson/ros2_ws_px4/install/px4_ros_com/lib:/home/jetson/ros2_ws_px4/install/offboard_core_pkg/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/aarch64-linux-gnu:/opt/ros/humble/lib:/usr/local/cuda-12.6/lib64 /usr/bin/cmake --build /home/jetson/ros2_ws_px4/build/px4_ros_com -- -j4 -l4
+[1.064s] Invoking command in '/home/jetson/ros2_ws_px4/build/px4_ros_com': CMAKE_PREFIX_PATH=/home/jetson/ros2_ws_px4/install/px4_msgs:/home/jetson/fastlio2_ws/install/pgo:/home/jetson/fastlio2_ws/install/localizer:/home/jetson/fastlio2_ws/install/fastlio2:/home/jetson/fastlio2_ws/install/livox_ros_driver2:/home/jetson/fastlio2_ws/install/hba:/home/jetson/fastlio2_ws/install/interface:/home/jetson/fastlio2_ws/install/bringup_pkg:/opt/ros/humble:/home/jetson/fastlio2_ws/install/fastlio_to_px4:/home/jetson/ros2_ws_px4/install/trajectory_generator_pkg:/home/jetson/ros2_ws_px4/install/px4_ros_com:/home/jetson/ros2_ws_px4/install/offboard_pkg:/home/jetson/ros2_ws_px4/install/offboard_core_pkg:/home/jetson/ros2_ws_px4/install/fastlio_to_px4 LD_LIBRARY_PATH=/home/jetson/ros2_ws_px4/install/px4_msgs/lib:/usr/local/cuda-12.6/lib64:/home/jetson/fastlio2_ws/install/livox_ros_driver2/lib:/home/jetson/fastlio2_ws/install/interface/lib:/home/jetson/ros2_ws_px4/install/px4_ros_com/lib:/home/jetson/ros2_ws_px4/install/offboard_core_pkg/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/aarch64-linux-gnu:/opt/ros/humble/lib:/usr/local/cuda-12.6/lib64 /usr/bin/cmake --install /home/jetson/ros2_ws_px4/build/px4_ros_com
+[1.082s] -- Install configuration: ""
+[1.083s] -- Up-to-date: /home/jetson/ros2_ws_px4/install/px4_ros_com/lib/px4_ros_com/sensor_combined_listener
+[1.084s] -- Up-to-date: /home/jetson/ros2_ws_px4/install/px4_ros_com/lib/px4_ros_com/vehicle_gps_position_listener
+[1.085s] -- Up-to-date: /home/jetson/ros2_ws_px4/install/px4_ros_com/lib/px4_ros_com/debug_vect_advertiser
+[1.086s] -- Up-to-date: /home/jetson/ros2_ws_px4/install/px4_ros_com/lib/px4_ros_com/offboard_control
+[1.087s] -- Up-to-date: /home/jetson/ros2_ws_px4/install/px4_ros_com/lib/px4_ros_com/offboard_control_srv
+[1.087s] -- Up-to-date: /home/jetson/ros2_ws_px4/install/px4_ros_com/share/px4_ros_com/environment/library_path.sh
+[1.088s] -- Up-to-date: /home/jetson/ros2_ws_px4/install/px4_ros_com/share/px4_ros_com/environment/library_path.dsv
+[1.088s] -- Up-to-date: /home/jetson/ros2_ws_px4/install/px4_ros_com/include/px4_ros_com
+[1.089s] -- Up-to-date: /home/jetson/ros2_ws_px4/install/px4_ros_com/include/px4_ros_com/frame_transforms.h
+[1.089s] -- Up-to-date: /home/jetson/ros2_ws_px4/install/px4_ros_com/lib/libframe_transforms.so
+[1.090s] -- Up-to-date: /home/jetson/ros2_ws_px4/install/px4_ros_com/share/px4_ros_com//launch
+[1.090s] -- Up-to-date: /home/jetson/ros2_ws_px4/install/px4_ros_com/share/px4_ros_com//launch/sensor_combined_listener.launch.py
+[1.090s] -- Up-to-date: /home/jetson/ros2_ws_px4/install/px4_ros_com/share/px4_ros_com//launch/offboard_control_launch.yaml
+[1.091s] -- Up-to-date: /home/jetson/ros2_ws_px4/install/px4_ros_com/share/px4_ros_com//test
+[1.091s] -- Up-to-date: /home/jetson/ros2_ws_px4/install/px4_ros_com/share/px4_ros_com//test/pipeline_io_test.py
+[1.092s] -- Up-to-date: /home/jetson/ros2_ws_px4/install/px4_ros_com/share/px4_ros_com//test/test_input.py
+[1.092s] -- Up-to-date: /home/jetson/ros2_ws_px4/install/px4_ros_com/share/px4_ros_com//test/__init__.py
+[1.092s] -- Up-to-date: /home/jetson/ros2_ws_px4/install/px4_ros_com/share/px4_ros_com//test/test_output.py
+[1.093s] -- Up-to-date: /home/jetson/ros2_ws_px4/install/px4_ros_com/share/px4_ros_com/environment/pythonpath.sh
+[1.093s] -- Up-to-date: /home/jetson/ros2_ws_px4/install/px4_ros_com/share/px4_ros_com/environment/pythonpath.dsv
+[1.093s] -- Up-to-date: /home/jetson/ros2_ws_px4/install/px4_ros_com/local/lib/python3.10/dist-packages/px4_ros_com-0.1.0-py3.10.egg-info
+[1.094s] -- Installing: /home/jetson/ros2_ws_px4/install/px4_ros_com/local/lib/python3.10/dist-packages/px4_ros_com-0.1.0-py3.10.egg-info/SOURCES.txt
+[1.094s] -- Installing: /home/jetson/ros2_ws_px4/install/px4_ros_com/local/lib/python3.10/dist-packages/px4_ros_com-0.1.0-py3.10.egg-info/top_level.txt
+[1.095s] -- Installing: /home/jetson/ros2_ws_px4/install/px4_ros_com/local/lib/python3.10/dist-packages/px4_ros_com-0.1.0-py3.10.egg-info/dependency_links.txt
+[1.096s] -- Installing: /home/jetson/ros2_ws_px4/install/px4_ros_com/local/lib/python3.10/dist-packages/px4_ros_com-0.1.0-py3.10.egg-info/PKG-INFO
+[1.096s] -- Up-to-date: /home/jetson/ros2_ws_px4/install/px4_ros_com/local/lib/python3.10/dist-packages/px4_ros_com
+[1.097s] -- Up-to-date: /home/jetson/ros2_ws_px4/install/px4_ros_com/local/lib/python3.10/dist-packages/px4_ros_com/__init__.py
+[1.097s] -- Up-to-date: /home/jetson/ros2_ws_px4/install/px4_ros_com/local/lib/python3.10/dist-packages/px4_ros_com/module_to_import.py
+[1.179s] Listing '/home/jetson/ros2_ws_px4/install/px4_ros_com/local/lib/python3.10/dist-packages/px4_ros_com'...
+[1.193s] -- Up-to-date: /home/jetson/ros2_ws_px4/install/px4_ros_com/lib/px4_ros_com/offboard_control.py
+[1.194s] -- Up-to-date: /home/jetson/ros2_ws_px4/install/px4_ros_com/share/ament_index/resource_index/package_run_dependencies/px4_ros_com
+[1.194s] -- Up-to-date: /home/jetson/ros2_ws_px4/install/px4_ros_com/share/ament_index/resource_index/parent_prefix_path/px4_ros_com
+[1.194s] -- Up-to-date: /home/jetson/ros2_ws_px4/install/px4_ros_com/share/px4_ros_com/environment/ament_prefix_path.sh
+[1.194s] -- Up-to-date: /home/jetson/ros2_ws_px4/install/px4_ros_com/share/px4_ros_com/environment/ament_prefix_path.dsv
+[1.194s] -- Up-to-date: /home/jetson/ros2_ws_px4/install/px4_ros_com/share/px4_ros_com/environment/path.sh
+[1.194s] -- Up-to-date: /home/jetson/ros2_ws_px4/install/px4_ros_com/share/px4_ros_com/environment/path.dsv
+[1.195s] -- Up-to-date: /home/jetson/ros2_ws_px4/install/px4_ros_com/share/px4_ros_com/local_setup.bash
+[1.195s] -- Up-to-date: /home/jetson/ros2_ws_px4/install/px4_ros_com/share/px4_ros_com/local_setup.sh
+[1.195s] -- Up-to-date: /home/jetson/ros2_ws_px4/install/px4_ros_com/share/px4_ros_com/local_setup.zsh
+[1.195s] -- Up-to-date: /home/jetson/ros2_ws_px4/install/px4_ros_com/share/px4_ros_com/local_setup.dsv
+[1.195s] -- Installing: /home/jetson/ros2_ws_px4/install/px4_ros_com/share/px4_ros_com/package.dsv
+[1.195s] -- Up-to-date: /home/jetson/ros2_ws_px4/install/px4_ros_com/share/ament_index/resource_index/packages/px4_ros_com
+[1.195s] -- Up-to-date: /home/jetson/ros2_ws_px4/install/px4_ros_com/share/px4_ros_com/cmake/export_frame_transformsExport.cmake
+[1.195s] -- Up-to-date: /home/jetson/ros2_ws_px4/install/px4_ros_com/share/px4_ros_com/cmake/export_frame_transformsExport-noconfig.cmake
+[1.196s] -- Up-to-date: /home/jetson/ros2_ws_px4/install/px4_ros_com/share/px4_ros_com/cmake/ament_cmake_export_dependencies-extras.cmake
+[1.196s] -- Up-to-date: /home/jetson/ros2_ws_px4/install/px4_ros_com/share/px4_ros_com/cmake/ament_cmake_export_targets-extras.cmake
+[1.196s] -- Up-to-date: /home/jetson/ros2_ws_px4/install/px4_ros_com/share/px4_ros_com/cmake/ament_cmake_export_include_directories-extras.cmake
+[1.202s] -- Up-to-date: /home/jetson/ros2_ws_px4/install/px4_ros_com/share/px4_ros_com/cmake/ament_cmake_export_libraries-extras.cmake
+[1.209s] -- Up-to-date: /home/jetson/ros2_ws_px4/install/px4_ros_com/share/px4_ros_com/cmake/px4_ros_comConfig.cmake
+[1.210s] -- Up-to-date: /home/jetson/ros2_ws_px4/install/px4_ros_com/share/px4_ros_com/cmake/px4_ros_comConfig-version.cmake
+[1.210s] -- Up-to-date: /home/jetson/ros2_ws_px4/install/px4_ros_com/share/px4_ros_com/package.xml
+[1.210s] Invoked command in '/home/jetson/ros2_ws_px4/build/px4_ros_com' returned '0': CMAKE_PREFIX_PATH=/home/jetson/ros2_ws_px4/install/px4_msgs:/home/jetson/fastlio2_ws/install/pgo:/home/jetson/fastlio2_ws/install/localizer:/home/jetson/fastlio2_ws/install/fastlio2:/home/jetson/fastlio2_ws/install/livox_ros_driver2:/home/jetson/fastlio2_ws/install/hba:/home/jetson/fastlio2_ws/install/interface:/home/jetson/fastlio2_ws/install/bringup_pkg:/opt/ros/humble:/home/jetson/fastlio2_ws/install/fastlio_to_px4:/home/jetson/ros2_ws_px4/install/trajectory_generator_pkg:/home/jetson/ros2_ws_px4/install/px4_ros_com:/home/jetson/ros2_ws_px4/install/offboard_pkg:/home/jetson/ros2_ws_px4/install/offboard_core_pkg:/home/jetson/ros2_ws_px4/install/fastlio_to_px4 LD_LIBRARY_PATH=/home/jetson/ros2_ws_px4/install/px4_msgs/lib:/usr/local/cuda-12.6/lib64:/home/jetson/fastlio2_ws/install/livox_ros_driver2/lib:/home/jetson/fastlio2_ws/install/interface/lib:/home/jetson/ros2_ws_px4/install/px4_ros_com/lib:/home/jetson/ros2_ws_px4/install/offboard_core_pkg/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/aarch64-linux-gnu:/opt/ros/humble/lib:/usr/local/cuda-12.6/lib64 /usr/bin/cmake --install /home/jetson/ros2_ws_px4/build/px4_ros_com
