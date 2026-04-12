@@ -1,3 +1,0 @@
-CMakeFiles/offboard_mission1_node.dir/src/nodes/offboard_mission1.cpp.o: \
- /home/jetson/ros2_ws_px4/src/offboard_core_pkg/src/nodes/offboard_mission1.cpp \
- /usr/include/stdc-predef.h
