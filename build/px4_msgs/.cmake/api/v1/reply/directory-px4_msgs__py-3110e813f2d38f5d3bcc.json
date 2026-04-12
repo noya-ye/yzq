@@ -1,0 +1,14 @@
+{
+	"backtraceGraph" : 
+	{
+		"commands" : [],
+		"files" : [],
+		"nodes" : []
+	},
+	"installers" : [],
+	"paths" : 
+	{
+		"build" : "px4_msgs__py",
+		"source" : "/home/jetson/ros2_ws_px4/build/px4_msgs/px4_msgs__py"
+	}
+}

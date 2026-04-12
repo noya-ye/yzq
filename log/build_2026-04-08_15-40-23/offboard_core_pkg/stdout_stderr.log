@@ -1,0 +1,165 @@
+-- Found ament_cmake: 1.3.13 (/opt/ros/humble/share/ament_cmake/cmake)
+-- Found rclcpp: 16.0.18 (/opt/ros/humble/share/rclcpp/cmake)
+-- Found rosidl_generator_c: 3.1.8 (/opt/ros/humble/share/rosidl_generator_c/cmake)
+-- Found rosidl_adapter: 3.1.8 (/opt/ros/humble/share/rosidl_adapter/cmake)
+-- Found rosidl_generator_cpp: 3.1.8 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)
+-- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+-- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+-- Found rmw_implementation_cmake: 6.1.2 (/opt/ros/humble/share/rmw_implementation_cmake/cmake)
+-- Found rmw_fastrtps_cpp: 6.2.10 (/opt/ros/humble/share/rmw_fastrtps_cpp/cmake)
+-- Using RMW implementation 'rmw_fastrtps_cpp' as default
+-- Found px4_msgs: 2.0.1 (/home/jetson/ros2_ws_px4/install/px4_msgs/share/px4_msgs/cmake)
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/jetson/ros2_ws_px4/build/offboard_core_pkg
+[35m[1mConsolidate compiler generated dependencies of target offboard_core[0m
+[  6%] [32mBuilding CXX object CMakeFiles/offboard_core.dir/src/tasks/px4_land_mode_task.cpp.o[0m
+[ 13%] [32mBuilding CXX object CMakeFiles/offboard_core.dir/src/tasks/set_offboard_task.cpp.o[0m
+[ 20%] [32mBuilding CXX object CMakeFiles/offboard_core.dir/src/tasks/return_home_task.cpp.o[0m
+[ 26%] [32mBuilding CXX object CMakeFiles/offboard_core.dir/src/tasks/presetpoint_task.cpp.o[0m
+In file included from [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/px4_land_mode_task.hpp:5[m[K,
+                 from [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/src/tasks/px4_land_mode_task.cpp:1[m[K:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:[m[K In member function ‘[01m[Kvirtual void ITask::onEnter(Context&)[m[K’:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:12:33:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   12 |   virtual void onEnter([01;35m[KContext& ctx[m[K) {}
+      |                        [01;35m[K~~~~~~~~~^~~[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:[m[K In member function ‘[01m[Kvirtual void ITask::onExit(Context&)[m[K’:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:14:32:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   14 |   virtual void onExit([01;35m[KContext& ctx[m[K) {}
+      |                       [01;35m[K~~~~~~~~~^~~[m[K
+In file included from [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/set_offboard_task.hpp:4[m[K,
+                 from [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/src/tasks/set_offboard_task.cpp:1[m[K:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:[m[K In member function ‘[01m[Kvirtual void ITask::onEnter(Context&)[m[K’:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:12:33:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   12 |   virtual void onEnter([01;35m[KContext& ctx[m[K) {}
+      |                        [01;35m[K~~~~~~~~~^~~[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:[m[K In member function ‘[01m[Kvirtual void ITask::onExit(Context&)[m[K’:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:14:32:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   14 |   virtual void onExit([01;35m[KContext& ctx[m[K) {}
+      |                       [01;35m[K~~~~~~~~~^~~[m[K
+In file included from [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/return_home_task.hpp:7[m[K,
+                 from [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/src/tasks/return_home_task.cpp:1[m[K:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:[m[K In member function ‘[01m[Kvirtual void ITask::onEnter(Context&)[m[K’:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:12:33:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   12 |   virtual void onEnter([01;35m[KContext& ctx[m[K) {}
+      |                        [01;35m[K~~~~~~~~~^~~[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:[m[K In member function ‘[01m[Kvirtual void ITask::onExit(Context&)[m[K’:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:14:32:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   14 |   virtual void onExit([01;35m[KContext& ctx[m[K) {}
+      |                       [01;35m[K~~~~~~~~~^~~[m[K
+In file included from [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/presetpoint_task.hpp:4[m[K,
+                 from [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/src/tasks/presetpoint_task.cpp:1[m[K:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:[m[K In member function ‘[01m[Kvirtual void ITask::onEnter(Context&)[m[K’:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:12:33:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   12 |   virtual void onEnter([01;35m[KContext& ctx[m[K) {}
+      |                        [01;35m[K~~~~~~~~~^~~[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:[m[K In member function ‘[01m[Kvirtual void ITask::onExit(Context&)[m[K’:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:14:32:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   14 |   virtual void onExit([01;35m[KContext& ctx[m[K) {}
+      |                       [01;35m[K~~~~~~~~~^~~[m[K
+In file included from [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/src/tasks/set_offboard_task.cpp:1[m[K:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/set_offboard_task.hpp:[m[K In constructor ‘[01m[KSetOffboardTask::SetOffboardTask(rclcpp::Logger, Px4Iface&)[m[K’:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/set_offboard_task.hpp:23:20:[m[K [01;35m[Kwarning: [m[K‘[01m[KSetOffboardTask::lg_[m[K’ will be initialized after [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wreorder-Wreorder]8;;[m[K]
+   23 |     rclcpp::Logger [01;35m[Klg_[m[K;
+      |                    [01;35m[K^~~[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/set_offboard_task.hpp:20:15:[m[K [01;35m[Kwarning: [m[K  ‘[01m[KPx4Iface& SetOffboardTask::px4_[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wreorder-Wreorder]8;;[m[K]
+   20 |     Px4Iface& [01;35m[Kpx4_[m[K;
+      |               [01;35m[K^~~~[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/src/tasks/set_offboard_task.cpp:3:1:[m[K [01;35m[Kwarning: [m[K  when initialized here [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wreorder-Wreorder]8;;[m[K]
+    3 | [01;35m[KSetOffboardTask[m[K::SetOffboardTask(rclcpp::Logger lg, Px4Iface& px4)
+      | [01;35m[K^~~~~~~~~~~~~~~[m[K
+[ 33%] [32mBuilding CXX object CMakeFiles/offboard_core.dir/src/tasks/takeoff_task.cpp.o[0m
+[ 40%] [32mBuilding CXX object CMakeFiles/offboard_core.dir/src/tasks/wait_home_task.cpp.o[0m
+In file included from [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/takeoff_task.hpp:4[m[K,
+                 from [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/src/tasks/takeoff_task.cpp:1[m[K:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:[m[K In member function ‘[01m[Kvirtual void ITask::onEnter(Context&)[m[K’:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:12:33:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   12 |   virtual void onEnter([01;35m[KContext& ctx[m[K) {}
+      |                        [01;35m[K~~~~~~~~~^~~[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:[m[K In member function ‘[01m[Kvirtual void ITask::onExit(Context&)[m[K’:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:14:32:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   14 |   virtual void onExit([01;35m[KContext& ctx[m[K) {}
+      |                       [01;35m[K~~~~~~~~~^~~[m[K
+In file included from [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/wait_home_task.hpp:4[m[K,
+                 from [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/src/tasks/wait_home_task.cpp:1[m[K:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:[m[K In member function ‘[01m[Kvirtual void ITask::onEnter(Context&)[m[K’:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:12:33:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   12 |   virtual void onEnter([01;35m[KContext& ctx[m[K) {}
+      |                        [01;35m[K~~~~~~~~~^~~[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:[m[K In member function ‘[01m[Kvirtual void ITask::onExit(Context&)[m[K’:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:14:32:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   14 |   virtual void onExit([01;35m[KContext& ctx[m[K) {}
+      |                       [01;35m[K~~~~~~~~~^~~[m[K
+In file included from [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/src/tasks/takeoff_task.cpp:1[m[K:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/takeoff_task.hpp:[m[K In constructor ‘[01m[KTakeoffTask::TakeoffTask(rclcpp::Logger, Px4Iface&, double)[m[K’:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/takeoff_task.hpp:20:20:[m[K [01;35m[Kwarning: [m[K‘[01m[KTakeoffTask::lg_[m[K’ will be initialized after [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wreorder-Wreorder]8;;[m[K]
+   20 |     rclcpp::Logger [01;35m[Klg_[m[K;
+      |                    [01;35m[K^~~[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/takeoff_task.hpp:19:15:[m[K [01;35m[Kwarning: [m[K  ‘[01m[KPx4Iface& TakeoffTask::px4_[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wreorder-Wreorder]8;;[m[K]
+   19 |     Px4Iface& [01;35m[Kpx4_[m[K;
+      |               [01;35m[K^~~~[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/src/tasks/takeoff_task.cpp:3:1:[m[K [01;35m[Kwarning: [m[K  when initialized here [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wreorder-Wreorder]8;;[m[K]
+    3 | [01;35m[KTakeoffTask[m[K::TakeoffTask(rclcpp::Logger lg, Px4Iface& px4, double arrival_error_max)
+      | [01;35m[K^~~~~~~~~~~[m[K
+[ 46%] [32m[1mLinking CXX static library liboffboard_core.a[0m
+[ 86%] Built target offboard_core
+[35m[1mConsolidate compiler generated dependencies of target offboard_test1_node[0m
+[ 93%] [32mBuilding CXX object CMakeFiles/offboard_test1_node.dir/src/nodes/offboard_test1.cpp.o[0m
+In file included from [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/scheduler.hpp:5[m[K,
+                 from [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/src/nodes/offboard_test1.cpp:22[m[K:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:[m[K In member function ‘[01m[Kvirtual void ITask::onEnter(Context&)[m[K’:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:12:33:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   12 |   virtual void onEnter([01;35m[KContext& ctx[m[K) {}
+      |                        [01;35m[K~~~~~~~~~^~~[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:[m[K In member function ‘[01m[Kvirtual void ITask::onExit(Context&)[m[K’:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:14:32:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   14 |   virtual void onExit([01;35m[KContext& ctx[m[K) {}
+      |                       [01;35m[K~~~~~~~~~^~~[m[K
+[100%] [32m[1mLinking CXX executable offboard_test1_node[0m
+[100%] Built target offboard_test1_node
+-- Install configuration: ""
+-- Installing: /home/jetson/ros2_ws_px4/install/offboard_core_pkg/lib/liboffboard_core.a
+-- Installing: /home/jetson/ros2_ws_px4/install/offboard_core_pkg/lib/offboard_core_pkg/offboard_test1_node
+-- Set runtime path of "/home/jetson/ros2_ws_px4/install/offboard_core_pkg/lib/offboard_core_pkg/offboard_test1_node" to ""
+-- Up-to-date: /home/jetson/ros2_ws_px4/install/offboard_core_pkg/include
+-- Up-to-date: /home/jetson/ros2_ws_px4/install/offboard_core_pkg/include/offboard_core_pkg
+-- Installing: /home/jetson/ros2_ws_px4/install/offboard_core_pkg/include/offboard_core_pkg/tasks.hpp
+-- Installing: /home/jetson/ros2_ws_px4/install/offboard_core_pkg/include/offboard_core_pkg/px4_iface.hpp
+-- Up-to-date: /home/jetson/ros2_ws_px4/install/offboard_core_pkg/include/offboard_core_pkg/tasks
+-- Up-to-date: /home/jetson/ros2_ws_px4/install/offboard_core_pkg/include/offboard_core_pkg/tasks/grid_goto_dwell_task.hpp
+-- Up-to-date: /home/jetson/ros2_ws_px4/install/offboard_core_pkg/include/offboard_core_pkg/tasks/wait_home_task.hpp
+-- Installing: /home/jetson/ros2_ws_px4/install/offboard_core_pkg/include/offboard_core_pkg/tasks/px4_land_mode_task.hpp
+-- Up-to-date: /home/jetson/ros2_ws_px4/install/offboard_core_pkg/include/offboard_core_pkg/tasks/presetpoint_task.hpp
+-- Up-to-date: /home/jetson/ros2_ws_px4/install/offboard_core_pkg/include/offboard_core_pkg/tasks/hover_task.hpp
+-- Up-to-date: /home/jetson/ros2_ws_px4/install/offboard_core_pkg/include/offboard_core_pkg/tasks/return_home_task.hpp
+-- Up-to-date: /home/jetson/ros2_ws_px4/install/offboard_core_pkg/include/offboard_core_pkg/tasks/disarm_task.hpp
+-- Up-to-date: /home/jetson/ros2_ws_px4/install/offboard_core_pkg/include/offboard_core_pkg/tasks/set_offboard_task.hpp
+-- Up-to-date: /home/jetson/ros2_ws_px4/install/offboard_core_pkg/include/offboard_core_pkg/tasks/home_stabilize_task.hpp
+-- Up-to-date: /home/jetson/ros2_ws_px4/install/offboard_core_pkg/include/offboard_core_pkg/tasks/arm_task.hpp
+-- Up-to-date: /home/jetson/ros2_ws_px4/install/offboard_core_pkg/include/offboard_core_pkg/tasks/takeoff_task.hpp
+-- Up-to-date: /home/jetson/ros2_ws_px4/install/offboard_core_pkg/include/offboard_core_pkg/grid.hpp
+-- Up-to-date: /home/jetson/ros2_ws_px4/install/offboard_core_pkg/include/offboard_core_pkg/scheduler.hpp
+-- Up-to-date: /home/jetson/ros2_ws_px4/install/offboard_core_pkg/include/offboard_core_pkg/itask.hpp
+-- Up-to-date: /home/jetson/ros2_ws_px4/install/offboard_core_pkg/include/offboard_core_pkg/helpers
+-- Up-to-date: /home/jetson/ros2_ws_px4/install/offboard_core_pkg/include/offboard_core_pkg/helpers/yaw_assist.hpp
+-- Up-to-date: /home/jetson/ros2_ws_px4/install/offboard_core_pkg/include/offboard_core_pkg/math_tool.hpp
+-- Installing: /home/jetson/ros2_ws_px4/install/offboard_core_pkg/include/offboard_core_pkg/context.hpp
+-- Up-to-date: /home/jetson/ros2_ws_px4/install/offboard_core_pkg/share/offboard_core_pkg/environment/library_path.sh
+-- Installing: /home/jetson/ros2_ws_px4/install/offboard_core_pkg/share/offboard_core_pkg/environment/library_path.dsv
+-- Up-to-date: /home/jetson/ros2_ws_px4/install/offboard_core_pkg/share/ament_index/resource_index/package_run_dependencies/offboard_core_pkg
+-- Installing: /home/jetson/ros2_ws_px4/install/offboard_core_pkg/share/ament_index/resource_index/parent_prefix_path/offboard_core_pkg
+-- Up-to-date: /home/jetson/ros2_ws_px4/install/offboard_core_pkg/share/offboard_core_pkg/environment/ament_prefix_path.sh
+-- Installing: /home/jetson/ros2_ws_px4/install/offboard_core_pkg/share/offboard_core_pkg/environment/ament_prefix_path.dsv
+-- Up-to-date: /home/jetson/ros2_ws_px4/install/offboard_core_pkg/share/offboard_core_pkg/environment/path.sh
+-- Installing: /home/jetson/ros2_ws_px4/install/offboard_core_pkg/share/offboard_core_pkg/environment/path.dsv
+-- Up-to-date: /home/jetson/ros2_ws_px4/install/offboard_core_pkg/share/offboard_core_pkg/local_setup.bash
+-- Up-to-date: /home/jetson/ros2_ws_px4/install/offboard_core_pkg/share/offboard_core_pkg/local_setup.sh
+-- Up-to-date: /home/jetson/ros2_ws_px4/install/offboard_core_pkg/share/offboard_core_pkg/local_setup.zsh
+-- Installing: /home/jetson/ros2_ws_px4/install/offboard_core_pkg/share/offboard_core_pkg/local_setup.dsv
+-- Installing: /home/jetson/ros2_ws_px4/install/offboard_core_pkg/share/offboard_core_pkg/package.dsv
+-- Up-to-date: /home/jetson/ros2_ws_px4/install/offboard_core_pkg/share/ament_index/resource_index/packages/offboard_core_pkg
+-- Up-to-date: /home/jetson/ros2_ws_px4/install/offboard_core_pkg/share/offboard_core_pkg/cmake/ament_cmake_export_include_directories-extras.cmake
+-- Up-to-date: /home/jetson/ros2_ws_px4/install/offboard_core_pkg/share/offboard_core_pkg/cmake/ament_cmake_export_libraries-extras.cmake
+-- Up-to-date: /home/jetson/ros2_ws_px4/install/offboard_core_pkg/share/offboard_core_pkg/cmake/offboard_core_pkgConfig.cmake
+-- Up-to-date: /home/jetson/ros2_ws_px4/install/offboard_core_pkg/share/offboard_core_pkg/cmake/offboard_core_pkgConfig-version.cmake
+-- Up-to-date: /home/jetson/ros2_ws_px4/install/offboard_core_pkg/share/offboard_core_pkg/package.xml

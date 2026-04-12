@@ -1,0 +1,33 @@
+running egg_info
+creating ../../build/mission_bringup_pkg/mission_bringup_pkg.egg-info
+writing ../../build/mission_bringup_pkg/mission_bringup_pkg.egg-info/PKG-INFO
+writing dependency_links to ../../build/mission_bringup_pkg/mission_bringup_pkg.egg-info/dependency_links.txt
+writing entry points to ../../build/mission_bringup_pkg/mission_bringup_pkg.egg-info/entry_points.txt
+writing requirements to ../../build/mission_bringup_pkg/mission_bringup_pkg.egg-info/requires.txt
+writing top-level names to ../../build/mission_bringup_pkg/mission_bringup_pkg.egg-info/top_level.txt
+writing manifest file '../../build/mission_bringup_pkg/mission_bringup_pkg.egg-info/SOURCES.txt'
+reading manifest file '../../build/mission_bringup_pkg/mission_bringup_pkg.egg-info/SOURCES.txt'
+writing manifest file '../../build/mission_bringup_pkg/mission_bringup_pkg.egg-info/SOURCES.txt'
+running build
+running build_py
+creating /home/jetson/ros2_ws_px4/build/mission_bringup_pkg/build
+creating /home/jetson/ros2_ws_px4/build/mission_bringup_pkg/build/lib
+creating /home/jetson/ros2_ws_px4/build/mission_bringup_pkg/build/lib/mission_bringup_pkg
+copying mission_bringup_pkg/__init__.py -> /home/jetson/ros2_ws_px4/build/mission_bringup_pkg/build/lib/mission_bringup_pkg
+running install
+running install_lib
+creating /home/jetson/ros2_ws_px4/install/mission_bringup_pkg/lib/python3.10/site-packages/mission_bringup_pkg
+copying /home/jetson/ros2_ws_px4/build/mission_bringup_pkg/build/lib/mission_bringup_pkg/__init__.py -> /home/jetson/ros2_ws_px4/install/mission_bringup_pkg/lib/python3.10/site-packages/mission_bringup_pkg
+byte-compiling /home/jetson/ros2_ws_px4/install/mission_bringup_pkg/lib/python3.10/site-packages/mission_bringup_pkg/__init__.py to __init__.cpython-310.pyc
+running install_data
+creating /home/jetson/ros2_ws_px4/install/mission_bringup_pkg/share/ament_index
+creating /home/jetson/ros2_ws_px4/install/mission_bringup_pkg/share/ament_index/resource_index
+creating /home/jetson/ros2_ws_px4/install/mission_bringup_pkg/share/ament_index/resource_index/packages
+copying resource/mission_bringup_pkg -> /home/jetson/ros2_ws_px4/install/mission_bringup_pkg/share/ament_index/resource_index/packages
+copying package.xml -> /home/jetson/ros2_ws_px4/install/mission_bringup_pkg/share/mission_bringup_pkg
+creating /home/jetson/ros2_ws_px4/install/mission_bringup_pkg/share/mission_bringup_pkg/launch
+copying launch/mission_full.launch.py -> /home/jetson/ros2_ws_px4/install/mission_bringup_pkg/share/mission_bringup_pkg/launch
+running install_egg_info
+Copying ../../build/mission_bringup_pkg/mission_bringup_pkg.egg-info to /home/jetson/ros2_ws_px4/install/mission_bringup_pkg/lib/python3.10/site-packages/mission_bringup_pkg-0.0.0-py3.10.egg-info
+running install_scripts
+writing list of installed files to '/home/jetson/ros2_ws_px4/build/mission_bringup_pkg/install.log'

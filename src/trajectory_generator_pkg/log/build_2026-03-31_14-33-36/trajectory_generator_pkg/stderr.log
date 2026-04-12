@@ -1,0 +1,42 @@
+[33mCMake Warning:
+  Manually-specified variables were not used by the project:
+
+    CATKIN_INSTALL_INTO_PREFIX_ROOT
+
+[0m
+In file included from [01m[K/home/jetson/ros2_ws_px4/src/trajectory_generator_pkg/third_party/mav_trajectory_generation/src/io.cpp:22[m[K:
+[01m[K/home/jetson/ros2_ws_px4/src/trajectory_generator_pkg/third_party/mav_trajectory_generation/include/mav_trajectory_generation/trajectory_sampling.h:24:10:[m[K [01;31m[Kfatal error: [m[Kmav_msgs/eigen_mav_msgs.h: 没有那个文件或目录
+   24 | #include [01;31m[K<mav_msgs/eigen_mav_msgs.h>[m[K
+      |          [01;31m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+compilation terminated.
+gmake[2]: *** [CMakeFiles/trajectory_node.dir/build.make:104：CMakeFiles/trajectory_node.dir/third_party/mav_trajectory_generation/src/io.cpp.o] 错误 1
+gmake[2]: *** 正在等待未完成的任务....
+In file included from [01m[K/home/jetson/ros2_ws_px4/src/trajectory_generator_pkg/src/generator.cpp:4[m[K:
+/home/jetson/ros2_ws_px4/src/trajectory_generator_pkg/third_party/mav_trajectory_generation/include/mav_trajectory_generation/polynomial_optimization_linear.h: In instantiation of ‘[01m[Kclass mav_trajectory_generation::PolynomialOptimization<7>[m[K’:
+[01m[K/home/jetson/ros2_ws_px4/src/trajectory_generator_pkg/src/generator.cpp:33:71:[m[K   required from here
+[01m[K/home/jetson/ros2_ws_px4/src/trajectory_generator_pkg/third_party/mav_trajectory_generation/include/mav_trajectory_generation/polynomial_optimization_linear.h:47:24:[m[K [01;31m[Kerror: [m[Kstatic assertion failed: The number of coefficients has to be even.
+   47 |   static_assert([01;31m[K_N % 2 == 0[m[K, "The number of coefficients has to be even.");
+      |                 [01;31m[K~~~~~~~^~~~[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/trajectory_generator_pkg/third_party/mav_trajectory_generation/include/mav_trajectory_generation/polynomial_optimization_linear.h:47:24:[m[K [01;36m[Knote: [m[K‘[01m[K((7 % 2) == 0)[m[K’ evaluates to false
+gmake[2]: *** [CMakeFiles/trajectory_node.dir/build.make:90：CMakeFiles/trajectory_node.dir/src/generator.cpp.o] 错误 1
+[01m[K/home/jetson/ros2_ws_px4/src/trajectory_generator_pkg/src/trajectory_node.cpp:[m[K In member function ‘[01m[Kvoid TrajectoryNode::onTimer()[m[K’:
+[01m[K/home/jetson/ros2_ws_px4/src/trajectory_generator_pkg/src/trajectory_node.cpp:53:30:[m[K [01;35m[Kwarning: [m[Knarrowing conversion of ‘[01m[K((Eigen::DenseCoeffsBase<Eigen::Matrix<double, 3, 1>, 1>*)(& pos))->Eigen::DenseCoeffsBase<Eigen::Matrix<double, 3, 1>, 1>::x()[m[K’ from ‘[01m[KEigen::DenseCoeffsBase<Eigen::Matrix<double, 3, 1>, 1>::Scalar[m[K’ {aka ‘[01m[Kdouble[m[K’} to ‘[01m[Kfloat[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wnarrowing-Wnarrowing]8;;[m[K]
+   53 |         msg.position = {[01;35m[Kpos.x()[m[K, pos.y(), pos.z()};
+      |                         [01;35m[K~~~~~^~[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/trajectory_generator_pkg/src/trajectory_node.cpp:53:39:[m[K [01;35m[Kwarning: [m[Knarrowing conversion of ‘[01m[K((Eigen::DenseCoeffsBase<Eigen::Matrix<double, 3, 1>, 1>*)(& pos))->Eigen::DenseCoeffsBase<Eigen::Matrix<double, 3, 1>, 1>::y()[m[K’ from ‘[01m[KEigen::DenseCoeffsBase<Eigen::Matrix<double, 3, 1>, 1>::Scalar[m[K’ {aka ‘[01m[Kdouble[m[K’} to ‘[01m[Kfloat[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wnarrowing-Wnarrowing]8;;[m[K]
+   53 |         msg.position = {pos.x(), [01;35m[Kpos.y()[m[K, pos.z()};
+      |                                  [01;35m[K~~~~~^~[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/trajectory_generator_pkg/src/trajectory_node.cpp:53:48:[m[K [01;35m[Kwarning: [m[Knarrowing conversion of ‘[01m[K((Eigen::DenseCoeffsBase<Eigen::Matrix<double, 3, 1>, 1>*)(& pos))->Eigen::DenseCoeffsBase<Eigen::Matrix<double, 3, 1>, 1>::z()[m[K’ from ‘[01m[KEigen::DenseCoeffsBase<Eigen::Matrix<double, 3, 1>, 1>::Scalar[m[K’ {aka ‘[01m[Kdouble[m[K’} to ‘[01m[Kfloat[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wnarrowing-Wnarrowing]8;;[m[K]
+   53 |         msg.position = {pos.x(), pos.y(), [01;35m[Kpos.z()[m[K};
+      |                                           [01;35m[K~~~~~^~[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/trajectory_generator_pkg/src/trajectory_node.cpp:54:30:[m[K [01;35m[Kwarning: [m[Knarrowing conversion of ‘[01m[K((Eigen::DenseCoeffsBase<Eigen::Matrix<double, 3, 1>, 1>*)(& vel))->Eigen::DenseCoeffsBase<Eigen::Matrix<double, 3, 1>, 1>::x()[m[K’ from ‘[01m[KEigen::DenseCoeffsBase<Eigen::Matrix<double, 3, 1>, 1>::Scalar[m[K’ {aka ‘[01m[Kdouble[m[K’} to ‘[01m[Kfloat[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wnarrowing-Wnarrowing]8;;[m[K]
+   54 |         msg.velocity = {[01;35m[Kvel.x()[m[K, vel.y(), vel.z()};
+      |                         [01;35m[K~~~~~^~[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/trajectory_generator_pkg/src/trajectory_node.cpp:54:39:[m[K [01;35m[Kwarning: [m[Knarrowing conversion of ‘[01m[K((Eigen::DenseCoeffsBase<Eigen::Matrix<double, 3, 1>, 1>*)(& vel))->Eigen::DenseCoeffsBase<Eigen::Matrix<double, 3, 1>, 1>::y()[m[K’ from ‘[01m[KEigen::DenseCoeffsBase<Eigen::Matrix<double, 3, 1>, 1>::Scalar[m[K’ {aka ‘[01m[Kdouble[m[K’} to ‘[01m[Kfloat[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wnarrowing-Wnarrowing]8;;[m[K]
+   54 |         msg.velocity = {vel.x(), [01;35m[Kvel.y()[m[K, vel.z()};
+      |                                  [01;35m[K~~~~~^~[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/trajectory_generator_pkg/src/trajectory_node.cpp:54:48:[m[K [01;35m[Kwarning: [m[Knarrowing conversion of ‘[01m[K((Eigen::DenseCoeffsBase<Eigen::Matrix<double, 3, 1>, 1>*)(& vel))->Eigen::DenseCoeffsBase<Eigen::Matrix<double, 3, 1>, 1>::z()[m[K’ from ‘[01m[KEigen::DenseCoeffsBase<Eigen::Matrix<double, 3, 1>, 1>::Scalar[m[K’ {aka ‘[01m[Kdouble[m[K’} to ‘[01m[Kfloat[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wnarrowing-Wnarrowing]8;;[m[K]
+   54 |         msg.velocity = {vel.x(), vel.y(), [01;35m[Kvel.z()[m[K};
+      |                                           [01;35m[K~~~~~^~[m[K
+gmake[1]: *** [CMakeFiles/Makefile2:137：CMakeFiles/trajectory_node.dir/all] 错误 2
+gmake: *** [Makefile:146：all] 错误 2

@@ -1,0 +1,55 @@
+[  6%] [32mBuilding CXX object CMakeFiles/offboard_core.dir/src/tasks/arm_task.cpp.o[0m
+[ 13%] [32mBuilding CXX object CMakeFiles/offboard_core.dir/src/tasks/disarm_task.cpp.o[0m
+[ 20%] [32mBuilding CXX object CMakeFiles/offboard_core.dir/src/tasks/home_stabilize_task.cpp.o[0m
+[ 26%] [32mBuilding CXX object CMakeFiles/offboard_core.dir/src/tasks/hover_task.cpp.o[0m
+In file included from [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/home_stabilize_task.hpp:7[m[K,
+                 from [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/src/tasks/home_stabilize_task.cpp:1[m[K:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:[m[K In member function ‘[01m[Kvirtual void ITask::onEnter(Context&)[m[K’:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:12:33:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   12 |   virtual void onEnter([01;35m[KContext& ctx[m[K) {}
+      |                        [01;35m[K~~~~~~~~~^~~[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:[m[K In member function ‘[01m[Kvirtual void ITask::onExit(Context&)[m[K’:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:14:32:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   14 |   virtual void onExit([01;35m[KContext& ctx[m[K) {}
+      |                       [01;35m[K~~~~~~~~~^~~[m[K
+In file included from [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/arm_task.hpp:5[m[K,
+                 from [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/src/tasks/arm_task.cpp:1[m[K:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:[m[K In member function ‘[01m[Kvirtual void ITask::onEnter(Context&)[m[K’:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:12:33:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   12 |   virtual void onEnter([01;35m[KContext& ctx[m[K) {}
+      |                        [01;35m[K~~~~~~~~~^~~[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:[m[K In member function ‘[01m[Kvirtual void ITask::onExit(Context&)[m[K’:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:14:32:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   14 |   virtual void onExit([01;35m[KContext& ctx[m[K) {}
+      |                       [01;35m[K~~~~~~~~~^~~[m[K
+In file included from [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/hover_task.hpp:4[m[K,
+                 from [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/src/tasks/hover_task.cpp:1[m[K:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:[m[K In member function ‘[01m[Kvirtual void ITask::onEnter(Context&)[m[K’:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:12:33:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   12 |   virtual void onEnter([01;35m[KContext& ctx[m[K) {}
+      |                        [01;35m[K~~~~~~~~~^~~[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:[m[K In member function ‘[01m[Kvirtual void ITask::onExit(Context&)[m[K’:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:14:32:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   14 |   virtual void onExit([01;35m[KContext& ctx[m[K) {}
+      |                       [01;35m[K~~~~~~~~~^~~[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/src/tasks/hover_task.cpp:[m[K In member function ‘[01m[Kvirtual void HoverTask::onEnter(Context&)[m[K’:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/src/tasks/hover_task.cpp:12:34:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   12 | void HoverTask::onEnter([01;35m[KContext& ctx[m[K)
+      |                         [01;35m[K~~~~~~~~~^~~[m[K
+In file included from [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/tasks/disarm_task.hpp:7[m[K,
+                 from [01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/src/tasks/disarm_task.cpp:1[m[K:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:[m[K In member function ‘[01m[Kvirtual void ITask::onEnter(Context&)[m[K’:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:12:33:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   12 |   virtual void onEnter([01;35m[KContext& ctx[m[K) {}
+      |                        [01;35m[K~~~~~~~~~^~~[m[K
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:[m[K In member function ‘[01m[Kvirtual void ITask::onExit(Context&)[m[K’:
+[01m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/include/offboard_core_pkg/itask.hpp:14:32:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kctx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   14 |   virtual void onExit([01;35m[KContext& ctx[m[K) {}
+      |                       [01;35m[K~~~~~~~~~^~~[m[K
+[ 33%] [32mBuilding CXX object CMakeFiles/offboard_core.dir/src/tasks/land_decend_task.cpp.o[0m
+[01m[Kcc1plus:[m[K [01;31m[Kfatal error: [m[K/home/jetson/ros2_ws_px4/src/offboard_core_pkg/src/tasks/land_decend_task.cpp: 没有那个文件或目录
+compilation terminated.
+gmake[2]: *** [CMakeFiles/offboard_core.dir/build.make:160：CMakeFiles/offboard_core.dir/src/tasks/land_decend_task.cpp.o] 错误 1
+gmake[2]: *** 正在等待未完成的任务....
+gmake[1]: *** [CMakeFiles/Makefile2:139：CMakeFiles/offboard_core.dir/all] 错误 2
+gmake: *** [Makefile:146：all] 错误 2
