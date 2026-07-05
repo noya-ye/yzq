@@ -20,7 +20,7 @@ ITask::Status HomeStabilizeTask::tick(Context& ctx, double dt)
   ctx.sp_x = ctx.home_x;
   ctx.sp_y = ctx.home_y;
   ctx.sp_z = ctx.takeoff_z;
-  ctx.sp_yaw = ctx.home_yaw;
+  ctx.sp_yaw = ctx.yaw;
 
   t_ += dt;
 

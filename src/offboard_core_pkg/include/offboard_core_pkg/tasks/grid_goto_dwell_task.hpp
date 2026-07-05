@@ -33,12 +33,18 @@ protected:
 
   // ===== 给子类覆写的钩子 =====
   virtual void on_task_enter(Context& ctx) {}
-  virtual void on_before_goto(Context& ctx, int r, int c, float tx, float ty) {}
+  virtual void on_before_goto(Context& ctx, int r, int c, float& tx, float& ty) {}
   virtual void on_cell_enter(Context& ctx, int r, int c) {}
   virtual void on_cell_dwell(Context& ctx, int r, int c, double dwell_t, double dt) {}
   virtual void on_cell_leave(Context& ctx, int r, int c) {}
   virtual void on_task_finish(Context& ctx) {}
   virtual bool should_finish_early(Context& ctx) { return false; }
+
+  // DWELL 阶段是否允许离开当前点。
+  // base_timeout 表示原始 dwell_s_ 是否已经到时。
+  // 默认逻辑：base_timeout=true 就离开。
+  // 子类可重写，比如 TSP 要求视觉误差足够小才去下一个点。
+  virtual bool should_leave_cell(Context& ctx, double dwell_t, bool base_timeout);
 
 protected:
   rclcpp::Logger lg_;

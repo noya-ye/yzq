@@ -17,17 +17,35 @@ public:
   }
 
   bool done() const { return done_; }
+
   std::string current_name() const {
     if (done_ || idx_ >= tasks_.size()) return "DONE";
     return tasks_[idx_]->name();
   }
 
+  int current_index() const {
+    if (done_) {
+      return static_cast<int>(tasks_.size());
+    }
+    return static_cast<int>(idx_);
+  }
+
+  int total_count() const {
+    return static_cast<int>(tasks_.size());
+  }
+
   void tick(Context& ctx, double dt_s) {
     if (done_) return;
-    if (idx_ >= tasks_.size()) { done_ = true; return; }
+    if (idx_ >= tasks_.size()) {
+      done_ = true;
+      return;
+    }
 
     ITask* cur = tasks_[idx_].get();
-    if (!entered_) { cur->onEnter(ctx); entered_ = true; }
+    if (!entered_) {
+      cur->onEnter(ctx);
+      entered_ = true;
+    }
 
     auto st = cur->tick(ctx, dt_s);
     if (st == ITask::Status::RUNNING) return;

@@ -23,7 +23,7 @@ ITask::Status HoverTask::tick(Context& ctx, double dt)
     // 保持当前位置悬停
     ctx.sp_x = ctx.cx();
     ctx.sp_y = ctx.cy();
-    ctx.sp_z = ctx.cz();
+    ctx.sp_z = ctx.takeoff_z;  // 锁定在起飞高度
     ctx.sp_yaw = ctx.home_yaw;
 
     t_ += dt;

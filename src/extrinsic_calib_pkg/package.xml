@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>extrinsic_calib_pkg</name>
+  <version>0.0.0</version>
+  <description>Extrinsic Calibration Package</description>
+
+  <maintainer email="user@todo.todo">user</maintainer>
+  <license>Apache-2.0</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <depend>rclcpp</depend>
+  <depend>geometry_msgs</depend>
+  <depend>nav_msgs</depend>
+
+  <build_depend>eigen3_cmake_module</build_depend>
+  <depend>eigen</depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

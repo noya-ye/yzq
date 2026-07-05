@@ -1,23 +1,16 @@
 #pragma once
 
+#include <vector>
+#include <limits>
+#include <cmath>
+#include <algorithm>
+
+#include <Eigen/Core>
+#include <rclcpp/rclcpp.hpp>
+
 #include "offboard_core_pkg/tasks/grid_goto_dwell_task.hpp"
 #include "offboard_core_pkg/planners/tsp_planner.hpp"
-
-
-
-// 这是一个GridGotoDwellTask的子类
-// 实现功能：tsp规划出最优航点排列
-
-// sched_.add(std::make_unique<TspGridTask>(
-//     get_logger(),
-//     grid_,
-//     0.3,   // xy tol
-//     0.2,   // z tol
-//     0.3,   // vxy
-//     0.2,   // vz
-//     10,    // stable
-//     2.0    // dwell
-// ));
+#include "offboard_core_pkg/context.hpp"
 
 namespace offboard_core_pkg
 {
@@ -30,55 +23,86 @@ public:
 protected:
   TspPlanner tsp_;
 
-  void on_task_enter(Context& ctx) override
-  {
-    RCLCPP_INFO(lg_, "[TspGridTask] Start");
+  // ========= 可调参数 =========
+  double vision_enable_radius_{1.0};
+  double vision_refine_radius_{0.45};
+  double vision_timeout_s_{0.80};
 
-    // =========================
-    // 1. 当前点
-    // =========================
-    Eigen::Vector3d start(
-        ctx.cx(),
-        ctx.cy(),
-        ctx.cz());
+  // 注意：这里 score 是轮廓面积，不要太小
+  float vision_score_thresh_{500.0f};
 
-    // =========================
-    // 2. 目标点（来自视觉）
-    // =========================
-    std::vector<Eigen::Vector3d> targets;
+  // 图像偏差 -> 机体系修正比例
+  double k_img_to_meter_{0.65};
 
-    for (auto& p : ctx.detected_targets)   // ⚠️你需要有这个
-    {
-      targets.emplace_back(p.x, p.y, ctx.takeoff_z);
-    }
+  // 单次修正最大步长
+  double max_correction_step_{0.22};
 
-    if (targets.empty()) {
-      RCLCPP_WARN(lg_, "No targets, fallback to grid");
-      return;  // 保留原grid
-    }
+  bool refine_in_dwell_{true};
 
-    // =========================
-    // 3. TSP 排序
-    // =========================
-    auto ordered = tsp_.solve(targets);
+  // ========= 下视相机方向符号 =========
+  // 你前面已经验证：dy 方向需要取反
+  double img_dx_to_body_y_sign_{1.0};
+  double img_dy_to_body_x_sign_{-1.0};
 
-    // =========================
-    // 4. 覆盖 Grid 路径
-    // =========================
-    grid_.waypoints.clear();
+  // ========= 任务内部状态 =========
+  int active_target_idx_{-1};
+  bool visual_refining_{false};
 
-    // 👉 加入起点（可选）
-    grid_.waypoints.emplace_back(start.x(), start.y());
+  float refined_tx_{0.0f};
+  float refined_ty_{0.0f};
 
-    for (auto& p : ordered)
-    {
-      grid_.waypoints.emplace_back(p.x(), p.y());
-    }
+  // 当前 TSP 理论目标点
+  // 下视多目标锁定时，用这个点作为匹配依据
+  float coarse_tx_{0.0f};
+  float coarse_ty_{0.0f};
+  bool has_coarse_target_{false};
 
-    grid_.wp_idx = 0;
+  // ========= 精修打印控制 =========
+  // 每个目标只打印一次 REFINE START
+  bool refine_start_printed_{false};
 
-    RCLCPP_INFO(lg_, "TSP path loaded: %zu waypoints", grid_.waypoints.size());
-  }
+  // 记录开始锁定时的信息，用于 REFINE END 打印
+  int locked_type_{0};
+  float locked_score_{0.0f};
+  float locked_start_dist_{0.0f};
+  float locked_start_est_x_{0.0f};
+  float locked_start_est_y_{0.0f};
+
+  // ========= 稳定后识别当前目标 =========
+  float final_recognize_img_tol_{0.06f};   // 图像中心误差阈值
+  int final_recognize_required_{3};       // 连续稳定帧数
+  int final_recognize_count_{0};           // 当前稳定计数
+  bool final_type_printed_{false};         // 每个目标只打印一次
+  double refine_max_dwell_s_{12.0};
+
+protected:
+  void on_task_enter(Context& ctx) override;
+  void on_before_goto(Context& ctx, int r, int c, float& tx, float& ty) override;
+  void on_cell_enter(Context& ctx, int r, int c) override;
+  void on_cell_dwell(Context& ctx, int r, int c, double dwell_t, double dt) override;
+  void on_cell_leave(Context& ctx, int r, int c) override;
+  void on_task_finish(Context& ctx) override;
+  bool should_leave_cell(Context& ctx, double dwell_t, bool base_timeout) override;
+
+private:
+  bool is_down_targets_fresh(const Context& ctx) const;
+
+  bool should_enable_vision_for_wp(const Context& ctx, float tx, float ty) const;
+  bool should_refine_now(const Context& ctx, float tx, float ty) const;
+
+  // 从 ctx.vision_down_targets 里锁定离当前 TSP 理论目标最近的那个
+  bool apply_visual_refine(Context& ctx, double dt);
+
+  void image_offset_to_world_delta(
+      const Context& ctx,
+      float dx_img,
+      float dy_img,
+      float& dwx,
+      float& dwy) const;
+
+  int guess_active_target_index(const Context& ctx, float tx, float ty) const;
+
+  const char* type_to_name(int type) const;
 };
 
-}
+}  // namespace offboard_core_pkg

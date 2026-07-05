@@ -13,6 +13,8 @@
   <depend>std_msgs</depend>
   <depend>px4_msgs</depend>
   <depend>nlohmann_json</depend>
+  <depend>ground_station_msgs</depend>
+  <depend>custom_vision_msgs</depend>
 
   <export>
     <build_type>ament_cmake</build_type>

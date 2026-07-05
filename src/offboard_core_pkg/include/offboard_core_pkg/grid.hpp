@@ -5,6 +5,7 @@
 #include <cmath>
 #include <algorithm>
 #include <Eigen/Dense>
+#include "rclcpp/rclcpp.hpp"
 
 #include "offboard_core_pkg/context.hpp"
 

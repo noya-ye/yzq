@@ -1,0 +1,671 @@
+#include "offboard_core_pkg/tasks/tsp_grid_task.hpp"
+
+#include <cmath>
+#include <algorithm>
+#include <limits>
+
+namespace offboard_core_pkg
+{
+
+void TspGridTask::on_task_enter(Context& ctx)
+{
+  RCLCPP_INFO(lg_, "[TspGridTask] Start");
+
+  ctx.vision_front_enable = false;
+  ctx.vision_down_enable = false;
+  ctx.vision_enable = false;
+
+  ctx.vision_searching = false;
+  ctx.vision_target_locked = false;
+  ctx.vision_aligned = false;
+
+  active_target_idx_ = -1;
+  visual_refining_ = false;
+
+  refined_tx_ = 0.0f;
+  refined_ty_ = 0.0f;
+
+  coarse_tx_ = 0.0f;
+  coarse_ty_ = 0.0f;
+  has_coarse_target_ = false;
+
+  refine_start_printed_ = false;
+
+  locked_type_ = 0;
+  locked_score_ = 0.0f;
+  locked_start_dist_ = 0.0f;
+  locked_start_est_x_ = 0.0f;
+  locked_start_est_y_ = 0.0f;
+
+  final_recognize_count_ = 0;
+  final_type_printed_ = false;
+
+  std::vector<Eigen::Vector3d> targets;
+  targets.reserve(ctx.detected_targets.size());
+
+  for (const auto& p : ctx.detected_targets)
+  {
+    targets.emplace_back(p.x, p.y, ctx.takeoff_z);
+  }
+
+  if (targets.empty()) {
+    RCLCPP_WARN(lg_, "[TspGridTask] No detected_targets, fallback to original grid");
+    return;
+  }
+
+  auto ordered = tsp_.solve(targets);
+
+  grid_.waypoints.clear();
+
+  for (const auto& p : ordered)
+  {
+    grid_.waypoints.emplace_back(
+      static_cast<float>(p.x()),
+      static_cast<float>(p.y()));
+  }
+
+  grid_.wp_idx = 0;
+
+  RCLCPP_INFO(
+    lg_,
+    "[TspGridTask] TSP path loaded: %zu waypoints",
+    grid_.waypoints.size());
+
+  for (std::size_t i = 0; i < grid_.waypoints.size(); ++i) {
+    RCLCPP_WARN(
+      lg_,
+      "[TspGridTask] ordered wp %zu = (%.3f, %.3f)",
+      i + 1,
+      grid_.waypoints[i].first,
+      grid_.waypoints[i].second);
+  }
+}
+
+void TspGridTask::on_before_goto(Context& ctx, int r, int c, float& tx, float& ty)
+{
+  (void)r;
+  (void)c;
+
+  ctx.vision_front_enable = false;
+  ctx.vision_down_enable = false;
+  ctx.vision_enable = false;
+
+  ctx.vision_searching = false;
+  ctx.vision_target_locked = false;
+  ctx.vision_aligned = false;
+
+  if (!should_enable_vision_for_wp(ctx, tx, ty)) {
+    visual_refining_ = false;
+    refined_tx_ = tx;
+    refined_ty_ = ty;
+
+    coarse_tx_ = tx;
+    coarse_ty_ = ty;
+    has_coarse_target_ = true;
+
+    refine_start_printed_ = false;
+
+    return;
+  }
+
+  // 靠近当前 TSP 理论目标点，开启下视视觉
+  ctx.vision_front_enable = false;
+  ctx.vision_down_enable = true;
+  ctx.vision_enable = true;
+  ctx.vision_searching = true;
+
+  if (!visual_refining_) {
+    refined_tx_ = tx;
+    refined_ty_ = ty;
+
+    // 关键：保存当前 TSP 理论目标点
+    coarse_tx_ = tx;
+    coarse_ty_ = ty;
+    has_coarse_target_ = true;
+
+    active_target_idx_ = guess_active_target_index(ctx, tx, ty);
+    visual_refining_ = true;
+    refine_start_printed_ = false;
+
+    locked_type_ = 0;
+    locked_score_ = 0.0f;
+    locked_start_dist_ = 0.0f;
+    locked_start_est_x_ = 0.0f;
+    locked_start_est_y_ = 0.0f;
+  }
+
+  if (!should_refine_now(ctx, tx, ty)) {
+    return;
+  }
+
+  if (apply_visual_refine(ctx, 0.0)) {
+    ctx.vision_target_locked = true;
+  }
+
+  // GridGotoDwellTask 后面会根据 tx/ty 写 setpoint
+  // 所以必须覆盖 tx/ty
+  tx = refined_tx_;
+  ty = refined_ty_;
+
+  ctx.sp_x = refined_tx_;
+  ctx.sp_y = refined_ty_;
+  ctx.sp_z = ctx.takeoff_z;
+  ctx.sp_yaw = ctx.home_yaw;
+  ctx.use_vel_ctrl = false;
+
+  ctx.sp_vx = 0.0f;
+  ctx.sp_vy = 0.0f;
+  ctx.sp_vz = 0.0f;
+}
+
+void TspGridTask::on_cell_enter(Context& ctx, int r, int c)
+{
+  (void)r;
+  (void)c;
+
+  ctx.vision_front_enable = false;
+  ctx.vision_down_enable = true;
+  ctx.vision_enable = true;
+
+  ctx.vision_searching = true;
+  ctx.vision_target_locked = false;
+  ctx.vision_aligned = false;
+
+  if (grid_.wp_idx < grid_.waypoints.size()) {
+    const auto& wp = grid_.waypoints[grid_.wp_idx];
+
+    if (!visual_refining_) {
+      refined_tx_ = wp.first;
+      refined_ty_ = wp.second;
+
+      coarse_tx_ = wp.first;
+      coarse_ty_ = wp.second;
+      has_coarse_target_ = true;
+
+      active_target_idx_ = guess_active_target_index(ctx, coarse_tx_, coarse_ty_);
+      visual_refining_ = true;
+      refine_start_printed_ = false;
+
+      locked_type_ = 0;
+      locked_score_ = 0.0f;
+      locked_start_dist_ = 0.0f;
+      locked_start_est_x_ = 0.0f;
+      locked_start_est_y_ = 0.0f;
+    }
+  }
+}
+
+void TspGridTask::on_cell_dwell(Context& ctx, int r, int c, double dwell_t, double dt)
+{
+  (void)r;
+  (void)c;
+  (void)dwell_t;
+
+  if (!refine_in_dwell_) {
+    return;
+  }
+
+  ctx.vision_front_enable = false;
+  ctx.vision_down_enable = true;
+  ctx.vision_enable = true;
+  ctx.vision_searching = true;
+
+  if (apply_visual_refine(ctx, dt)) {
+    ctx.sp_x = refined_tx_;
+    ctx.sp_y = refined_ty_;
+    ctx.sp_z = ctx.takeoff_z;
+    ctx.sp_yaw = ctx.home_yaw;
+    ctx.use_vel_ctrl = false;
+
+    ctx.sp_vx = 0.0f;
+    ctx.sp_vy = 0.0f;
+    ctx.sp_vz = 0.0f;
+
+    ctx.vision_target_locked = true;
+
+    const float err = std::sqrt(
+      ctx.vision_offset.dx * ctx.vision_offset.dx +
+      ctx.vision_offset.dy * ctx.vision_offset.dy);
+
+    // 连续稳定计数
+    if (err < final_recognize_img_tol_) {
+      final_recognize_count_++;
+    } else {
+      final_recognize_count_ = 0;
+    }
+
+    ctx.vision_aligned =
+      (final_recognize_count_ >= final_recognize_required_);
+
+    // 稳定后识别当前目标类型，只打印一次
+    if (ctx.vision_aligned && !final_type_printed_) {
+      final_type_printed_ = true;
+
+      RCLCPP_WARN(
+        lg_,
+        "[TspGridTask] TARGET RECOGNIZED wp_idx=%zu target_idx=%d "
+        "type=%d name=%s img_err=%.4f stable=%d/%d score=%.1f "
+        "final=(%.3f %.3f) theory=(%.3f %.3f)",
+        grid_.wp_idx,
+        active_target_idx_,
+        ctx.vision_offset.type,
+        type_to_name(ctx.vision_offset.type),
+        err,
+        final_recognize_count_,
+        final_recognize_required_,
+        ctx.vision_offset.score,
+        refined_tx_,
+        refined_ty_,
+        coarse_tx_,
+        coarse_ty_);
+    }
+  } else {
+    ctx.vision_target_locked = false;
+    ctx.vision_aligned = false;
+    final_recognize_count_ = 0;
+  }
+}
+
+bool TspGridTask::should_leave_cell(
+  Context& ctx,
+  double dwell_t,
+  bool base_timeout)
+{
+  const float img_err = std::sqrt(
+    ctx.vision_offset.dx * ctx.vision_offset.dx +
+    ctx.vision_offset.dy * ctx.vision_offset.dy);
+
+  if (!visual_refining_) {
+    return base_timeout;
+  }
+
+  // ============================================================
+  // 修正过程中如果下视相机没有识别到有效目标，直接去下一个点。
+  // 给 0.30s 缓冲，避免刚进入 DWELL 时图像还没来得及更新就误跳过。
+  // ============================================================
+  const bool no_fresh_down_target =
+    !is_down_targets_fresh(ctx) || ctx.vision_down_targets.empty();
+
+  if (dwell_t > 0.30 && no_fresh_down_target) {
+    RCLCPP_WARN(
+      lg_,
+      "[TspGridTask] LEAVE CELL: no down target wp_idx=%zu dwell=%.2f "
+      "fresh=%d targets=%zu score=%.1f",
+      grid_.wp_idx,
+      dwell_t,
+      is_down_targets_fresh(ctx) ? 1 : 0,
+      ctx.vision_down_targets.size(),
+      ctx.vision_offset.score);
+    return true;
+  }
+
+  if (ctx.vision_aligned) {
+    RCLCPP_WARN(
+      lg_,
+      "[TspGridTask] LEAVE CELL: aligned wp_idx=%zu img_err=%.4f stable=%d/%d dwell=%.2f",
+      grid_.wp_idx,
+      img_err,
+      final_recognize_count_,
+      final_recognize_required_,
+      dwell_t);
+    return true;
+  }
+
+  if (img_err < final_recognize_img_tol_ && final_recognize_count_ >= 1) {
+    RCLCPP_WARN(
+      lg_,
+      "[TspGridTask] LEAVE CELL: img_err good enough wp_idx=%zu img_err=%.4f stable=%d/%d dwell=%.2f",
+      grid_.wp_idx,
+      img_err,
+      final_recognize_count_,
+      final_recognize_required_,
+      dwell_t);
+    return true;
+  }
+
+  if (dwell_t >= refine_max_dwell_s_) {
+    RCLCPP_WARN(
+      lg_,
+      "[TspGridTask] LEAVE CELL: refine timeout wp_idx=%zu dwell=%.2f/%.2f img_err=%.4f stable=%d/%d score=%.1f",
+      grid_.wp_idx,
+      dwell_t,
+      refine_max_dwell_s_,
+      img_err,
+      final_recognize_count_,
+      final_recognize_required_,
+      ctx.vision_offset.score);
+    return true;
+  }
+
+  if (base_timeout) {
+    RCLCPP_INFO(
+      lg_,
+      "[TspGridTask] HOLD CELL: wait refine wp_idx=%zu dwell=%.2f/%.2f img_err=%.4f stable=%d/%d score=%.1f targets=%zu",
+      grid_.wp_idx,
+      dwell_t,
+      refine_max_dwell_s_,
+      img_err,
+      final_recognize_count_,
+      final_recognize_required_,
+      ctx.vision_offset.score,
+      ctx.vision_down_targets.size());
+  }
+
+  return false;
+}
+
+void TspGridTask::on_cell_leave(Context& ctx, int r, int c)
+{
+  (void)r;
+  (void)c;
+
+  ctx.vision_front_enable = false;
+  ctx.vision_down_enable = false;
+  ctx.vision_enable = false;
+
+  ctx.vision_searching = false;
+  ctx.vision_target_locked = false;
+  ctx.vision_aligned = false;
+
+  const float final_img_err = std::sqrt(
+    ctx.vision_offset.dx * ctx.vision_offset.dx +
+    ctx.vision_offset.dy * ctx.vision_offset.dy);
+
+  const float final_theory_err = std::sqrt(
+    (refined_tx_ - coarse_tx_) * (refined_tx_ - coarse_tx_) +
+    (refined_ty_ - coarse_ty_) * (refined_ty_ - coarse_ty_));
+
+  RCLCPP_WARN(
+    lg_,
+    "[TspGridTask] REFINE END   wp_idx=%zu target_idx=%d type=%d "
+    "theory=(%.3f %.3f) start_est=(%.3f %.3f) start_dist=%.3f "
+    "final=(%.3f %.3f) final_delta_to_theory=%.3f img_err=%.3f score=%.1f",
+    grid_.wp_idx,
+    active_target_idx_,
+    locked_type_,
+    coarse_tx_,
+    coarse_ty_,
+    locked_start_est_x_,
+    locked_start_est_y_,
+    locked_start_dist_,
+    refined_tx_,
+    refined_ty_,
+    final_theory_err,
+    final_img_err,
+    ctx.vision_offset.score);
+
+  visual_refining_ = false;
+  active_target_idx_ = -1;
+  has_coarse_target_ = false;
+  refine_start_printed_ = false;
+
+  locked_type_ = 0;
+  locked_score_ = 0.0f;
+  locked_start_dist_ = 0.0f;
+  locked_start_est_x_ = 0.0f;
+  locked_start_est_y_ = 0.0f;
+
+  final_recognize_count_ = 0;
+  final_type_printed_ = false;
+
+  if (grid_.wp_idx < grid_.waypoints.size()) {
+    grid_.waypoints[grid_.wp_idx].first  = refined_tx_;
+    grid_.waypoints[grid_.wp_idx].second = refined_ty_;
+  }
+}
+
+void TspGridTask::on_task_finish(Context& ctx)
+{
+  ctx.vision_front_enable = false;
+  ctx.vision_down_enable = false;
+  ctx.vision_enable = false;
+
+  ctx.vision_searching = false;
+  ctx.vision_target_locked = false;
+  ctx.vision_aligned = false;
+
+  visual_refining_ = false;
+  active_target_idx_ = -1;
+  has_coarse_target_ = false;
+  refine_start_printed_ = false;
+
+  locked_type_ = 0;
+  locked_score_ = 0.0f;
+  locked_start_dist_ = 0.0f;
+  locked_start_est_x_ = 0.0f;
+  locked_start_est_y_ = 0.0f;
+
+  final_recognize_count_ = 0;
+  final_type_printed_ = false;
+
+  RCLCPP_INFO(lg_, "[TspGridTask] Finish");
+}
+
+bool TspGridTask::is_down_targets_fresh(const Context& ctx) const
+{
+  if (ctx.vision_down_targets_stamp_us == 0) {
+    return false;
+  }
+
+  if (ctx.vision_last_update_us == 0) {
+    return false;
+  }
+
+  const uint64_t age_us =
+      (ctx.vision_last_update_us > ctx.vision_down_targets_stamp_us)
+      ? (ctx.vision_last_update_us - ctx.vision_down_targets_stamp_us)
+      : 0ULL;
+
+  return age_us <= static_cast<uint64_t>(vision_timeout_s_ * 1e6);
+}
+
+bool TspGridTask::should_enable_vision_for_wp(const Context& ctx, float tx, float ty) const
+{
+  const float d = Grid::dist2d(ctx.cx(), ctx.cy(), tx, ty);
+  return d <= static_cast<float>(vision_enable_radius_);
+}
+
+bool TspGridTask::should_refine_now(const Context& ctx, float tx, float ty) const
+{
+  const float d = Grid::dist2d(ctx.cx(), ctx.cy(), tx, ty);
+  return d <= static_cast<float>(vision_refine_radius_);
+}
+
+bool TspGridTask::apply_visual_refine(Context& ctx, double dt)
+{
+  (void)dt;
+
+  if (!has_coarse_target_) {
+    return false;
+  }
+
+  if (!is_down_targets_fresh(ctx)) {
+    return false;
+  }
+
+  if (ctx.vision_down_targets.empty()) {
+    return false;
+  }
+
+  bool found = false;
+  VisionOffset best_target;
+
+  float best_est_x = 0.0f;
+  float best_est_y = 0.0f;
+  float best_dist_to_theory = std::numeric_limits<float>::max();
+
+  // ============================================================
+  // 多目标锁定逻辑：
+  // 不选“图像中心最近”，不选“面积最大”。
+  // 反算每个下视目标的世界坐标，选择离当前 TSP 理论点最近的那个。
+  // ============================================================
+  for (const auto& vo : ctx.vision_down_targets) {
+    if (vo.type == 0) {
+      continue;
+    }
+
+    if (vo.score < vision_score_thresh_) {
+      continue;
+    }
+
+    float cand_dwx = 0.0f;
+    float cand_dwy = 0.0f;
+
+    image_offset_to_world_delta(
+      ctx,
+      vo.dx,
+      vo.dy,
+      cand_dwx,
+      cand_dwy);
+
+    const float cand_world_x = ctx.cx() + cand_dwx;
+    const float cand_world_y = ctx.cy() + cand_dwy;
+
+    const float ex = cand_world_x - coarse_tx_;
+    const float ey = cand_world_y - coarse_ty_;
+    const float dist_to_theory = std::sqrt(ex * ex + ey * ey);
+
+    if (dist_to_theory < best_dist_to_theory) {
+      best_dist_to_theory = dist_to_theory;
+      best_target = vo;
+      best_est_x = cand_world_x;
+      best_est_y = cand_world_y;
+      found = true;
+    }
+  }
+
+  if (!found) {
+    return false;
+  }
+
+  ctx.vision_offset = best_target;
+
+  float dwx = 0.0f;
+  float dwy = 0.0f;
+
+  image_offset_to_world_delta(
+    ctx,
+    best_target.dx,
+    best_target.dy,
+    dwx,
+    dwy);
+
+  const float norm = std::sqrt(dwx * dwx + dwy * dwy);
+  if (norm > static_cast<float>(max_correction_step_) && norm > 1e-6f) {
+    const float s = static_cast<float>(max_correction_step_) / norm;
+    dwx *= s;
+    dwy *= s;
+  }
+
+  // 关键：不要 refined += correction，避免积分漂移和多目标拉扯
+  refined_tx_ = ctx.cx() + dwx;
+  refined_ty_ = ctx.cy() + dwy;
+
+  if (!refine_start_printed_) {
+    refine_start_printed_ = true;
+
+    locked_type_ = best_target.type;
+    locked_score_ = best_target.score;
+    locked_start_dist_ = best_dist_to_theory;
+    locked_start_est_x_ = best_est_x;
+    locked_start_est_y_ = best_est_y;
+
+    RCLCPP_WARN(
+      lg_,
+      "[TspGridTask] REFINE START wp_idx=%zu target_idx=%d type=%d "
+      "theory=(%.3f %.3f) start_est=(%.3f %.3f) dist=%.3f "
+      "img=(%.3f %.3f) score=%.1f candidates=%zu",
+      grid_.wp_idx,
+      active_target_idx_,
+      best_target.type,
+      coarse_tx_,
+      coarse_ty_,
+      best_est_x,
+      best_est_y,
+      best_dist_to_theory,
+      best_target.dx,
+      best_target.dy,
+      best_target.score,
+      ctx.vision_down_targets.size());
+  }
+
+  return true;
+}
+
+const char* TspGridTask::type_to_name(int type) const
+{
+  switch (type) {
+    case 1:  return "red_circle";
+    case 2:  return "red_square";
+    case 3:  return "red_triangle";
+    case 4:  return "red_pentagon";
+    case 5:  return "red_hexagon";
+
+    case 6:  return "green_circle";
+    case 7:  return "green_square";
+    case 8:  return "green_triangle";
+    case 9:  return "green_pentagon";
+    case 10: return "green_hexagon";
+
+    case 11: return "yellow_circle";
+    case 12: return "yellow_square";
+    case 13: return "yellow_triangle";
+    case 14: return "yellow_pentagon";
+    case 15: return "yellow_hexagon";
+
+    case 16: return "blue_circle";
+    case 17: return "blue_square";
+    case 18: return "blue_triangle";
+    case 19: return "blue_pentagon";
+    case 20: return "blue_hexagon";
+
+    default: return "unknown";
+  }
+}
+
+void TspGridTask::image_offset_to_world_delta(
+    const Context& ctx,
+    float dx_img,
+    float dy_img,
+    float& dwx,
+    float& dwy) const
+{
+  const float body_dx =
+      static_cast<float>(img_dy_to_body_x_sign_ * k_img_to_meter_ * dy_img);
+
+  const float body_dy =
+      static_cast<float>(img_dx_to_body_y_sign_ * k_img_to_meter_ * dx_img);
+
+  const float cy = std::cos(ctx.yaw);
+  const float sy = std::sin(ctx.yaw);
+
+  dwx = cy * body_dx - sy * body_dy;
+  dwy = sy * body_dx + cy * body_dy;
+}
+
+int TspGridTask::guess_active_target_index(const Context& ctx, float tx, float ty) const
+{
+  if (ctx.detected_targets.empty()) {
+    return -1;
+  }
+
+  int best_i = -1;
+  float best_d = std::numeric_limits<float>::max();
+
+  for (int i = 0; i < static_cast<int>(ctx.detected_targets.size()); ++i)
+  {
+    const auto& p = ctx.detected_targets[i];
+    const float dx = p.x - tx;
+    const float dy = p.y - ty;
+    const float d = std::sqrt(dx * dx + dy * dy);
+
+    if (d < best_d) {
+      best_d = d;
+      best_i = i;
+    }
+  }
+
+  return best_i;
+}
+
+}  // namespace offboard_core_pkg

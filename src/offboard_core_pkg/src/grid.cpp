@@ -100,4 +100,5 @@ float Grid::clamp_step(float current, float target, float max_step)
 void Grid::setPoints(const std::vector<Eigen::Vector3d>& pts)
 {
     points_ = pts;
+    RCLCPP_INFO(rclcpp::get_logger("Grid_TSP"), "TSP points set: %zu", points_.size());
 }//用于写死位置作为调试

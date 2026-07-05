@@ -13,11 +13,9 @@ class YawSpinTask : public ITask
 {
 public:
   YawSpinTask(rclcpp::Logger logger,
-              double yaw_rate ,   // rad/s（慢速）
-              double duration )   // 秒
+              double yaw_rate)   // rad/s（慢速）
   : logger_(logger),
-    yaw_rate_(yaw_rate),
-    duration_(duration)
+    yaw_rate_(yaw_rate)
   {}
 
   std::string name() const override { return "YawSpinTask"; }
@@ -27,16 +25,38 @@ public:
   Status tick(Context& ctx, double dt) override;
 
 private:
+  // =========================
+  // 内部状态机
+  // =========================
+  enum class SpinState
+  {
+    SPINNING,
+    STABILIZING
+  };
+
+  SpinState state_{SpinState::SPINNING};
+
+  // =========================
+  // 参数
+  // =========================
   rclcpp::Logger logger_;
-
   double yaw_rate_{0.0};
-  double duration_{0.0};
 
-  double elapsed_{0.0};
-
+  // =========================
+  // 运行时变量
+  // =========================
+  double elapsed_{0.0};        // 可保留（调试用）
   double target_yaw_{0.0};
 
-  float hold_x_, hold_y_, hold_z_;
+  // =========================
+  // 位置锁定
+  // =========================
+  float hold_x_{0.0};
+  float hold_y_{0.0};
+  float hold_z_{0.0};
 };
 
 } // namespace offboard_core_pkg
+
+
+

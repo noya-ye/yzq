@@ -467,6 +467,16 @@ void GridGotoDwellTask::set_hover_sp(Context& ctx, float x, float y)
   ctx.sp_yaw = ctx.home_yaw;
 }
 
+bool GridGotoDwellTask::should_leave_cell(
+  Context& ctx,
+  double dwell_t,
+  bool base_timeout)
+{
+  (void)ctx;
+  (void)dwell_t;
+  return base_timeout;
+}
+
 bool GridGotoDwellTask::reached_and_stable(Context& ctx, float tx, float ty)
 {
   const bool xy_ok =
@@ -516,9 +526,11 @@ ITask::Status GridGotoDwellTask::tick(Context& ctx, double dt)
   const auto& wp = grid_.waypoints[grid_.wp_idx];
   const float tx = wp.first;
   const float ty = wp.second;
-
-  on_before_goto(ctx, ctx.current_r, ctx.current_c, tx, ty);
-  set_hover_sp(ctx, tx, ty);
+  
+  float cmd_tx = tx;
+  float cmd_ty = ty;
+  on_before_goto(ctx, ctx.current_r, ctx.current_c, cmd_tx, cmd_ty);
+  set_hover_sp(ctx, cmd_tx, cmd_ty);
 
   // ===== DWELL 阶段 =====
   if (in_dwell_) {
@@ -526,7 +538,9 @@ ITask::Status GridGotoDwellTask::tick(Context& ctx, double dt)
 
     on_cell_dwell(ctx, ctx.current_r, ctx.current_c, dwell_t_, dt);
 
-    if (dwell_t_ >= dwell_s_) {
+    const bool base_timeout = dwell_t_ >= dwell_s_;
+
+    if (should_leave_cell(ctx, dwell_t_, base_timeout)) {
       on_cell_leave(ctx, ctx.current_r, ctx.current_c);
 
       in_dwell_ = false;
@@ -539,7 +553,7 @@ ITask::Status GridGotoDwellTask::tick(Context& ctx, double dt)
   }
 
   // ===== GOTO 阶段 =====
-  if (reached_and_stable(ctx, tx, ty)) {
+  if (reached_and_stable(ctx, cmd_tx, cmd_ty)) {
     stable_counter_ = 0;
     in_dwell_ = true;
     dwell_t_ = 0.0;

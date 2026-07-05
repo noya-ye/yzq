@@ -13,3 +13,8 @@
 #include "offboard_core_pkg/tasks/wait_home_task.hpp"
 #include "offboard_core_pkg/tasks/yaw_spin_task.hpp"
 #include "offboard_core_pkg/tasks/tsp_grid_task.hpp"
+#include "offboard_core_pkg/tasks/snake_traverse_task.hpp"
+#include "offboard_core_pkg/tasks/go_to_task.hpp"
+#include "offboard_core_pkg/tasks/start_down_blind_check_task.hpp"
+#include "offboard_core_pkg/tasks/yaw_spin2_task.hpp"
+#include "offboard_core_pkg/tasks/fixed_xy_goto_task.hpp"

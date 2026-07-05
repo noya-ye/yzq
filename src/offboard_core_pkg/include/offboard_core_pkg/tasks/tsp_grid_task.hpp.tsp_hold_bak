@@ -1,0 +1,106 @@
+#pragma once
+
+#include <vector>
+#include <limits>
+#include <cmath>
+#include <algorithm>
+
+#include <Eigen/Core>
+#include <rclcpp/rclcpp.hpp>
+
+#include "offboard_core_pkg/tasks/grid_goto_dwell_task.hpp"
+#include "offboard_core_pkg/planners/tsp_planner.hpp"
+#include "offboard_core_pkg/context.hpp"
+
+namespace offboard_core_pkg
+{
+
+class TspGridTask : public GridGotoDwellTask
+{
+public:
+  using GridGotoDwellTask::GridGotoDwellTask;
+
+protected:
+  TspPlanner tsp_;
+
+  // ========= 可调参数 =========
+  double vision_enable_radius_{1.0};
+  double vision_refine_radius_{0.45};
+  double vision_timeout_s_{0.25};
+
+  // 注意：这里 score 是轮廓面积，不要太小
+  float vision_score_thresh_{500.0f};
+
+  // 图像偏差 -> 机体系修正比例
+  double k_img_to_meter_{0.35};
+
+  // 单次修正最大步长
+  double max_correction_step_{0.12};
+
+  bool refine_in_dwell_{true};
+
+  // ========= 下视相机方向符号 =========
+  // 你前面已经验证：dy 方向需要取反
+  double img_dx_to_body_y_sign_{1.0};
+  double img_dy_to_body_x_sign_{-1.0};
+
+  // ========= 任务内部状态 =========
+  int active_target_idx_{-1};
+  bool visual_refining_{false};
+
+  float refined_tx_{0.0f};
+  float refined_ty_{0.0f};
+
+  // 当前 TSP 理论目标点
+  // 下视多目标锁定时，用这个点作为匹配依据
+  float coarse_tx_{0.0f};
+  float coarse_ty_{0.0f};
+  bool has_coarse_target_{false};
+
+  // ========= 精修打印控制 =========
+  // 每个目标只打印一次 REFINE START
+  bool refine_start_printed_{false};
+
+  // 记录开始锁定时的信息，用于 REFINE END 打印
+  int locked_type_{0};
+  float locked_score_{0.0f};
+  float locked_start_dist_{0.0f};
+  float locked_start_est_x_{0.0f};
+  float locked_start_est_y_{0.0f};
+
+  // ========= 稳定后识别当前目标 =========
+  float final_recognize_img_tol_{0.08f};   // 图像中心误差阈值
+  int final_recognize_required_{3};       // 连续稳定帧数
+  int final_recognize_count_{0};           // 当前稳定计数
+  bool final_type_printed_{false};         // 每个目标只打印一次
+
+protected:
+  void on_task_enter(Context& ctx) override;
+  void on_before_goto(Context& ctx, int r, int c, float& tx, float& ty) override;
+  void on_cell_enter(Context& ctx, int r, int c) override;
+  void on_cell_dwell(Context& ctx, int r, int c, double dwell_t, double dt) override;
+  void on_cell_leave(Context& ctx, int r, int c) override;
+  void on_task_finish(Context& ctx) override;
+
+private:
+  bool is_down_targets_fresh(const Context& ctx) const;
+
+  bool should_enable_vision_for_wp(const Context& ctx, float tx, float ty) const;
+  bool should_refine_now(const Context& ctx, float tx, float ty) const;
+
+  // 从 ctx.vision_down_targets 里锁定离当前 TSP 理论目标最近的那个
+  bool apply_visual_refine(Context& ctx, double dt);
+
+  void image_offset_to_world_delta(
+      const Context& ctx,
+      float dx_img,
+      float dy_img,
+      float& dwx,
+      float& dwy) const;
+
+  int guess_active_target_index(const Context& ctx, float tx, float ty) const;
+
+  const char* type_to_name(int type) const;
+};
+
+}  // namespace offboard_core_pkg

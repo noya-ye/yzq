@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>custom_vision_msgs</name>
+  <version>0.0.0</version>
+  <description>Vision message definitions</description>
+
+  <maintainer email="you@todo.todo">you</maintainer>
+  <license>TODO</license>
+
+  <!-- 构建工具 -->
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <!-- 生成接口必须 -->
+  <build_depend>rosidl_default_generators</build_depend>
+  <exec_depend>rosidl_default_runtime</exec_depend>
+
+  <!-- msg 依赖 -->
+  <depend>std_msgs</depend>
+
+  <!-- 🔥 必须：声明这是接口包 -->
+  <member_of_group>rosidl_interface_packages</member_of_group>
+
+  <!-- 🔥 必须：声明 build 类型 -->
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>
