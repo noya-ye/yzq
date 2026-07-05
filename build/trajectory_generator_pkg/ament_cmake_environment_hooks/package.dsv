@@ -1,4 +1,0 @@
-source;share/trajectory_generator_pkg/local_setup.bash
-source;share/trajectory_generator_pkg/local_setup.dsv
-source;share/trajectory_generator_pkg/local_setup.sh
-source;share/trajectory_generator_pkg/local_setup.zsh

@@ -1,4 +1,0 @@
-[35m[1mConsolidate compiler generated dependencies of target offboard_1m_node[0m
-[ 50%] [32mBuilding CXX object CMakeFiles/offboard_1m_node.dir/src/offboard_1m.cpp.o[0m
-[100%] [32m[1mLinking CXX executable offboard_1m_node[0m
-[100%] Built target offboard_1m_node
