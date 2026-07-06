@@ -18,3 +18,6 @@
 #include "offboard_core_pkg/tasks/start_down_blind_check_task.hpp"
 #include "offboard_core_pkg/tasks/yaw_spin2_task.hpp"
 #include "offboard_core_pkg/tasks/fixed_xy_goto_task.hpp"
+#include "offboard_core_pkg/tasks/multi_locked_task.hpp"
+#include "offboard_core_pkg/tasks/ego_vel_follow_task.hpp"
+

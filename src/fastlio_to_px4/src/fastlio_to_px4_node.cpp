@@ -37,7 +37,7 @@ public:
 
     // 超过这个时间没有新 FAST-LIO odom，就停止向 PX4 发布，避免旧数据继续喂 EKF
     stale_timeout_s_ = this->declare_parameter<double>(
-      "stale_timeout_s", 0.30);
+      "stale_timeout_s", 0.35);
 
     // 单帧位置跳变保护，防止 FAST-LIO 偶发跳点直接喂给 PX4
     max_position_jump_m_ = this->declare_parameter<double>(

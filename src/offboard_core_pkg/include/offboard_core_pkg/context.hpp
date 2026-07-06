@@ -278,6 +278,53 @@ struct Context
   float sp_vy{0.0f};
   float sp_vz{0.0f};
 
+  float sp_ax{0.0f};
+  float sp_ay{0.0f};
+  float sp_az{0.0f};
+ // ============================================================
+// EGO-Planner /position_cmd 输入
+// 来自 quadrotor_msgs/msg/PositionCommand
+// ============================================================
+bool ego_cmd_valid{false};
+uint64_t ego_cmd_stamp_us{0};
+
+double ego_x{0.0};
+double ego_y{0.0};
+double ego_z{0.0};
+
+double ego_vx{0.0};
+double ego_vy{0.0};
+double ego_vz{0.0};
+
+double ego_ax{0.0};
+double ego_ay{0.0};
+double ego_az{0.0};
+
+double ego_yaw{0.0};
+double ego_yaw_dot{0.0};
+
+uint32_t ego_traj_id{0};
+uint8_t ego_traj_flag{0};
+
+
+// ============================================================
+// FAST-LIO / EGO Odometry 输入
+// 用于计算 EGO 世界系下的相对误差：
+//   d_ego = /position_cmd - /Odometry
+//
+// 注意：不再使用 ego_origin / px4_origin 对齐方法，
+// 避免第一帧 /position_cmd 被误当成原点导致飞机乱飞。
+// ============================================================
+bool ego_odom_valid{false};
+uint64_t ego_odom_stamp_us{0};
+
+double ego_odom_x{0.0};
+double ego_odom_y{0.0};
+double ego_odom_z{0.0};
+
+double ego_odom_vx{0.0};
+double ego_odom_vy{0.0};
+double ego_odom_vz{0.0};
   // ============================================================
   // LAND 状态
   // ============================================================

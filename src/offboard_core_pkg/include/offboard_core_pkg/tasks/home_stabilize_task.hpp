@@ -19,6 +19,6 @@ public:
 
 private:
   rclcpp::Logger lg_;
-  double home_stabilize_s_{1.5};
+  double home_stabilize_s_{3.0};
   double t_{0.0};
 };

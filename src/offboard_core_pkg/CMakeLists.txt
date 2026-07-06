@@ -8,6 +8,8 @@ endif()
 # ========================
 # dependencies
 # ========================
+find_package(quadrotor_msgs REQUIRED)
+find_package(nav_msgs REQUIRED)
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
@@ -59,6 +61,7 @@ add_library(offboard_core
   src/tasks/go_to_task.cpp
   src/tasks/start_down_blind_check_task.cpp
   src/tasks/yaw_spin2_task.cpp
+  src/tasks/multi_locked_task.cpp
 
   # ===== utils =====
   src/utils/mcu_serial_switch.cpp
@@ -70,6 +73,9 @@ ament_target_dependencies(offboard_core
   ground_station_msgs
   nlohmann_json
   custom_vision_msgs 
+  quadrotor_msgs
+  nav_msgs
+
 )
 
 target_include_directories(offboard_core PUBLIC
@@ -104,6 +110,35 @@ target_link_libraries(offboard_core
   glog
   Eigen3::Eigen
 )
+# ========================
+# node: offboard_test0
+# ========================
+add_executable(offboard_test0_node
+  src/nodes/offboard_test0.cpp
+)
+
+target_link_libraries(offboard_test0_node
+  offboard_core
+)
+
+ament_target_dependencies(offboard_test0_node
+  rclcpp
+  std_msgs
+  px4_msgs
+  nlohmann_json
+  Eigen3  
+  custom_vision_msgs 
+  quadrotor_msgs
+  nav_msgs
+)
+
+target_include_directories(offboard_test0_node PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>
+)
+
+target_compile_features(offboard_test0_node PUBLIC cxx_std_17)
+
 
 # ========================
 # node: offboard_test1
@@ -246,7 +281,6 @@ target_include_directories(yaw_spin_test_node PUBLIC
 target_compile_features(yaw_spin_test_node PUBLIC cxx_std_17)
 
 
-
 # # ========================
 # # node: offboard_mission1
 # # ========================
@@ -278,6 +312,7 @@ target_compile_features(yaw_spin_test_node PUBLIC cxx_std_17)
 install(
   TARGETS
     offboard_core
+    offboard_test0_node
     offboard_test1_node
     offboard_test2_node
     offboard_test3_node

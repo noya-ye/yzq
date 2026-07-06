@@ -15,7 +15,8 @@
   <depend>nlohmann_json</depend>
   <depend>ground_station_msgs</depend>
   <depend>custom_vision_msgs</depend>
-
+  <depend>nav_msgs</depend>
+  <depend>quadrotor_msgs</depend>
   <export>
     <build_type>ament_cmake</build_type>
   </export>
