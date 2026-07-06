@@ -27,7 +27,7 @@ class D435Node(Node):
             10
         )
 
-#d435部分
+#d435部分11
         self.pipeline = rs.pipeline()
         self.config = rs.config()
 
