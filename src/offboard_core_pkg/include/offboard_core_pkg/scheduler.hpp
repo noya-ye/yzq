@@ -70,6 +70,84 @@ struct Context;
 
 class Scheduler {
 public:
+void clear()
+{
+  tasks_.clear();
+  paused_stack_.clear();
+  idx_ = 0;
+  entered_ = false;
+  done_ = true;
+}
+  // ============================================================
+  // 兼容旧版本接口：当前任务序号，0-based
+  // 旧代码里一般会用 current_index() + 1 显示
+  // ============================================================
+  size_t current_index() const
+  {
+    const size_t total = total_count();
+
+    if (total == 0) {
+      return 0;
+    }
+
+    if (done_) {
+      return total - 1;
+    }
+
+    // 如果当前任务是主线任务，返回它在主线任务中的序号
+    size_t seq_idx = 0;
+
+    for (size_t i = 0; i < tasks_.size(); ++i) {
+      if (!tasks_[i].in_sequence) {
+        continue;
+      }
+
+      if (i == idx_) {
+        return seq_idx;
+      }
+
+      ++seq_idx;
+    }
+
+    // 如果当前任务是 addAux 添加的中断任务，
+    // 优先显示被中断的主线任务序号
+    if (!paused_stack_.empty()) {
+      const size_t paused_idx = paused_stack_.back().idx;
+
+      seq_idx = 0;
+      for (size_t i = 0; i < tasks_.size(); ++i) {
+        if (!tasks_[i].in_sequence) {
+          continue;
+        }
+
+        if (i == paused_idx) {
+          return seq_idx;
+        }
+
+        ++seq_idx;
+      }
+    }
+
+    // 兜底：防止 current_wp 显示成 total + 1
+    return total - 1;
+  }
+
+  // ============================================================
+  // 兼容旧版本接口：主线任务总数
+  // 注意：addAux 添加的中断任务不计入 total_count
+  // ============================================================
+  size_t total_count() const
+  {
+    size_t count = 0;
+
+    for (const auto& slot : tasks_) {
+      if (slot.in_sequence) {
+        ++count;
+      }
+    }
+
+    return count;
+  }
   enum class InterruptMode {
     RESUME_CURRENT,   // 插队任务完成后，回到被中断任务
     DROP_CURRENT      // 丢弃当前任务，不再回来

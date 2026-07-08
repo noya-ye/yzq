@@ -56,7 +56,7 @@ add_library(offboard_core
   src/tasks/takeoff_task.cpp
   src/tasks/wait_home_task.cpp
   src/tasks/yaw_spin_task.cpp
-  src/tasks/snake_traverse_task.cpp
+  src/tasks/snake_grid_task.cpp
   src/tasks/tsp_grid_task.cpp
   src/tasks/go_to_task.cpp
   src/tasks/start_down_blind_check_task.cpp

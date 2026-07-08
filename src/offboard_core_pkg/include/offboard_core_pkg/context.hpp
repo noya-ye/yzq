@@ -52,7 +52,7 @@ struct VisionInfo
   uint64_t stamp_us{0};
 };
 
-struct VisionOffset
+struct VisionOffset    //视觉对准
 {
   float dx{0.0f};      // 图像中心偏差，右为正
   float dy{0.0f};      // 图像中心偏差，下为正
@@ -62,7 +62,7 @@ struct VisionOffset
   uint64_t stamp_us{0};
 };
 
-struct VisionNumber
+struct VisionNumber    //识别数字
 {
   int number{-1};
   float score{0.0f};
@@ -74,7 +74,7 @@ struct VisionNumber
   }
 };
 
-struct VisionPosition
+struct VisionPosition  //深度相机识别坐标
 {
   float x{0.0f};
   float y{0.0f};

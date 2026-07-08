@@ -281,7 +281,7 @@ private:
 
   void build_scheduler()
   {
-    sched_.reset();
+    sched_.clear();
 
     sched_.add(std::make_unique<WaitHomeTask>(get_logger()));
 
@@ -315,6 +315,7 @@ private:
     sched_.add(std::make_unique<offboard_core_pkg::Px4LandModeTask>(
       get_logger(),
       *px4_));
+    sched_.reset();
   }
 
   void publish_vision_gate()

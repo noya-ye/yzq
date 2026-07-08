@@ -1,7 +1,7 @@
 ego_replan_fsm_2d_node:
   ros__parameters:
     frame_id: "lidar"
-    cloud_topic: "/fastlio2/world_cloud"
+    cloud_topic: "/cloud_registered_filtered"
     odom_topic: "/fastlio2/lio_odom"
     goal_topic: "/simple_2d_planner/goal"
 
