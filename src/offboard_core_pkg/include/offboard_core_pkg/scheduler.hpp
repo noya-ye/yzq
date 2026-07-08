@@ -1,3 +1,62 @@
+// void on_timer()
+// {
+//   const auto t = now();
+//   const double dt = (t - last_time_).seconds();
+//   last_time_ = t;
+
+//   // ============================================================
+//   // 1. 正常发布 OffboardControlMode
+//   // ============================================================
+//   if (!sched_.done() && !ctx_.handover_to_px4_land) {
+//     px4_->publish_offboard_control_mode(ctx_);
+//   }
+
+//   // ============================================================
+//   // 2. 中断逻辑
+//   // 注意：
+//   // interrupt：临时插队，任务完成后回到原任务
+//   // jumpTo：强制跳转，不再回到原任务
+//   // ============================================================
+
+//   // 示例 1：发现障碍物，临时进入避障任务
+//   // 避障完成后会回到 SnakeGridTask 继续蛇形遍历
+//   //
+//   // if (ctx_.obstacle_too_close) {
+//   //   sched_.interrupt("AVOID", ctx_);
+//   // }
+
+//   // 示例 2：发现目标，临时进入目标跟踪任务
+//   //
+//   // if (ctx_.vision_detected) {
+//   //   sched_.interrupt("TRACK_TARGET", ctx_);
+//   // }
+
+//   // 示例 3：低电量 / 超时，强制返航
+//   // 不再回到蛇形任务
+//   //
+//   // if (ctx_.low_battery || ctx_.mission_timeout) {
+//   //   sched_.jumpTo("RETURN_HOME", ctx_);
+//   // }
+
+//   // 示例 4：严重异常，直接交给 PX4 降落
+//   //
+//   // if (ctx_.critical_error) {
+//   //   sched_.jumpTo("EMERGENCY_LAND", ctx_);
+//   // }
+
+//   // ============================================================
+//   // 3. 执行当前任务
+//   // ============================================================
+//   sched_.tick(ctx_, dt);
+
+//   // ============================================================
+//   // 4. 发布 setpoint
+//   // ============================================================
+//   if (!sched_.done()) {
+//     px4_->publish_setpoint_from_ctx(ctx_);
+//   }
+// }
+
 #pragma once
 
 #include <memory>
