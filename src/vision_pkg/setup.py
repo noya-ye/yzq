@@ -47,6 +47,7 @@ setup(
 
         'DownCamera_Node=vision_pkg.DownCamera:main',
 
+        'qrcode_node=vision_pkg.QRcode:main',
         ],
     },
 )
