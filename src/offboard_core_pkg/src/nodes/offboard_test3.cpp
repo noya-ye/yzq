@@ -261,7 +261,7 @@ void down_servo_cb(
     ctx_.vision_down_targets.push_back(vo);
   }
 
-  ctx_.vision_down_targets_stamp_us = now_us;
+  ctx_.vision_down_targets_stamp_us = nowServoTargetArray_us;
 
   if (ctx_.vision_down_targets.empty()) {
     ctx_.vision_offset.type = 0;
