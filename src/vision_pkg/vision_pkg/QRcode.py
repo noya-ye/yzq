@@ -1,4 +1,3 @@
-from ultralytics import YOLO
 import cv2
 from pyzbar.pyzbar import decode
 
@@ -38,10 +37,6 @@ class QRcode(Node):
             Image,
             '/vision/QRcode/debug_image',
             10
-        )
-        # 加载YOLO模型（请换成你训练好的二维码检测模型）
-        self.model = YOLO(
-            '/home/robot/ros2_ws/src/vision_pkg/vision_pkg/yolov8n.pt'
         )
 
     def enable_callback(self, msg):
@@ -87,61 +82,50 @@ class QRcode(Node):
             return
 
         found_target = False
-        results = self.model(frame, verbose=False)
-        for result in results:
-            if result.boxes is None:
-                continue
-            boxes = result.boxes.xyxy.cpu().numpy()
-            confs = result.boxes.conf.cpu().numpy()
-            for box, conf in zip(boxes, confs):
-                if conf < 0.5:
-                    continue
-                found_target = True
-                x1, y1, x2, y2 = box.astype(int)
-                bbox_cx = (x1 + x2) // 2
-                bbox_cy = (y1 + y2) // 2
-                dx = float(bbox_cx - frame_cx)
-                dy = float(bbox_cy - frame_cy)
+        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        qr_results = decode(gray)
 
-                cv2.rectangle(debug, (x1, y1), (x2, y2), (0, 255, 0), 2)
-                cv2.circle(debug, (bbox_cx, bbox_cy), 4, (0, 255, 255), -1)
-                self.draw_text_bg(debug, f"dx={dx:.1f} dy={dy:.1f}", (x1, y1 - 10))
+        for qr_result in qr_results:
+            found_target = True
+            x1 = int(qr_result.rect.left)
+            y1 = int(qr_result.rect.top)
+            x2 = int(qr_result.rect.left + qr_result.rect.width)
+            y2 = int(qr_result.rect.top + qr_result.rect.height)
+            bbox_cx = (x1 + x2) // 2
+            bbox_cy = (y1 + y2) // 2
+            dx = float(bbox_cx - frame_cx)
+            dy = float(bbox_cy - frame_cy)
 
-                pad = 10
-                rx1 = max(0, x1 - pad)
-                ry1 = max(0, y1 - pad)
-                rx2 = min(w, x2 + pad)
-                ry2 = min(h, y2 + pad)
-                roi = frame[ry1:ry2, rx1:rx2]
+            cv2.rectangle(debug, (x1, y1), (x2, y2), (0, 255, 0), 2)
+            cv2.circle(debug, (bbox_cx, bbox_cy), 4, (0, 255, 255), -1)
+            self.draw_text_bg(debug, f"dx={dx:.1f} dy={dy:.1f}", (x1, y1 - 10))
 
-                typex = -1
-                if roi.size != 0:
-                    gray = cv2.cvtColor(roi, cv2.COLOR_BGR2GRAY)
-                    qr_results = decode(gray)
-                    if qr_results:
-                        text = qr_results[0].data.decode('utf-8').strip()
-                        if text.isdigit():
-                            num = int(text)
-                            if 1 <= num <= 24:
-                                typex = num
-                label = f"QR={typex if typex != -1 else 'NA'}"
-                self.draw_text_bg(debug, label, (x1, y2 + 20))
+            typex = -1
+            text = qr_result.data.decode('utf-8').strip()
+            if text.isdigit():
+                num = int(text)
+                if 1 <= num <= 24:
+                    typex = num
 
-                self.get_logger().info(
-                    f"QR={typex}, dx={dx:.1f}, dy={dy:.1f}, score={t.score:.2f}"
-                )
+            label = f"QR={typex if typex != -1 else 'NA'}"
+            self.draw_text_bg(debug, label, (x1, y2 + 20))
 
-                t = ServoTarget()
-                t.x = float(bbox_cx)
-                t.y = float(bbox_cy)
-                t.dx = dx
-                t.dy = dy
-                t.type = typex
-                t.score = float(x2-x1) * float(y2-y1)
-                self.pub.publish(t)
+            score = float(x2 - x1) * float(y2 - y1)
+            self.get_logger().info(
+                f"QR={typex}, dx={dx:.1f}, dy={dy:.1f}, score={score:.2f}"
+            )
+
+            t = ServoTarget()
+            t.x = float(bbox_cx)
+            t.y = float(bbox_cy)
+            t.dx = dx
+            t.dy = dy
+            t.type = typex
+            t.score = score
+            self.pub.publish(t)
 
         if not found_target:
-            self.draw_text_bg(debug, "no yolo target", (10, 30), (0, 0, 255))
+            self.draw_text_bg(debug, "no QR target", (10, 30), (0, 0, 255))
 
         debug_msg = self.bridge.cv2_to_imgmsg(debug, 'bgr8')
         debug_msg.header = msg.header
