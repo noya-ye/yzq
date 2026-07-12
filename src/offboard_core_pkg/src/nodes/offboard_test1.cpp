@@ -1,3 +1,5 @@
+// 自转扫描测试节点：
+// 起飞 -> 悬停 -> YawSpin 开启前视视觉 -> 扫描一圈 -> 悬停 -> PX4 Land
 #include <chrono>
 #include <cmath>
 #include <memory>
@@ -27,8 +29,6 @@
 
 using namespace std::chrono_literals;
 
-// 自转扫描测试节点：
-// 起飞 -> 悬停 -> YawSpin 开启前视视觉 -> 扫描一圈 -> 悬停 -> PX4 Land
 class OffboardTestNode : public rclcpp::Node
 {
 public:

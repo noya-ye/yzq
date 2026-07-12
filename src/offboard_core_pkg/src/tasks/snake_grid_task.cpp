@@ -171,18 +171,33 @@ void SnakeGridTask::onPause(Context& ctx)
     index_ + 1,
     waypoints_.size());
 }
-
 void SnakeGridTask::onResume(Context& ctx)
 {
-  (void)ctx;
+  if (phase_ == Phase::FAILED ||
+      phase_ == Phase::FINISHED ||
+      index_ >= waypoints_.size()) {
+    return;
+  }
+
+  // 中断任务可能已经移动飞机。
+  // 以恢复时的实际位置作为新的平滑指令起点。
+  if (ctx.pos_valid()) {
+    cmd_x_ = ctx.cx();
+    cmd_y_ = ctx.cy();
+    cmd_z_ = ctx.cz();
+  }
+
+  // 仍然继续中断前的 waypoint，不改变 index_
+  phase_ = Phase::MOVING;
+
+  // 如果中断发生在悬停阶段，恢复后重新到达该点并重新悬停。
+  hover_elapsed_s_ = 0.0;
+
   RCLCPP_WARN(
     logger_,
     "[SNAKE] resumed at wp=%zu/%zu",
     index_ + 1,
     waypoints_.size());
-
-  // 不要重置 index_ / phase_ / cmd_x_ / cmd_y_ / cmd_z_
-  // 这样才能从中断前的位置继续蛇形遍历
 }
 
 void SnakeGridTask::buildWaypoints()

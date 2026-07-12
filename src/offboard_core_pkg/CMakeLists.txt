@@ -60,8 +60,11 @@ add_library(offboard_core
   src/tasks/tsp_grid_task.cpp
   src/tasks/go_to_task.cpp
   src/tasks/start_down_blind_check_task.cpp
+  src/tasks/front_pre_align_task.cpp
   src/tasks/yaw_spin2_task.cpp
   src/tasks/multi_locked_task.cpp
+  src/tasks/trajectory_task.cpp
+  src/tasks/ego_goto_task.cpp
 
   # ===== utils =====
   src/utils/mcu_serial_switch.cpp
@@ -110,6 +113,35 @@ target_link_libraries(offboard_core
   glog
   Eigen3::Eigen
 )
+# ========================
+# node: d_advance
+# ========================
+add_executable(d_advance
+  src/nodes/d_advance.cpp
+)
+
+target_link_libraries(d_advance
+  offboard_core
+)
+
+ament_target_dependencies(d_advance
+  rclcpp
+  std_msgs
+  px4_msgs
+  nlohmann_json
+  Eigen3  
+  custom_vision_msgs 
+  quadrotor_msgs
+  nav_msgs
+)
+
+target_include_directories(d_advance PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>
+)
+
+target_compile_features(d_advance PUBLIC cxx_std_17)
+
 # ========================
 # node: offboard_test0
 # ========================
@@ -280,6 +312,34 @@ target_include_directories(yaw_spin_test_node PUBLIC
 
 target_compile_features(yaw_spin_test_node PUBLIC cxx_std_17)
 
+# ========================
+# node: trajectory_test_node
+# ========================
+add_executable(trajectory_test_node
+  src/nodes/trajectory_test.cpp
+)
+
+target_link_libraries(trajectory_test_node
+  offboard_core
+)
+
+ament_target_dependencies(trajectory_test_node
+  rclcpp
+  std_msgs
+  px4_msgs
+  ground_station_msgs
+  nlohmann_json
+  Eigen3
+  custom_vision_msgs
+)
+
+target_include_directories(trajectory_test_node PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>
+)
+
+target_compile_features(trajectory_test_node PUBLIC cxx_std_17)
+
 
 # # ========================
 # # node: offboard_mission1
@@ -318,6 +378,8 @@ install(
     offboard_test3_node
     offboard_test4_node
     yaw_spin_test_node
+    trajectory_test_node
+    d_advance
     # offboard_mission1_node
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib

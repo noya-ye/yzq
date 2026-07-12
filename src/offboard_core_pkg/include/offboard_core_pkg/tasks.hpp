@@ -20,4 +20,7 @@
 #include "offboard_core_pkg/tasks/fixed_xy_goto_task.hpp"
 #include "offboard_core_pkg/tasks/multi_locked_task.hpp"
 #include "offboard_core_pkg/tasks/ego_vel_follow_task.hpp"
+#include "offboard_core_pkg/tasks/trajectory_task.hpp"
+#include "offboard_core_pkg/tasks/front_pre_align_task.hpp"
+#include "offboard_core_pkg/tasks/ego_goto_task.hpp"
 

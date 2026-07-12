@@ -1,3 +1,6 @@
+// ego的使用
+
+
 #include <chrono>
 #include <cmath>
 #include <memory>
@@ -68,17 +71,6 @@ public:
     return_vxy_tol_   = this->declare_parameter<double>("return_vxy_tol", 0.15);
     home_stabilize_s_ = this->declare_parameter<double>("home_stabilize_s", 1.5);
 
-    timeout_s_ = this->declare_parameter<double>("down_blind_timeout_s", 4.0);
-    align_tol_m_ = this->declare_parameter<double>("down_blind_align_tol_m", 0.02);
-    k_img_to_meter_ = this->declare_parameter<double>("down_blind_k_img_to_meter", 0.45);
-    max_step_m_ = this->declare_parameter<double>("down_blind_max_step_m", 0.12);
-    // 图像偏差 -> 机体系方向符号
-    // dx_img: 图像右为正
-    // dy_img: 图像下为正 
-    // body_dx: 机体 x 方向修正
-    // body_dy: 机体 y 方向修正
-    img_to_body_x_sign_ = this->declare_parameter<double>("down_blind_img_to_body_x_sign", -1.0);
-    img_to_body_y_sign_ = this->declare_parameter<double>("down_blind_img_to_body_y_sign", 1.0);
     // ===== EGO velocity follow params =====
     ego_max_step_m_ = this->declare_parameter<double>(
       "ego.max_step_m", 0.03);
@@ -154,9 +146,6 @@ public:
       create_publisher<px4_msgs::msg::VehicleCommand>(
         "/fmu/in/vehicle_command", qos_pub);
 
-    task_status_pub_ =
-      create_publisher<ground_station_msgs::msg::TaskStatus>(
-        "/ground_station/task_status", 10);
 
     // ===== 视觉门控发布 =====
     vision_front_enable_pub_ =
@@ -275,20 +264,6 @@ ego_odom_sub_ = this->create_subscription<nav_msgs::msg::Odometry>(
     ctx_.ego_odom_vy = msg->twist.twist.linear.y;
     ctx_.ego_odom_vz = msg->twist.twist.linear.z;
   });
-    // ===== 地面站命令订阅 =====
-    ground_cmd_sub_ = create_subscription<ground_station_msgs::msg::GroundCommand>(
-      "/ground_station/cmd_parsed",
-      10,
-      std::bind(&OffboardTest0Node::ground_cmd_cb, this, std::placeholders::_1));
-
-
-    // ===== 下视工业相机视觉伺服订阅 =====
-    // shape_color_node 输出：/vision/down/servo_targets
-    down_servo_sub_ =
-      create_subscription<custom_vision_msgs::msg::ServoTargetArray>(
-        "/vision/down/servo_targets",
-        10,
-        std::bind(&OffboardTest0Node::down_servo_cb, this, std::placeholders::_1));
 
     // ===== scheduler =====
     build_scheduler();
@@ -298,156 +273,6 @@ ego_odom_sub_ = this->create_subscription<nav_msgs::msg::Odometry>(
   }
 
 private:
-
-void down_servo_cb(
-  const custom_vision_msgs::msg::ServoTargetArray::SharedPtr msg)
-{
-  // 下视相机没开时，不更新偏差，避免旧数据污染
-  if (!ctx_.vision_down_enable) {
-    return;
-  }
-
-  const uint64_t now_us =
-    static_cast<uint64_t>(this->now().nanoseconds() / 1000ULL);
-
-  ctx_.vision_last_update_us = now_us;
-
-  // 保存这一帧所有有效下视目标
-  ctx_.vision_down_targets.clear();
-
-  if (msg->targets.empty()) {
-    ctx_.vision_offset.type = 0;
-    ctx_.vision_offset.score = 0.0f;
-    ctx_.vision_offset.stamp_us = 0;
-    ctx_.vision_down_targets_stamp_us = now_us;
-    return;
-  }
-
-  for (const auto& t : msg->targets) {
-    if (t.type == 0) {
-      continue;
-    }
-
-    if (t.score < 500.0f) {
-      continue;
-    }
-
-    VisionOffset vo;
-    vo.dx = t.dx;
-    vo.dy = t.dy;
-    vo.type = t.type;
-    vo.score = t.score;
-    vo.stamp_us = now_us;
-
-    // cost 越小越优先
-    const float center_cost = t.dx * t.dx + t.dy * t.dy;
-    const float area_bonus = 1e-6f * t.score;
-    vo.cost = center_cost - area_bonus;
-
-    ctx_.vision_down_targets.push_back(vo);
-  }
-
-  ctx_.vision_down_targets_stamp_us = now_us;
-
-  if (ctx_.vision_down_targets.empty()) {
-    ctx_.vision_offset.type = 0;
-    ctx_.vision_offset.score = 0.0f;
-    ctx_.vision_offset.stamp_us = 0;
-    return;
-  }
-
-  // 按 cost 从小到大排序
-  std::sort(
-    ctx_.vision_down_targets.begin(),
-    ctx_.vision_down_targets.end(),
-    [](const VisionOffset& a, const VisionOffset& b) {
-      return a.cost < b.cost;
-    });
-
-  // 兜底：仍然保留第一个最优目标给旧逻辑兼容
-  ctx_.vision_offset = ctx_.vision_down_targets.front();
-
-  RCLCPP_INFO_THROTTLE(
-    get_logger(),
-    *get_clock(),
-    500,
-    "[VISION_DOWN] frame targets=%zu best type=%d dx=%.3f dy=%.3f score=%.1f cost=%.4f",
-    ctx_.vision_down_targets.size(),
-    ctx_.vision_offset.type,
-    ctx_.vision_offset.dx,
-    ctx_.vision_offset.dy,
-    ctx_.vision_offset.score,
-    ctx_.vision_offset.cost);
-}
-  void ground_cmd_cb(const ground_station_msgs::msg::GroundCommand::SharedPtr msg)
-  {
-    const uint8_t cmd = msg->cmd_type;
-
-    if (cmd == ground_station_msgs::msg::GroundCommand::CMD_GOTO) {
-      if (!msg->has_goal) {
-        RCLCPP_WARN(get_logger(), "[GCS] GOTO received but has_goal=false, ignored");
-        return;
-      }
-
-      const float gx = msg->x;
-      const float gy = msg->y;
-
-      // 地面站发送的 z 按“高度”理解：
-      // z=1.0 表示离地 1m。
-      // PX4 local NED 坐标里，向上是负 z，所以转换成 -1.0。
-      const float gz = -std::fabs(msg->z);
-
-      ctx_.detected_targets.push_back(VisionPosition{gx, gy, gz});
-
-      RCLCPP_WARN(
-        get_logger(),
-        "[GCS] GOTO appended to detected_targets: x=%.2f y=%.2f z=%.2f | total=%zu",
-        gx, gy, gz, ctx_.detected_targets.size());
-
-      return;
-    }
-
-    if (cmd == ground_station_msgs::msg::GroundCommand::CMD_START) {
-      RCLCPP_WARN(get_logger(), "[GCS] START received");
-      return;
-    }
-
-    if (cmd == ground_station_msgs::msg::GroundCommand::CMD_PAUSE) {
-      RCLCPP_WARN(get_logger(), "[GCS] PAUSE received");
-      return;
-    }
-
-    if (cmd == ground_station_msgs::msg::GroundCommand::CMD_RESUME) {
-      RCLCPP_WARN(get_logger(), "[GCS] RESUME received");
-      return;
-    }
-
-    if (cmd == ground_station_msgs::msg::GroundCommand::CMD_RTL) {
-      RCLCPP_WARN(get_logger(), "[GCS] RTL received");
-      return;
-    }
-
-    if (cmd == ground_station_msgs::msg::GroundCommand::CMD_LAND) {
-      RCLCPP_WARN(get_logger(), "[GCS] LAND received");
-      ctx_.handover_to_px4_land = true;
-      return;
-    }
-
-    if (cmd == ground_station_msgs::msg::GroundCommand::CMD_RESET) {
-      RCLCPP_WARN(get_logger(), "[GCS] RESET received");
-      return;
-    }
-
-    if (cmd == ground_station_msgs::msg::GroundCommand::CMD_CLEAR_TRACK) {
-      RCLCPP_WARN(get_logger(), "[GCS] CLEAR_TRACK received");
-      return;
-    }
-
-    RCLCPP_WARN(get_logger(), "[GCS] UNKNOWN cmd_type=%u raw='%s'",
-                static_cast<unsigned>(cmd), msg->raw.c_str());
-  }
-
-
 //任务的主要流程由 Scheduler 维护的任务链来执行，build_scheduler() 负责根据当前 Context 构建这个任务链。每当收到新的 GOTO 命令时，都会重建任务链，以确保 GoToTask 能读取到最新的 detected_targets。
   void build_scheduler()
   {
@@ -461,66 +286,66 @@ void down_servo_cb(
       get_logger(), *px4_, arrival_error_max_));
     sched_.add(std::make_unique<HoverTask>(
       get_logger(),2.0));
-offboard_core_pkg::EgoVelFollowTask::Config ego_cfg;
+      offboard_core_pkg::EgoVelFollowTask::Config ego_cfg;
 
-ego_cfg.max_step_m = ego_max_step_m_;
+      ego_cfg.max_step_m = ego_max_step_m_;
 
-ego_cfg.kp_xy = ego_kp_xy_;
-ego_cfg.kp_z = ego_kp_z_;
+      ego_cfg.kp_xy = ego_kp_xy_;
+      ego_cfg.kp_z = ego_kp_z_;
 
-ego_cfg.max_cmd_xy_m = ego_max_cmd_xy_m_;
-ego_cfg.max_cmd_z_m = ego_max_cmd_z_m_;
+      ego_cfg.max_cmd_xy_m = ego_max_cmd_xy_m_;
+      ego_cfg.max_cmd_z_m = ego_max_cmd_z_m_;
 
-ego_cfg.use_velocity_ff = ego_use_velocity_ff_;
-ego_cfg.use_acceleration_ff = ego_use_acceleration_ff_;
+      ego_cfg.use_velocity_ff = ego_use_velocity_ff_;
+      ego_cfg.use_acceleration_ff = ego_use_acceleration_ff_;
 
-ego_cfg.vel_ff_scale = ego_vel_ff_scale_;
-ego_cfg.acc_ff_scale = ego_acc_ff_scale_;
+      ego_cfg.vel_ff_scale = ego_vel_ff_scale_;
+      ego_cfg.acc_ff_scale = ego_acc_ff_scale_;
 
-ego_cfg.kp_vel_xy = ego_kp_vel_xy_;
-ego_cfg.kp_vel_z = ego_kp_vel_z_;
+      ego_cfg.kp_vel_xy = ego_kp_vel_xy_;
+      ego_cfg.kp_vel_z = ego_kp_vel_z_;
 
-ego_cfg.max_vel_xy_mps = ego_max_vel_xy_mps_;
-ego_cfg.max_vel_z_mps = ego_max_vel_z_mps_;
+      ego_cfg.max_vel_xy_mps = ego_max_vel_xy_mps_;
+      ego_cfg.max_vel_z_mps = ego_max_vel_z_mps_;
 
-ego_cfg.max_acc_xy_mps2 = ego_max_acc_xy_mps2_;
-ego_cfg.max_acc_z_mps2 = ego_max_acc_z_mps2_;
+      ego_cfg.max_acc_xy_mps2 = ego_max_acc_xy_mps2_;
+      ego_cfg.max_acc_z_mps2 = ego_max_acc_z_mps2_;
 
-ego_cfg.err_xy_hold_m = ego_err_xy_hold_m_;
-ego_cfg.err_z_hold_m = ego_err_z_hold_m_;
+      ego_cfg.err_xy_hold_m = ego_err_xy_hold_m_;
+      ego_cfg.err_z_hold_m = ego_err_z_hold_m_;
 
-// 坐标方向参数：默认保持你原来的方向
-ego_cfg.x_sign = ego_x_sign_;
-ego_cfg.y_sign = ego_y_sign_;
-ego_cfg.swap_xy = ego_swap_xy_;
-ego_cfg.yaw_align_rad = ego_yaw_align_rad_;
+      // 坐标方向参数：默认保持你原来的方向
+      ego_cfg.x_sign = ego_x_sign_;
+      ego_cfg.y_sign = ego_y_sign_;
+      ego_cfg.swap_xy = ego_swap_xy_;
+      ego_cfg.yaw_align_rad = ego_yaw_align_rad_;
 
-ego_cfg.use_ego_yaw = ego_use_ego_yaw_;
+      ego_cfg.use_ego_yaw = ego_use_ego_yaw_;
 
-RCLCPP_WARN(
-  get_logger(),
-  "[EGO_CFG] max_step=%.3f kp_xy=%.3f kp_z=%.3f max_vel_xy=%.3f max_vel_z=%.3f "
-  "max_acc_xy=%.3f max_acc_z=%.3f vel_ff=%d vel_ff_scale=%.2f acc_ff=%d acc_ff_scale=%.2f "
-  "x_sign=%.1f y_sign=%.1f swap_xy=%d yaw_align=%.3f use_ego_yaw=%d",
-  ego_cfg.max_step_m,
-  ego_cfg.kp_xy,
-  ego_cfg.kp_z,
-  ego_cfg.max_vel_xy_mps,
-  ego_cfg.max_vel_z_mps,
-  ego_cfg.max_acc_xy_mps2,
-  ego_cfg.max_acc_z_mps2,
-  ego_cfg.use_velocity_ff ? 1 : 0,
-  ego_cfg.vel_ff_scale,
-  ego_cfg.use_acceleration_ff ? 1 : 0,
-  ego_cfg.acc_ff_scale,
-  ego_cfg.x_sign,
-  ego_cfg.y_sign,
-  ego_cfg.swap_xy ? 1 : 0,
-  ego_cfg.yaw_align_rad,
-  ego_cfg.use_ego_yaw ? 1 : 0);
-sched_.add(std::make_unique<offboard_core_pkg::EgoVelFollowTask>(
-  this->get_logger(),
-  ego_cfg));
+      RCLCPP_WARN(
+        get_logger(),
+        "[EGO_CFG] max_step=%.3f kp_xy=%.3f kp_z=%.3f max_vel_xy=%.3f max_vel_z=%.3f "
+        "max_acc_xy=%.3f max_acc_z=%.3f vel_ff=%d vel_ff_scale=%.2f acc_ff=%d acc_ff_scale=%.2f "
+        "x_sign=%.1f y_sign=%.1f swap_xy=%d yaw_align=%.3f use_ego_yaw=%d",
+        ego_cfg.max_step_m,
+        ego_cfg.kp_xy,
+        ego_cfg.kp_z,
+        ego_cfg.max_vel_xy_mps,
+        ego_cfg.max_vel_z_mps,
+        ego_cfg.max_acc_xy_mps2,
+        ego_cfg.max_acc_z_mps2,
+        ego_cfg.use_velocity_ff ? 1 : 0,
+        ego_cfg.vel_ff_scale,
+        ego_cfg.use_acceleration_ff ? 1 : 0,
+        ego_cfg.acc_ff_scale,
+        ego_cfg.x_sign,
+        ego_cfg.y_sign,
+        ego_cfg.swap_xy ? 1 : 0,
+        ego_cfg.yaw_align_rad,
+        ego_cfg.use_ego_yaw ? 1 : 0);
+      sched_.add(std::make_unique<offboard_core_pkg::EgoVelFollowTask>(
+        this->get_logger(),
+        ego_cfg));
       sched_.add(std::make_unique<offboard_core_pkg::Px4LandModeTask>(
             get_logger(),
             *px4_));
@@ -567,21 +392,7 @@ std::string target_type_to_name(int type) const
     default: return "none";
   }
 }
-  void publish_task_status()
-  {
-    ground_station_msgs::msg::TaskStatus msg;
-    msg.header.stamp = now();
-    msg.task_name = sched_.current_name();
-    msg.current_wp = sched_.done() ? sched_.total_count()
-                                   : (sched_.current_index() + 1);
-    msg.total_wp = sched_.total_count();
-    msg.mission_done = sched_.done();
-
-    msg.target_type = ctx_.vision_offset.type;//传递当前最佳下视目标的类型，供地面站显示
-    msg.target_name = target_type_to_name(ctx_.vision_offset.type);
-
-    task_status_pub_->publish(msg);
-  }
+ 
 
   void on_timer()
   {
@@ -602,7 +413,6 @@ std::string target_type_to_name(int type) const
       px4_->publish_setpoint_from_ctx(ctx_);
     }
 
-    publish_task_status();
   }
 
 private:
@@ -621,12 +431,7 @@ private:
   double wp_xy_tol_{0.25};
   double wp_z_tol_{0.25};
   double dwell_s_{5.0};
-  double timeout_s_{4.0};
-  double align_tol_m_{0.02};
-  double k_img_to_meter_{0.45};
-  double max_step_m_{0.12};
-  double img_to_body_x_sign_{-1.0};
-  double img_to_body_y_sign_{1.0};
+  
 
   double v_xy_tol_{0.2};
   double v_z_tol_{0.2};
@@ -677,21 +482,17 @@ private:
   rclcpp::Publisher<px4_msgs::msg::OffboardControlMode>::SharedPtr offboard_control_mode_pub_;
   rclcpp::Publisher<px4_msgs::msg::TrajectorySetpoint>::SharedPtr trajectory_setpoint_pub_;
   rclcpp::Publisher<px4_msgs::msg::VehicleCommand>::SharedPtr vehicle_command_pub_;
-  rclcpp::Publisher<ground_station_msgs::msg::TaskStatus>::SharedPtr task_status_pub_;
-
+  
   rclcpp::Publisher<std_msgs::msg::Bool>::SharedPtr vision_front_enable_pub_;
   rclcpp::Publisher<std_msgs::msg::Bool>::SharedPtr vision_down_enable_pub_;
 
   // ===== subscriptions =====
-  rclcpp::Subscription<custom_vision_msgs::msg::ServoTarget>::SharedPtr down_selected_sub_;
+ 
   rclcpp::Subscription<px4_msgs::msg::VehicleStatus>::SharedPtr vehicle_status_sub_;
   rclcpp::Subscription<px4_msgs::msg::VehicleLocalPosition>::SharedPtr local_pos_sub_;
   rclcpp::Subscription<px4_msgs::msg::VehicleAttitude>::SharedPtr vehicle_att_sub_;
   rclcpp::Subscription<px4_msgs::msg::VehicleLandDetected>::SharedPtr vehicle_land_sub_;
-  rclcpp::Subscription<ground_station_msgs::msg::GroundCommand>::SharedPtr ground_cmd_sub_;
 
-  rclcpp::Subscription<custom_vision_msgs::msg::PositionTargetArray>::SharedPtr front_targets_sub_;
-  rclcpp::Subscription<custom_vision_msgs::msg::ServoTargetArray>::SharedPtr down_servo_sub_;
 
   rclcpp::Subscription<quadrotor_msgs::msg::PositionCommand>::SharedPtr ego_cmd_sub_;
   rclcpp::Subscription<nav_msgs::msg::Odometry>::SharedPtr ego_odom_sub_;

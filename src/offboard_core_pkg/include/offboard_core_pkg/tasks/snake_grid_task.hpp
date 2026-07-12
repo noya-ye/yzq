@@ -82,8 +82,8 @@ public:
   void onExit(Context& ctx) override;
 
   // 需要你的 ITask 已经支持 onPause / onResume
-  void onPause(Context& ctx) override;
 
+  void onPause(Context& ctx) override;
   void onResume(Context& ctx) override;
 
 private:

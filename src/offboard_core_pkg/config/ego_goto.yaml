@@ -1,0 +1,47 @@
+# config/ego_goto.yaml
+D_adcance:
+  ros__parameters:
+    ego:
+      goal_topic: "/move_base_simple/goal"
+      goal_frame: "camera_init"
+      cmd_topic: "/position_cmd"
+      odom_topic: "/fastlio2/lio_odom"
+
+      cmd_timeout_s: 0.50
+      odom_timeout_s: 0.50
+      max_step_m: 0.03
+
+      kp_xy: 0.15
+      kp_z: 0.30
+      max_cmd_xy_m: 0.15
+      max_cmd_z_m: 0.08
+
+      use_velocity_ff: false
+      use_acceleration_ff: false
+      vel_ff_scale: 0.0
+      acc_ff_scale: 0.0
+      kp_vel_xy: 0.0
+      kp_vel_z: 0.0
+
+      max_vel_xy_mps: 0.30
+      max_vel_z_mps: 0.20
+      max_acc_xy_mps2: 0.40
+      max_acc_z_mps2: 0.30
+
+      err_xy_hold_m: 2.0
+      err_z_hold_m: 1.0
+
+      x_sign: 1.0
+      y_sign: 1.0
+      swap_xy: true
+      yaw_align_rad: 0.0
+      use_ego_yaw: false
+
+      arrive_xy_m: 0.15
+      arrive_z_m: 0.15
+      stable_vxy_mps: 0.15
+      stable_vz_mps: 0.12
+      target_stable_s: 0.40
+      landing_stable_s: 0.50
+      goal_republish_s: 1.0
+      cmd_guard_s: 0.30
