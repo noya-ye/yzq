@@ -1,13 +1,18 @@
 //轨迹飞行+中断设置
 //  ctx.front_pre_align_request = true;与外界通信，中断标志位。下次如果需要中断接另外的程序，只需要把那个程序在on_timer设置成true则开启
 
+// InputWaypoint 和 Waypoint 的核心区别是：
 
-#include "offboard_core_pkg/tasks/trajectory_task.hpp"
+// InputWaypoint 是用户输入的原始航点；Waypoint 是程序解析、转换后真正用于飞行的内部航点。
+// #include "offboard_core_pkg/tasks/trajectory_task.hpp"，使用时只需要输入inputwaypoint就行了
+//绝对坐标 ABSOLUTE_LOCAL时：输入的坐标直接就是飞机最终要到达的局部坐标。飞机打开雷达处为原点构建的坐标系，与进入任务时飞机的位置无关
+//相对坐标 RELATIVE_TO_ENTER：输入航点当作相对于进入位置的偏移量
 
 #include <algorithm>
 #include <cmath>
 #include <limits>
 #include <utility>
+#include "offboard_core_pkg/tasks/trajectory_task.hpp"
 
 TrajectoryTask::TrajectoryTask(
   rclcpp::Logger logger,

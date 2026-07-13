@@ -8,7 +8,7 @@ cloud_self_filter_node:
 
     # 过滤飞机自身附近点云
     enable_self_filter: true
-    self_filter_radius: 0.60
+    self_filter_radius: 0.35
 
     # 距离过滤，基于当前 odom 位置
     enable_range_filter: true
@@ -16,7 +16,7 @@ cloud_self_filter_node:
     max_range: 6.00
 
     # 高度过滤默认关闭，避免误删细杆/地面点
-    enable_z_filter:
+    enable_z_filter: true
     z_relative_to_odom: true
     min_z_keep: 0.2
     max_z_keep:1.5

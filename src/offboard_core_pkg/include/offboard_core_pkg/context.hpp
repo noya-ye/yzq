@@ -260,8 +260,10 @@ struct Context
   bool seen_red_circle{false};
 
 
-  // TrajectoryTask 请求执行货架前置视觉矫正
-  bool front_pre_align_request{false};
+  //请求中断的信号
+  bool front_pre_align_request{false};//前视矫正
+  bool down_align_request{false};//下视矫正
+  bool obstacle_request{false};//避障请求
   // ===== MCU serial switch request =====
   // true  表示请求主程序打开单片机开关
   // false 表示请求主程序关闭单片机开关

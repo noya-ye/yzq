@@ -40,7 +40,7 @@ public:
     double yaw{0.0};
 
     // 到达该点并完成停留后，
-    // 是否请求 RACK_PRE_ALIGN 中断任务
+    // 是否请求 FRONT_PRE_ALIGN 中断任务
     bool pre_align_after{false};//中断接口
   };
 

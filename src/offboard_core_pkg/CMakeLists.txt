@@ -341,6 +341,35 @@ target_include_directories(trajectory_test_node PUBLIC
 target_compile_features(trajectory_test_node PUBLIC cxx_std_17)
 
 
+# ========================
+# node: snake_test
+# ========================
+add_executable(snake_test
+  src/nodes/snake_test.cpp
+)
+
+target_link_libraries(snake_test
+  offboard_core
+)
+
+ament_target_dependencies(snake_test
+  rclcpp
+  std_msgs
+  px4_msgs
+  ground_station_msgs
+  nlohmann_json
+  Eigen3
+  custom_vision_msgs
+)
+
+target_include_directories(snake_test PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>
+)
+
+target_compile_features(snake_test PUBLIC cxx_std_17)
+
+
 # # ========================
 # # node: offboard_mission1
 # # ========================
@@ -380,6 +409,7 @@ install(
     yaw_spin_test_node
     trajectory_test_node
     d_advance
+    snake_test
     # offboard_mission1_node
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
