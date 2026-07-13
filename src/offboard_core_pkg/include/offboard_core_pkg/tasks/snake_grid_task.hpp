@@ -22,7 +22,11 @@ public:
     EVERY_CELL,
     LINE_END_ONLY
   };
-
+struct ObstacleCell
+{
+  int ix{0};
+  int iy{0};
+};
   struct Config
   {
     FirstAxis first_axis{FirstAxis::X_FIRST};
@@ -47,6 +51,8 @@ public:
     // 控制网格在 PX4 local 坐标系中的展开方向
     int x_sign{1};
     int y_sign{1};
+
+    std::vector<ObstacleCell> obstacle_cells;
   };
 
 private:
