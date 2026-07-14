@@ -93,7 +93,7 @@ class QRcode(Node):
             y2 = int(qr_result.rect.top + qr_result.rect.height)
             bbox_cx = (x1 + x2) // 2
             bbox_cy = (y1 + y2) // 2
-            dx = float(bbox_cx - frame_cx)
+            dx = float(bbox·_cx - frame_cx)
             dy = float(bbox_cy - frame_cy)
 
             cv2.rectangle(debug, (x1, y1), (x2, y2), (0, 255, 0), 2)
