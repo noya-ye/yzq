@@ -33,7 +33,6 @@ class ShapeColorNode(Node):
         self.cap.set(cv2.CAP_PROP_FRAME_WIDTH,640)
         self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT,480)
         self.cap.set(cv2.CAP_PROP_FPS,30)
-
         if not self.cap.isOpened():
             self.get_logger().error("Camera open failed")
 
@@ -46,13 +45,13 @@ class ShapeColorNode(Node):
             10
         )
 
-        # self.debug_pub=self.create_publisher(
-        #     Image,
-        #     '/vision/down/debug_image',
-        #     10
-        # )
+        self.debug_pub=self.create_publisher(
+            Image,
+            '/vision/down/debug_image',
+            10
+        )
 
-        self.timer=self.create_timer(0.02,self.loop)
+        self.timer=self.create_timer(0.03,self.loop)
 
         self.get_logger().info("ShapeColorDetect_Node started")
 
@@ -72,23 +71,23 @@ class ShapeColorNode(Node):
         return table.get((color,shape),0)
 
 
-    # def draw_center_cross(self,img):
-    #     h,w=img.shape[:2]
-    #     cx=w//2
-    #     cy=h//2
-    #     cv2.line(img,(cx-20,cy),(cx+20,cy),(255,255,255),2)
-    #     cv2.line(img,(cx,cy-20),(cx,cy+20),(255,255,255),2)
-    #     cv2.circle(img,(cx,cy),5,(255,255,255),-1)
+    def draw_center_cross(self,img):
+        h,w=img.shape[:2]
+        cx=w//2
+        cy=h//2
+        cv2.line(img,(cx-20,cy),(cx+20,cy),(255,255,255),2)
+        cv2.line(img,(cx,cy-20),(cx,cy+20),(255,255,255),2)
+        cv2.circle(img,(cx,cy),5,(255,255,255),-1)
 
 
-    # def draw_text_bg(self,img,text,org,color=(255,255,255)):
-    #     font=cv2.FONT_HERSHEY_SIMPLEX
-    #     scale=0.55
-    #     thickness=2
-    #     (tw,th),base=cv2.getTextSize(text,font,scale,thickness)
-    #     x,y=org
-    #     cv2.rectangle(img,(x-3,y-th-5),(x+tw+3,y+base+3),(0,0,0),-1)
-    #     cv2.putText(img,text,org,font,scale,color,thickness,cv2.LINE_AA)
+    def draw_text_bg(self,img,text,org,color=(255,255,255)):
+        font=cv2.FONT_HERSHEY_SIMPLEX
+        scale=0.55
+        thickness=2
+        (tw,th),base=cv2.getTextSize(text,font,scale,thickness)
+        x,y=org
+        cv2.rectangle(img,(x-3,y-th-5),(x+tw+3,y+base+3),(0,0,0),-1)
+        cv2.putText(img,text,org,font,scale,color,thickness,cv2.LINE_AA)
 
 
     def loop(self):
@@ -99,20 +98,20 @@ class ShapeColorNode(Node):
         if not ret:
             return
 
-        # debug=img.copy()
+        debug=img.copy()
         h,w=img.shape[:2]
-        # self.draw_center_cross(debug)
+        self.draw_center_cross(debug)
 
         if not self.enabled:
-            # self.draw_text_bg(debug,"ENABLE: false",(10,30),(0,0,255))
-            # msg=self.bridge.cv2_to_imgmsg(cv2.resize(debug,(640,480)),"bgr8")
-            # msg.header.stamp=self.get_clock().now().to_msg()
-            # self.debug_pub.publish(msg)
+            self.draw_text_bg(debug,"ENABLE: false",(10,30),(0,0,255))
+            msg=self.bridge.cv2_to_imgmsg(cv2.resize(debug,(640,480)),"bgr8")
+            msg.header.stamp=self.get_clock().now().to_msg()
+            self.debug_pub.publish(msg)
             return
 
         img=cv2.GaussianBlur(img,(5,5),0)
-        # roi_mask=get_map_roi(img)
-        # img=cv2.bitwise_and(img,img,mask=roi_mask)
+        roi_mask=get_map_roi(img)
+        img=cv2.bitwise_and(img,img,mask=roi_mask)
         hsv=cv2.cvtColor(img,cv2.COLOR_BGR2HSV)
 
         target_array=ServoTargetArray()
@@ -182,8 +181,8 @@ class ShapeColorNode(Node):
                     "shape":shape
                 })
 
-                # cv2.drawContours(debug,[hull],-1,(0,255,0),2)
-                # cv2.circle(debug,(cx,cy),5,(0,255,255),-1)
+                cv2.drawContours(debug,[hull],-1,(0,255,0),2)
+                cv2.circle(debug,(cx,cy),5,(0,255,255),-1)
                         # ==========================
         # 临时ID分配
         # ==========================
@@ -209,13 +208,13 @@ class ShapeColorNode(Node):
             target_array.targets.append(t)
 
 
-            # debug显示ID
-            # self.draw_text_bg(
-            #     debug,
-            #     f"ID:{idx+1} {obj['color']} {obj['shape']}",
-            #     (obj["cx"],obj["cy"]-15),
-            #     (255,255,255)
-            # )
+            #debug显示ID
+            self.draw_text_bg(
+                debug,
+                f"ID:{idx+1} {obj['color']} {obj['shape']}",
+                (obj["cx"],obj["cy"]-15),
+                (255,255,255)
+            )
 
 
         # ==========================
@@ -224,32 +223,32 @@ class ShapeColorNode(Node):
         self.pub.publish(target_array)
 
 
-        # self.draw_text_bg(
-        #     debug,
-        #     f"targets:{len(target_array.targets)}",
-        #     (10,30),
-        #     (0,255,0)
-        # )
+        self.draw_text_bg(
+            debug,
+            f"targets:{len(target_array.targets)}",
+            (10,30),
+            (0,255,0)
+        )
 
 
         # ==========================
         # 发布debug图像
         # ==========================
-        # debug_show=cv2.resize(
-        #     debug,
-        #     (640,480)
-        # )
+        debug_show=cv2.resize(
+            debug,
+            (640,480)
+        )
 
 
-        # msg=self.bridge.cv2_to_imgmsg(
-        #     debug_show,
-        #     "bgr8"
-        # )
+        msg=self.bridge.cv2_to_imgmsg(
+            debug_show,
+            "bgr8"
+        )
 
-        # msg.header.stamp=self.get_clock().now().to_msg()
-        # msg.header.frame_id="camera"
+        msg.header.stamp=self.get_clock().now().to_msg()
+        msg.header.frame_id="camera"
 
-        # self.debug_pub.publish(msg)
+        self.debug_pub.publish(msg)
 
 
 
