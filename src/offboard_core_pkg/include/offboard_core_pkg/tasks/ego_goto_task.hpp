@@ -137,7 +137,7 @@ private:
     double& ego_x,
     double& ego_y) const;
 
-  static uint64_t nowUs();
+  uint64_t nowUs() const;
 
   // ============================================================
   // 控制模式辅助函数

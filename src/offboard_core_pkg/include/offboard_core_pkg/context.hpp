@@ -50,6 +50,7 @@ struct VisionInfo
   BlockType type{BlockType::NONE};
   float score{0.0f};
   uint64_t stamp_us{0};
+  int32_t track_id{-1};
 };
 
 struct VisionOffset    //视觉对准

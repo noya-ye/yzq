@@ -13,6 +13,7 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/GroundCommand.msg"
   "msg/TaskStatus.msg"
   "msg/Telemetry.msg"
+  "msg/MissionPlan.msg"
   DEPENDENCIES std_msgs
 )
 

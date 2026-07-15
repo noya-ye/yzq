@@ -19,7 +19,7 @@ cloud_self_filter_node:
     enable_z_filter: true
     z_relative_to_odom: true
     min_z_keep: 0.2
-    max_z_keep:1.5
+    max_z_keep: 1.5
 
     # 体素降采样
     enable_voxel_filter: true

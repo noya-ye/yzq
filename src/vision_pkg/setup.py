@@ -47,6 +47,8 @@ setup(
 
         'DownCamera_Node=vision_pkg.DownCamera:main',
 
+        'shape_color_down_node=vision_pkg.ShapeColorDetect2:main',
+        
         ],
     },
 )

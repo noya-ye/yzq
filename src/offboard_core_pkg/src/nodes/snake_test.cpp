@@ -8,6 +8,7 @@
 #include <memory>
 #include <stdexcept>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "rclcpp/qos.hpp"
@@ -24,6 +25,7 @@
 #include "px4_msgs/msg/vehicle_status.hpp"
 
 #include "ground_station_msgs/msg/ground_command.hpp"
+#include "ground_station_msgs/msg/mission_plan.hpp"
 #include "ground_station_msgs/msg/task_status.hpp"
 
 #include "custom_vision_msgs/msg/servo_target_array.hpp"
@@ -122,24 +124,6 @@ private:
     img_to_body_y_sign_ =
       declare_parameter<double>("img_to_body_y_sign", 1.0);
 
-    /*
-     * ROS 2 参数不能直接使用自定义的 ObstacleCell 类型。
-     *
-     * 使用一维整数数组表示障碍栅格：
-     *
-     * obstacle_cells:
-     *   [ix0, iy0, ix1, iy1, ...]
-     *
-     * 例如：
-     *
-     * obstacle_cells: [2, 0, 2, 1, 3, 1]
-     *
-     * 表示三个障碍：
-     *
-     * (2,0)
-     * (2,1)
-     * (3,1)
-     */
     const auto raw_obstacles =
       declare_parameter<std::vector<int64_t>>(
         "obstacle_cells",
@@ -151,15 +135,15 @@ private:
     }
   }
 
-  bool parseObstacleCells(const std::vector<int64_t>& values)
+  bool parseObstacleCells(
+    const std::vector<int64_t>& values)
   {
     obstacle_cells_.clear();
 
     if (values.size() % 2 != 0) {
-      RCLCPP_FATAL(
+      RCLCPP_ERROR(
         get_logger(),
-        "[SNAKE] obstacle_cells must contain ix/iy pairs, size=%zu",
-        values.size());
+        "[SNAKE] obstacle_cells must contain ix/iy pairs");
 
       return false;
     }
@@ -170,22 +154,19 @@ private:
 
       if (ix < 0 || ix >= snake_x_cells_ ||
           iy < 0 || iy >= snake_y_cells_) {
-        RCLCPP_FATAL(
+        RCLCPP_ERROR(
           get_logger(),
-          "[SNAKE] obstacle outside grid: "
-          "cell=(r=%d,c=%d), grid=%dx%d",
+          "[SNAKE] obstacle outside grid: (r=%d,c=%d)",
           iy,
-          ix,
-          snake_y_cells_,
-          snake_x_cells_);
+          ix);
 
         return false;
       }
 
       if (ix == 0 && iy == 0) {
-        RCLCPP_FATAL(
+        RCLCPP_ERROR(
           get_logger(),
-          "[SNAKE] start cell (r=0,c=0) cannot be an obstacle");
+          "[SNAKE] start cell cannot be an obstacle");
 
         return false;
       }
@@ -197,18 +178,10 @@ private:
           return cell.ix == ix && cell.iy == iy;
         });
 
-      if (duplicate) {
-        RCLCPP_WARN(
-          get_logger(),
-          "[SNAKE] duplicate obstacle ignored: cell=(r=%d,c=%d)",
-          iy,
-          ix);
-
-        continue;
+      if (!duplicate) {
+        obstacle_cells_.push_back(
+          SnakeGridTask::ObstacleCell{ix, iy});
       }
-
-      obstacle_cells_.push_back(
-        SnakeGridTask::ObstacleCell{ix, iy});
     }
 
     return true;
@@ -239,6 +212,11 @@ private:
       create_publisher<ground_station_msgs::msg::TaskStatus>(
         "/ground_station/task_status",
         10);
+
+    mission_plan_pub_ =
+      create_publisher<ground_station_msgs::msg::MissionPlan>(
+        "/ground_station/mission_plan",
+        1);
 
     vision_front_enable_pub_ =
       create_publisher<std_msgs::msg::Bool>(
@@ -314,7 +292,8 @@ private:
 
           ctx_.yaw = yaw;
 
-          if (ctx_.home_inited && !ctx_.home_yaw_inited) {
+          if (ctx_.home_inited &&
+              !ctx_.home_yaw_inited) {
             ctx_.home_yaw = yaw;
             ctx_.home_yaw_inited = true;
           }
@@ -352,7 +331,6 @@ private:
   void downServoCallback(
     const custom_vision_msgs::msg::ServoTargetArray::SharedPtr msg)
   {
-    // 下视视觉关闭时不接收数据，避免旧数据污染任务。
     if (!ctx_.vision_down_enable) {
       return;
     }
@@ -366,29 +344,23 @@ private:
     ctx_.vision_down_targets_stamp_us = now_us;
 
     for (const auto& target : msg->targets) {
-      if (target.type == 0) {
-        continue;
-      }
-
-      if (target.score < 500.0f) {
+      if (target.type == 0 ||
+          target.score < 500.0f) {
         continue;
       }
 
       VisionOffset offset;
+
       offset.dx = target.dx;
       offset.dy = target.dy;
       offset.type = target.type;
       offset.score = target.score;
       offset.stamp_us = now_us;
 
-      const float center_cost =
+      offset.cost =
         target.dx * target.dx +
-        target.dy * target.dy;
-
-      const float area_bonus =
+        target.dy * target.dy -
         1e-6f * target.score;
-
-      offset.cost = center_cost - area_bonus;
 
       ctx_.vision_down_targets.push_back(offset);
     }
@@ -405,7 +377,6 @@ private:
         return lhs.cost < rhs.cost;
       });
 
-    // 保留当前最优目标，兼容原有单目标逻辑。
     ctx_.vision_offset =
       ctx_.vision_down_targets.front();
   }
@@ -418,17 +389,9 @@ private:
     if (command ==
         ground_station_msgs::msg::GroundCommand::CMD_GOTO) {
       if (!msg->has_goal) {
-        RCLCPP_WARN(
-          get_logger(),
-          "[GCS] GOTO ignored: has_goal=false");
-
         return;
       }
 
-      /*
-       * 地面站发送的 z 按离地高度理解。
-       * PX4 本地坐标为 NED，向上是负 z。
-       */
       const float z = -std::fabs(msg->z);
 
       ctx_.detected_targets.push_back(
@@ -448,80 +411,63 @@ private:
 
     if (command ==
         ground_station_msgs::msg::GroundCommand::CMD_START) {
-      RCLCPP_WARN(
-        get_logger(),
-        "[GCS] START received");
-
+      RCLCPP_WARN(get_logger(), "[GCS] START");
       return;
     }
 
     if (command ==
         ground_station_msgs::msg::GroundCommand::CMD_PAUSE) {
-      RCLCPP_WARN(
-        get_logger(),
-        "[GCS] PAUSE received");
-
+      RCLCPP_WARN(get_logger(), "[GCS] PAUSE");
       return;
     }
 
     if (command ==
         ground_station_msgs::msg::GroundCommand::CMD_RESUME) {
-      RCLCPP_WARN(
-        get_logger(),
-        "[GCS] RESUME received");
-
+      RCLCPP_WARN(get_logger(), "[GCS] RESUME");
       return;
     }
 
     if (command ==
         ground_station_msgs::msg::GroundCommand::CMD_RTL) {
-      RCLCPP_WARN(
-        get_logger(),
-        "[GCS] RTL received");
-
+      RCLCPP_WARN(get_logger(), "[GCS] RTL");
       return;
     }
 
     if (command ==
         ground_station_msgs::msg::GroundCommand::CMD_LAND) {
-      RCLCPP_WARN(
-        get_logger(),
-        "[GCS] LAND received");
-
+      RCLCPP_WARN(get_logger(), "[GCS] LAND");
       ctx_.handover_to_px4_land = true;
       return;
     }
 
     if (command ==
         ground_station_msgs::msg::GroundCommand::CMD_RESET) {
-      RCLCPP_WARN(
-        get_logger(),
-        "[GCS] RESET received");
-
+      RCLCPP_WARN(get_logger(), "[GCS] RESET");
       return;
     }
 
     if (command ==
         ground_station_msgs::msg::GroundCommand::CMD_CLEAR_TRACK) {
+      ctx_.detected_targets.clear();
+
       RCLCPP_WARN(
         get_logger(),
-        "[GCS] CLEAR_TRACK received");
+        "[GCS] CLEAR_TRACK");
 
       return;
     }
 
     RCLCPP_WARN(
       get_logger(),
-      "[GCS] unknown command: type=%u raw='%s'",
-      static_cast<unsigned>(command),
-      msg->raw.c_str());
+      "[GCS] unknown command: %u",
+      static_cast<unsigned>(command));
   }
 
   void buildScheduler()
   {
     sched_.clear();
+    snake_task_ = nullptr;
 
-    // ===== 主线任务 =====
     sched_.add(
       std::make_unique<WaitHomeTask>(
         get_logger()));
@@ -552,15 +498,16 @@ private:
         2.0));
 
     SnakeGridTask::Config snake_cfg;
+
     snake_cfg.first_axis =
       SnakeGridTask::FirstAxis::X_FIRST;
+
+    snake_cfg.stop_mode =
+      SnakeGridTask::StopMode::LINE_END_ONLY;
 
     snake_cfg.x_cells = snake_x_cells_;
     snake_cfg.y_cells = snake_y_cells_;
     snake_cfg.cell_size = snake_cell_size_;
-
-    snake_cfg.stop_mode =
-      SnakeGridTask::StopMode::LINE_END_ONLY;
 
     snake_cfg.obstacle_cells = obstacle_cells_;
 
@@ -569,34 +516,57 @@ private:
     snake_cfg.max_step_m = snake_max_step_m_;
     snake_cfg.arrive_xy_m = snake_arrive_xy_m_;
     snake_cfg.arrive_z_m = snake_arrive_z_m_;
+
     snake_cfg.x_sign = 1;
     snake_cfg.y_sign = 1;
 
-    sched_.add(
+    auto snake_task =
       std::make_unique<SnakeGridTask>(
         get_logger(),
-        snake_cfg));
+        snake_cfg);
+
+    snake_task_ = snake_task.get();
+
+    sched_.add(std::move(snake_task));
+
+    /*
+     * X_FIRST蛇形路线的正常结束网格。
+     *
+     * y_cells为奇数：
+     *   最后一行正向扫描，结束在右端。
+     *
+     * y_cells为偶数：
+     *   最后一行反向扫描，结束在左端。
+     */
+    const int snake_end_x =
+      snake_y_cells_ % 2 == 1
+      ? snake_x_cells_ - 1
+      : 0;
+
+    const int snake_end_y =
+      snake_y_cells_ - 1;
+
     offboard_core_pkg::AStarGotoTask::Config astar_cfg;
 
     astar_cfg.cols = snake_x_cells_;
     astar_cfg.rows = snake_y_cells_;
     astar_cfg.cell_size = snake_cell_size_;
 
-    astar_cfg.start_cell = {7,9};
-    astar_cfg.goal_cell = {0,0};
+    astar_cfg.start_cell = {
+      snake_end_x,
+      snake_end_y
+    };
 
-    astar_cfg.obstacle_cells.clear();
-    astar_cfg.obstacle_cells.reserve(obstacle_cells_.size());
+    astar_cfg.goal_cell = {0, 0};
 
     for (const auto& obstacle : obstacle_cells_) {
       astar_cfg.obstacle_cells.push_back(
         offboard_core_pkg::AStarPlanner::Cell{
           obstacle.ix,
-          obstacle.iy
-        });
+          obstacle.iy});
     }
 
-    astar_cfg.max_step_m = 0.3;
+    astar_cfg.max_step_m = 0.03;
     astar_cfg.arrive_xy_m = 0.08;
     astar_cfg.arrive_z_m = 0.10;
     astar_cfg.hover_s = 0.40;
@@ -604,15 +574,18 @@ private:
     astar_cfg.x_sign = 1;
     astar_cfg.y_sign = 1;
 
-    sched_.add(std::make_unique<offboard_core_pkg::AStarGotoTask>(
-      get_logger(),
-      astar_cfg));
     sched_.add(
-      std::make_unique<offboard_core_pkg::Px4LandModeTask>(
+      std::make_unique<
+        offboard_core_pkg::AStarGotoTask>(
+        get_logger(),
+        astar_cfg));
+
+    sched_.add(
+      std::make_unique<
+        offboard_core_pkg::Px4LandModeTask>(
         get_logger(),
         *px4_));
 
-    // ===== 下视补盲辅助任务 =====
     sched_.addAux(
       std::make_unique<
         offboard_core_pkg::StartDownBlindCheckTask>(
@@ -636,10 +609,6 @@ private:
       return;
     }
 
-    /*
-     * 中断当前 SnakeGridTask，执行下视补盲。
-     * 补盲任务结束后 Scheduler 恢复之前的蛇形任务。
-     */
     if (sched_.interrupt(
           "START_DOWN_BLIND_CHECK",
           ctx_)) {
@@ -668,6 +637,34 @@ private:
     std_msgs::msg::Bool down_msg;
     down_msg.data = ctx_.vision_down_enable;
     vision_down_enable_pub_->publish(down_msg);
+  }
+
+  void publishMissionPlan()
+  {
+    if (snake_task_ == nullptr ||
+        !snake_task_->planReady()) {
+      return;
+    }
+
+    if (snake_task_->planId() ==
+        last_published_plan_id_) {
+      return;
+    }
+
+    ground_station_msgs::msg::MissionPlan msg;
+
+    msg.plan_id = snake_task_->planId();
+    msg.route_cells = snake_task_->routeCells();
+
+    mission_plan_pub_->publish(msg);
+
+    last_published_plan_id_ = msg.plan_id;
+
+    RCLCPP_INFO(
+      get_logger(),
+      "[MISSION_PLAN] plan=%u route_size=%zu",
+      static_cast<unsigned>(msg.plan_id),
+      msg.route_cells.size());
   }
 
   static std::string targetTypeToName(int type)
@@ -709,17 +706,52 @@ private:
 
     msg.header.stamp = now();
     msg.task_name = sched_.current_name();
-
-    msg.current_wp = sched_.done()
-      ? sched_.total_count()
-      : sched_.current_index() + 1;
-
-    msg.total_wp = sched_.total_count();
     msg.mission_done = sched_.done();
 
-    msg.target_type = ctx_.vision_offset.type;
+    /*
+     * 规划完成后，current_wp和total_wp表示蛇形路线进度。
+     *
+     * 地面站收到MissionPlan后，可用current_wp标记：
+     *
+     *   已完成路线
+     *   当前目标
+     *   未执行路线
+     */
+    if (snake_task_ != nullptr &&
+        snake_task_->planReady()) {
+      const std::size_t total =
+        snake_task_->totalWaypoints();
+
+      const std::size_t index =
+        snake_task_->currentIndex();
+
+      msg.total_wp =
+        static_cast<uint32_t>(total);
+
+      msg.current_wp =
+        total == 0
+        ? 0
+        : static_cast<uint32_t>(
+            std::min(index + 1, total));
+    } else {
+      msg.current_wp =
+        sched_.done()
+        ? static_cast<uint32_t>(
+            sched_.total_count())
+        : static_cast<uint32_t>(
+            sched_.current_index() + 1);
+
+      msg.total_wp =
+        static_cast<uint32_t>(
+          sched_.total_count());
+    }
+
+    msg.target_type =
+      ctx_.vision_offset.type;
+
     msg.target_name =
-      targetTypeToName(ctx_.vision_offset.type);
+      targetTypeToName(
+        ctx_.vision_offset.type);
 
     task_status_pub_->publish(msg);
   }
@@ -744,13 +776,11 @@ private:
       px4_->publish_offboard_control_mode(ctx_);
     }
 
-    /*
-     * 中断请求必须在 sched_.tick() 前处理。
-     */
     handleDownAlignInterrupt();
 
     sched_.tick(ctx_, dt);
 
+    publishMissionPlan();
     publishVisionGates();
 
     if (!sched_.done() &&
@@ -786,8 +816,17 @@ private:
 
 private:
   Context ctx_;
+
   std::unique_ptr<Px4Iface> px4_;
   Scheduler sched_;
+
+  /*
+   * Scheduler拥有SnakeGridTask对象。
+   * 这里只保存非拥有指针，用于读取规划路线和执行进度。
+   */
+  SnakeGridTask* snake_task_{nullptr};
+
+  uint32_t last_published_plan_id_{0};
 
   rclcpp::TimerBase::SharedPtr timer_;
   rclcpp::Time last_time_;
@@ -835,6 +874,10 @@ private:
     task_status_pub_;
 
   rclcpp::Publisher<
+    ground_station_msgs::msg::MissionPlan>::SharedPtr
+    mission_plan_pub_;
+
+  rclcpp::Publisher<
     std_msgs::msg::Bool>::SharedPtr
     vision_front_enable_pub_;
 
@@ -871,7 +914,8 @@ private:
 int main(int argc, char** argv)
 {
   rclcpp::init(argc, argv);
-  rclcpp::spin(std::make_shared<SnakeTest>());
+  rclcpp::spin(
+    std::make_shared<SnakeTest>());
   rclcpp::shutdown();
 
   return 0;

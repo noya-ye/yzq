@@ -367,7 +367,8 @@ void down_servo_cb(
 //任务的主要流程由 Scheduler 维护的任务链来执行，build_scheduler() 负责根据当前 Context 构建这个任务链。每当收到新的 GOTO 命令时，都会重建任务链，以确保 GoToTask 能读取到最新的 detected_targets。
   void build_scheduler()
   {
-    sched_.reset();
+    
+    sched_.clear();
 
     sched_.add(std::make_unique<WaitHomeTask>(get_logger()));
     sched_.add(std::make_unique<PresetpointTask>(get_logger()));
@@ -393,6 +394,7 @@ void down_servo_cb(
 
     sched_.add(std::make_unique<offboard_core_pkg::Px4LandModeTask>(
        get_logger(), *px4_));
+       sched_.reset();
   }
 
   void publish_vision_gates()

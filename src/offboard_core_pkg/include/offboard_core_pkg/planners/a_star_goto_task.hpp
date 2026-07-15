@@ -53,6 +53,7 @@
 #include "offboard_core_pkg/context.hpp"
 #include "offboard_core_pkg/itask.hpp"
 #include "a_star_planner.hpp"
+#include "offboard_core_pkg/planners/ego_vel_planner.hpp"
 
 #include <rclcpp/rclcpp.hpp>
 

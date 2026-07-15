@@ -6,25 +6,19 @@ def generate_launch_description():
     return LaunchDescription([
         Node(
             package="ground_station_bridge_pkg",
-            executable="ground_station_bridge_node",
-            name="ground_station_bridge_node",
+            executable="udp_ground_station_bridge",
+            name="udp_ground_station_bridge",
             output="screen",
-            parameters=[
-                {
-                    "enable_serial": False,
-                    "serial_device": "/dev/ttyUSB0",
-                    "baudrate": 115200,
-                    "print_tx": True,
+            parameters=[{
+                "bind_ip": "0.0.0.0",
+                "bind_port": 9000,
 
-                    "local_pos_topic": "/fmu/out/vehicle_local_position",
-                    "attitude_topic": "/fmu/out/vehicle_attitude",
-                    "vehicle_status_topic": "/fmu/out/vehicle_status_v1",
+                # 修改成树莓派地面站IP
+                "remote_ip": "192.168.31.187",
+                "remote_port": 9001,
 
-                    "task_status_topic": "/ground_station/task_status",
-                    "raw_cmd_topic": "/ground_station/cmd",
-                    "parsed_cmd_topic": "/ground_station/cmd_parsed",
-                    "telemetry_topic": "/ground_station/telemetry",
-                }
-            ],
+                "print_rx": True,
+                "print_tx": True,
+            }],
         )
     ])
