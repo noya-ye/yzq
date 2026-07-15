@@ -4,7 +4,7 @@
 #include <cmath>
 #include <cstdlib>
 #include <string>
-#include <vector>
+#include <unordered_set>
 
 namespace offboard_core_pkg
 {
@@ -94,18 +94,12 @@ void StartDownBlindCheckTask::onEnter(Context& ctx)
 
   last_down_frame_stamp_us_ = 0;
   last_control_frame_stamp_us_ = 0;
-  last_track_frame_stamp_us_ = 0;
 
   align_cmd_x_ = ctx.cx();
   align_cmd_y_ = ctx.cy();
 
   mcu_a_sent_ = false;
   mcu_b_sent_ = false;
-
-  next_track_id_ = 1;
-  locked_track_id_ = -1;
-  tracks_.clear();
-  track_queue_.clear();
 
   hold_z_ = ctx.takeoff_z;
 
@@ -141,8 +135,8 @@ void StartDownBlindCheckTask::onEnter(Context& ctx)
 
 ITask::Status StartDownBlindCheckTask::tick(Context& ctx, double dt)
 {
-  elapsed_ += dt;
-  print_elapsed_ += dt;
+  elapsed_ += dt;//表示当前任务从 onEnter() 开始，已经运行了多久。
+  print_elapsed_ += dt;//只用于控制日志打印频率，避免每 50 ms 打一条日志。
 
   const uint64_t frame_stamp = ctx.vision_down_targets_stamp_us;
 
@@ -178,7 +172,7 @@ ITask::Status StartDownBlindCheckTask::tick(Context& ctx, double dt)
 
     finish_task(ctx, false);
     return Status::SUCCESS;
-  }
+  }//安全保护，飞出MAX_RADIUS_M自动降落
 
   ctx.vision_front_enable = false;
   ctx.vision_down_enable = true;
@@ -236,13 +230,45 @@ ITask::Status StartDownBlindCheckTask::tick_wait_frame(Context& ctx)
     return Status::RUNNING;
   }
 
-  capture_tracks(ctx);
-  ever_seen_ = !track_queue_.empty();
+  ctx.blindcheck_queue.clear();
+  std::unordered_set<int32_t> ids;
+
+  for (const auto& target : ctx.vision_down_targets) {
+    if (target.track_id < 0 ||
+        target.type == 0 ||
+        target.score < static_cast<float>(score_thresh_)) {
+      continue;
+    }
+
+    if (!ids.insert(target.track_id).second) {
+      RCLCPP_ERROR(
+        logger_,
+        "[StartDownBlindCheckTask] duplicate ID in first frame: id=%d",
+        target.track_id);
+      continue;
+    }
+
+    ctx.blindcheck_queue.push_back(target);
+  }
+
+  std::sort(
+    ctx.blindcheck_queue.begin(),
+    ctx.blindcheck_queue.end(),
+    [](const VisionOffset& a, const VisionOffset& b) {
+      return a.cost < b.cost;
+    });
+
+  if (ctx.blindcheck_queue.empty()) {
+    return Status::RUNNING;
+  }
+
+  ctx.blindcheck_index = 0;
+  ever_seen_ = true;
 
   RCLCPP_WARN(
     logger_,
-    "[StartDownBlindCheckTask] captured tracks=%zu",
-    track_queue_.size());
+    "[StartDownBlindCheckTask] captured targets=%zu",
+    ctx.blindcheck_queue.size());
 
   state_ = BlindCheckState::PICK_NEXT;
   return Status::RUNNING;
@@ -264,52 +290,46 @@ ITask::Status StartDownBlindCheckTask::tick_pick_next(Context& ctx)
   mcu_a_sent_ = false;
   mcu_b_sent_ = false;
 
-  if (ctx.blindcheck_index >= static_cast<int>(track_queue_.size())) {
+  if (ctx.blindcheck_index >=
+      static_cast<int>(ctx.blindcheck_queue.size())) {
     RCLCPP_WARN(logger_, "[StartDownBlindCheckTask] all targets finished");
     state_ = BlindCheckState::FINISH;
     return Status::RUNNING;
   }
 
-  locked_track_id_ = track_queue_[ctx.blindcheck_index];
-  TargetTrack* track = find_track(locked_track_id_);
-
-  if (track == nullptr) {
-    ctx.blindcheck_index++;
-    return Status::RUNNING;
-  }
-
-  ctx.blindcheck_locked_target = track->observation;
+  ctx.blindcheck_locked_target =
+    ctx.blindcheck_queue[ctx.blindcheck_index];
   ctx.blindcheck_locked = true;
 
   RCLCPP_WARN(
     logger_,
-    "[StartDownBlindCheckTask] PICK_NEXT %d/%zu track=%d type=%d(%s) anchor=(%.3f %.3f)",
+    "[StartDownBlindCheckTask] PICK_NEXT %d/%zu id=%d type=%d(%s) "
+    "dx=%.3f dy=%.3f score=%.1f",
     ctx.blindcheck_index + 1,
-    track_queue_.size(),
-    track->id,
-    track->type,
-    target_type_to_name(track->type).c_str(),
-    track->world_x,
-    track->world_y);
+    ctx.blindcheck_queue.size(),
+    ctx.blindcheck_locked_target.track_id,
+    ctx.blindcheck_locked_target.type,
+    target_type_to_name(ctx.blindcheck_locked_target.type).c_str(),
+    ctx.blindcheck_locked_target.dx,
+    ctx.blindcheck_locked_target.dy,
+    ctx.blindcheck_locked_target.score);
 
   state_ = BlindCheckState::ALIGN_TARGET;
   return Status::RUNNING;
 }
 
-ITask::Status StartDownBlindCheckTask::tick_align_target(Context& ctx, double dt)
+ITask::Status StartDownBlindCheckTask::tick_align_target(
+  Context& ctx,
+  double dt)
 {
   align_elapsed_ += dt;
 
   if (align_elapsed_ >= align_timeout_s_) {
     RCLCPP_WARN(
       logger_,
-      "[StartDownBlindCheckTask] ALIGN timeout track=%d after %.2fs",
-      locked_track_id_,
+      "[StartDownBlindCheckTask] ALIGN timeout id=%d after %.2fs",
+      ctx.blindcheck_locked_target.track_id,
       align_elapsed_);
-
-    if (TargetTrack* track = find_track(locked_track_id_)) {
-      track->processed = true;
-    }
 
     ctx.blindcheck_locked = false;
     ctx.vision_target_locked = false;
@@ -334,8 +354,8 @@ ITask::Status StartDownBlindCheckTask::tick_align_target(Context& ctx, double dt
       print_elapsed_ = 0.0;
       RCLCPP_WARN(
         logger_,
-        "[StartDownBlindCheckTask] track=%d lost=%.2fs align=%.2fs",
-        locked_track_id_,
+        "[StartDownBlindCheckTask] id=%d lost=%.2fs align=%.2fs",
+        ctx.blindcheck_locked_target.track_id,
         align_lost_elapsed_,
         align_elapsed_);
     }
@@ -343,12 +363,8 @@ ITask::Status StartDownBlindCheckTask::tick_align_target(Context& ctx, double dt
     if (align_lost_elapsed_ >= align_lost_timeout_s_) {
       RCLCPP_WARN(
         logger_,
-        "[StartDownBlindCheckTask] skip lost track=%d",
-        locked_track_id_);
-
-      if (TargetTrack* track = find_track(locked_track_id_)) {
-        track->processed = true;
-      }
+        "[StartDownBlindCheckTask] skip lost id=%d",
+        ctx.blindcheck_locked_target.track_id);
 
       ctx.blindcheck_locked = false;
       mcu_b_sent_ = false;
@@ -373,19 +389,30 @@ ITask::Status StartDownBlindCheckTask::tick_align_target(Context& ctx, double dt
   float dwy = 0.0f;
   image_offset_to_world_delta(ctx, dx, dy, dwx, dwy);
 
-  constexpr float CORRECTION_GAIN = 0.4f;
-  dwx *= CORRECTION_GAIN;
-  dwy *= CORRECTION_GAIN;
+ // 远离目标时快速纠偏，接近目标后自动减速
+float correction_gain = 0.35f;
+float dynamic_max_step = 0.03f;
 
-  const float norm = std::hypot(dwx, dwy);
-  const float max_step = static_cast<float>(max_step_m_);
+if (err_m > 0.12f) {
+  correction_gain = 0.75f;
+  dynamic_max_step = static_cast<float>(max_step_m_);
+} else if (err_m > 0.07f) {
+  correction_gain = 0.55f;
+  dynamic_max_step = std::min(
+    static_cast<float>(max_step_m_),
+    0.07f);
+}
 
-  if (norm > max_step && norm > 1e-6f) {
-    const float scale = max_step / norm;
-    dwx *= scale;
-    dwy *= scale;
-  }
+dwx *= correction_gain;
+dwy *= correction_gain;
 
+const float norm = std::hypot(dwx, dwy);
+
+if (norm > dynamic_max_step && norm > 1e-6f) {
+  const float scale = dynamic_max_step / norm;
+  dwx *= scale;
+  dwy *= scale;
+}
   const uint64_t frame_stamp = ctx.vision_down_targets_stamp_us;
   const bool new_frame = frame_stamp != last_control_frame_stamp_us_;
   const float enter_tol = static_cast<float>(align_tol_m_);
@@ -421,9 +448,9 @@ ITask::Status StartDownBlindCheckTask::tick_align_target(Context& ctx, double dt
     print_elapsed_ = 0.0;
     RCLCPP_INFO(
       logger_,
-      "[StartDownBlindCheckTask] ALIGN track=%d dx=%.3f dy=%.3f err=%.3f "
+      "[StartDownBlindCheckTask] ALIGN id=%d dx=%.3f dy=%.3f err=%.3f "
       "sp=(%.3f %.3f) stable=%d/%d new=%d age=%.2f",
-      locked_track_id_,
+      matched.track_id,
       dx,
       dy,
       err_m,
@@ -438,13 +465,9 @@ ITask::Status StartDownBlindCheckTask::tick_align_target(Context& ctx, double dt
   if (stable_count_ >= stable_required_) {
     RCLCPP_WARN(
       logger_,
-      "[StartDownBlindCheckTask] track=%d aligned, err=%.3f",
-      locked_track_id_,
+      "[StartDownBlindCheckTask] id=%d aligned, err=%.3f",
+      matched.track_id,
       err_m);
-
-    if (TargetTrack* track = find_track(locked_track_id_)) {
-      track->processed = true;
-    }
 
     remove_nearby_rough_targets(ctx, ctx.cx(), ctx.cy());
 
@@ -480,235 +503,68 @@ ITask::Status StartDownBlindCheckTask::tick_return_origin(Context& ctx)
       logger_,
       "[StartDownBlindCheckTask] RETURN_ORIGIN %d/%zu dist=%.3f",
       ctx.blindcheck_index + 1,
-      track_queue_.size(),
+      ctx.blindcheck_queue.size(),
       dist);
   }
 
   if (dist < 0.10f) {
     ctx.blindcheck_index++;
-    locked_track_id_ = -1;
     state_ = BlindCheckState::PICK_NEXT;
   }
 
   return Status::RUNNING;
 }
 
-bool StartDownBlindCheckTask::offset_fresh(const Context& ctx) const
-{
-  return ctx.vision_offset.stamp_us != 0 && down_frame_age_s_ < 0.30;
-}
-
 bool StartDownBlindCheckTask::down_targets_fresh(const Context& ctx) const
 {
   return ctx.vision_down_targets_stamp_us != 0 &&
          ctx.vision_down_targets_stamp_us == last_down_frame_stamp_us_ &&
-         down_frame_age_s_ < 0.30;
-}
-
-void StartDownBlindCheckTask::capture_tracks(Context& ctx)
-{
-  tracks_.clear();
-  track_queue_.clear();
-  ctx.blindcheck_queue.clear();
-
-  struct QueueItem
-  {
-    float cost;
-    int track_id;
-  };
-
-  std::vector<QueueItem> order;
-
-  for (const auto& target : ctx.vision_down_targets) {
-    if (target.type == 0 ||
-        target.score < static_cast<float>(score_thresh_)) {
-      continue;
-    }
-
-    TargetTrack track;
-    track.id = next_track_id_++;
-    track.type = target.type;
-    track.observation = target;
-    track.seen_stamp_us = ctx.vision_down_targets_stamp_us;
-    target_world_position(ctx, target, track.world_x, track.world_y);
-
-    tracks_.push_back(track);
-    order.push_back({target.cost, track.id});
-    ctx.blindcheck_queue.push_back(target);
-  }
-
-  std::sort(
-    order.begin(),
-    order.end(),
-    [](const QueueItem& a, const QueueItem& b) {
-      return a.cost < b.cost;
-    });
-
-  ctx.blindcheck_queue.clear();
-
-  for (const auto& item : order) {
-    track_queue_.push_back(item.track_id);
-
-    if (TargetTrack* track = find_track(item.track_id)) {
-      ctx.blindcheck_queue.push_back(track->observation);
-    }
-  }
-
-  last_track_frame_stamp_us_ = ctx.vision_down_targets_stamp_us;
-}
-
-void StartDownBlindCheckTask::update_tracks_from_frame(const Context& ctx)
-{
-  const uint64_t stamp = ctx.vision_down_targets_stamp_us;
-
-  if (!down_targets_fresh(ctx) ||
-      stamp == last_track_frame_stamp_us_) {
-    return;
-  }
-
-  last_track_frame_stamp_us_ = stamp;
-
-  struct Detection
-  {
-    VisionOffset target;
-    float world_x;
-    float world_y;
-  };
-
-  struct Candidate
-  {
-    float dist2;
-    std::size_t track_index;
-    std::size_t detection_index;
-  };
-
-  std::vector<Detection> detections;
-
-  for (const auto& target : ctx.vision_down_targets) {
-    if (target.type == 0 ||
-        target.score < static_cast<float>(score_thresh_)) {
-      continue;
-    }
-
-    Detection detection;
-    detection.target = target;
-    target_world_position(
-      ctx,
-      target,
-      detection.world_x,
-      detection.world_y);
-    detections.push_back(detection);
-  }
-
-  std::vector<Candidate> candidates;
-  const float max_gate = static_cast<float>(track_match_gate_m_);
-  std::vector<float> track_gate(tracks_.size(), max_gate);
-
-  // 同类型轨迹使用互不重叠的归属半径。
-  // 落在两个目标中间的模糊检测会被拒绝，而不是串到另一个目标。
-  for (std::size_t i = 0; i < tracks_.size(); ++i) {
-    for (std::size_t j = 0; j < tracks_.size(); ++j) {
-      if (i == j || tracks_[i].type != tracks_[j].type) {
-        continue;
-      }
-
-      const float separation = std::hypot(
-        tracks_[i].world_x - tracks_[j].world_x,
-        tracks_[i].world_y - tracks_[j].world_y);
-
-      track_gate[i] = std::min(track_gate[i], 0.45f * separation);
-    }
-  }
-
-  for (std::size_t i = 0; i < tracks_.size(); ++i) {
-    const float gate2 = track_gate[i] * track_gate[i];
-
-    for (std::size_t j = 0; j < detections.size(); ++j) {
-      if (tracks_[i].type != detections[j].target.type) {
-        continue;
-      }
-
-      const float dx = detections[j].world_x - tracks_[i].world_x;
-      const float dy = detections[j].world_y - tracks_[i].world_y;
-      const float dist2 = dx * dx + dy * dy;
-
-      if (dist2 < gate2) {
-        candidates.push_back({dist2, i, j});
-      }
-    }
-  }
-
-  std::sort(
-    candidates.begin(),
-    candidates.end(),
-    [](const Candidate& a, const Candidate& b) {
-      return a.dist2 < b.dist2;
-    });
-
-  std::vector<bool> track_used(tracks_.size(), false);
-  std::vector<bool> detection_used(detections.size(), false);
-
-  for (const auto& candidate : candidates) {
-    if (track_used[candidate.track_index] ||
-        detection_used[candidate.detection_index]) {
-      continue;
-    }
-
-    TargetTrack& track = tracks_[candidate.track_index];
-    const Detection& detection = detections[candidate.detection_index];
-
-    track.observation = detection.target;
-    track.seen_stamp_us = stamp;
-
-    track_used[candidate.track_index] = true;
-    detection_used[candidate.detection_index] = true;
-  }
-}
-
-StartDownBlindCheckTask::TargetTrack*
-StartDownBlindCheckTask::find_track(int id)
-{
-  for (auto& track : tracks_) {
-    if (track.id == id) {
-      return &track;
-    }
-  }
-  return nullptr;
+         down_frame_age_s_ < 0.7;
 }
 
 bool StartDownBlindCheckTask::find_locked_target_in_frame(
-    Context& ctx,
-    VisionOffset& matched)
+  const Context& ctx,
+  VisionOffset& matched) const
 {
-  if (!down_targets_fresh(ctx) || locked_track_id_ < 0) {
+  if (!down_targets_fresh(ctx) ||
+      ctx.vision_down_targets.empty()) {
     return false;
   }
 
-  update_tracks_from_frame(ctx);
+  const int32_t locked_id =
+    ctx.blindcheck_locked_target.track_id;
 
-  TargetTrack* track = find_track(locked_track_id_);
-
-  if (track == nullptr ||
-      track->seen_stamp_us != ctx.vision_down_targets_stamp_us) {
+  if (locked_id < 0) {
     return false;
   }
 
-  matched = track->observation;
-  return true;
-}
+  bool found = false;
 
-void StartDownBlindCheckTask::target_world_position(
-    const Context& ctx,
-    const VisionOffset& target,
-    float& world_x,
-    float& world_y) const
-{
-  float dwx = 0.0f;
-  float dwy = 0.0f;
-  image_offset_to_world_delta(ctx, target.dx, target.dy, dwx, dwy);
+  for (const auto& target : ctx.vision_down_targets) {
+    if (target.track_id != locked_id) {
+      continue;
+    }
 
-  world_x = ctx.cx() + dwx;
-  world_y = ctx.cy() + dwy;
+    // 同一个 ID 一帧出现多次，说明 Vision ID 异常。
+    if (found) {
+      return false;
+    }
+
+    if (target.score <
+        static_cast<float>(score_thresh_)) {
+      continue;
+    }
+
+    matched = target;
+
+    // ID决定目标身份，保留最初锁定的类别。
+    matched.type =
+      ctx.blindcheck_locked_target.type;
+
+    found = true;
+  }
+
+  return found;
 }
 
 void StartDownBlindCheckTask::finish_task(Context& ctx, bool aligned)

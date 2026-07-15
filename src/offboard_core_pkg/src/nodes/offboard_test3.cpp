@@ -7,6 +7,8 @@
 #include <string>
 #include <algorithm>
 #include <limits>
+#include <cstdint>
+#include <unordered_map>
 
 #include "rclcpp/rclcpp.hpp"
 #include "rclcpp/qos.hpp"
@@ -218,7 +220,7 @@ private:
 void down_servo_cb(
   const custom_vision_msgs::msg::ServoTargetArray::SharedPtr msg)
 {
-  // 下视相机没开时，不更新偏差，避免旧数据污染
+  // 下视相机关闭时不接收数据，防止旧帧污染任务。
   if (!ctx_.vision_down_enable) {
     return;
   }
@@ -227,52 +229,86 @@ void down_servo_cb(
     static_cast<uint64_t>(this->now().nanoseconds() / 1000ULL);
 
   ctx_.vision_last_update_us = now_us;
-
-  // 保存这一帧所有有效下视目标
+  ctx_.vision_down_targets_stamp_us = now_us;
   ctx_.vision_down_targets.clear();
 
   if (msg->targets.empty()) {
-    ctx_.vision_offset.type = 0;
-    ctx_.vision_offset.score = 0.0f;
-    ctx_.vision_offset.stamp_us = 0;
-    ctx_.vision_down_targets_stamp_us = now_us;
+    ctx_.vision_offset = VisionOffset{};
     return;
   }
 
-  for (const auto& t : msg->targets) {
-    if (t.type == 0) {
+  // Vision 把稳定 track_id 写在 ServoTarget.x 中。
+  const auto read_track_id = [](float raw_id, int32_t& track_id) {
+    if (!std::isfinite(raw_id) || raw_id < 0.0f || raw_id > 1000000.0f) {
+      return false;
+    }
+
+    const float rounded = std::round(raw_id);
+    if (std::fabs(raw_id - rounded) > 1e-3f) {
+      return false;
+    }
+
+    track_id = static_cast<int32_t>(rounded);
+    return true;
+  };
+
+  // 先统计 ID，重复 ID 整组拒绝，避免错误锁定。
+  std::unordered_map<int32_t, int> id_count;
+
+  for (const auto& target : msg->targets) {
+    if (target.type == 0 || target.score < 500.0f) {
       continue;
     }
 
-    if (t.score < 500.0f) {
+    int32_t track_id = -1;
+    if (!read_track_id(target.x, track_id)) {
+      continue;
+    }
+
+    id_count[track_id]++;
+  }
+
+  for (const auto& target : msg->targets) {
+    if (target.type == 0 || target.score < 500.0f) {
+      continue;
+    }
+
+    int32_t track_id = -1;
+    if (!read_track_id(target.x, track_id)) {
+      continue;
+    }
+
+    if (id_count[track_id] != 1) {
+      RCLCPP_WARN_THROTTLE(
+        get_logger(),
+        *get_clock(),
+        1000,
+        "[VISION_DOWN] reject duplicate track_id=%d",
+        track_id);
       continue;
     }
 
     VisionOffset vo;
-    vo.dx = t.dx;
-    vo.dy = t.dy;
-    vo.type = t.type;
-    vo.score = t.score;
+    vo.track_id = track_id;
+    vo.dx = target.dx;
+    vo.dy = target.dy;
+    vo.type = target.type;
+    vo.score = target.score;
     vo.stamp_us = now_us;
 
-    // cost 越小越优先
-    const float center_cost = t.dx * t.dx + t.dy * t.dy;
-    const float area_bonus = 1e-6f * t.score;
+    const float center_cost =
+      target.dx * target.dx + target.dy * target.dy;
+    const float area_bonus = 1e-6f * target.score;
     vo.cost = center_cost - area_bonus;
 
     ctx_.vision_down_targets.push_back(vo);
   }
 
-  ctx_.vision_down_targets_stamp_us = now_us;
-
   if (ctx_.vision_down_targets.empty()) {
-    ctx_.vision_offset.type = 0;
-    ctx_.vision_offset.score = 0.0f;
-    ctx_.vision_offset.stamp_us = 0;
+    ctx_.vision_offset = VisionOffset{};
     return;
   }
 
-  // 按 cost 从小到大排序
   std::sort(
     ctx_.vision_down_targets.begin(),
     ctx_.vision_down_targets.end(),
@@ -280,15 +316,17 @@ void down_servo_cb(
       return a.cost < b.cost;
     });
 
-  // 兜底：仍然保留第一个最优目标给旧逻辑兼容
+  // 兼容仍读取 vision_offset 的旧逻辑。
   ctx_.vision_offset = ctx_.vision_down_targets.front();
 
   RCLCPP_INFO_THROTTLE(
     get_logger(),
     *get_clock(),
     500,
-    "[VISION_DOWN] frame targets=%zu best type=%d dx=%.3f dy=%.3f score=%.1f cost=%.4f",
+    "[VISION_DOWN] targets=%zu best_id=%d type=%d "
+    "dx=%.3f dy=%.3f score=%.1f cost=%.4f",
     ctx_.vision_down_targets.size(),
+    ctx_.vision_offset.track_id,
     ctx_.vision_offset.type,
     ctx_.vision_offset.dx,
     ctx_.vision_offset.dy,
@@ -383,7 +421,7 @@ void down_servo_cb(
       get_logger(),
       timeout_s_,    // timeout_s
       align_tol_m_,   // align_tol_m
-      20,     // stable_required，20*50ms=1s
+      stable_required_,  // 连续有效视觉帧数
       k_img_to_meter_,   // k_img_to_meter，实机需要调
       max_step_m_,   // max_step_m
       500.0,  // score_thresh，按图形面积调

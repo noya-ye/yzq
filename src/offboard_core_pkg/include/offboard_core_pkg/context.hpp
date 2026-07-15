@@ -50,16 +50,18 @@ struct VisionInfo
   BlockType type{BlockType::NONE};
   float score{0.0f};
   uint64_t stamp_us{0};
-  int32_t track_id{-1};
 };
 
-struct VisionOffset    //视觉对准
+struct VisionOffset
 {
-  float dx{0.0f};      // 图像中心偏差，右为正
-  float dy{0.0f};      // 图像中心偏差，下为正
+  float dx{0.0f};          // 图像中心偏差，右为正
+  float dy{0.0f};          // 图像中心偏差，下为正
+
+  int32_t track_id{-1};     // Vision 提供的稳定目标 ID
+
   float score{0.0f};
-  int type{0};         // 0: 无效
-  float cost{0.0f};    // 排序代价，越小越优先
+  int type{0};             // 0：无效
+  float cost{0.0f};        // 排序代价，越小越优先
   uint64_t stamp_us{0};
 };
 
