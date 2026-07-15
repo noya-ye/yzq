@@ -394,26 +394,34 @@ std::string target_type_to_name(int type) const
 }
  
 
-  void on_timer()
-  {
-    const auto t = now();
-    const double dt = (t - last_time_).seconds();
-    last_time_ = t;
+void on_timer()
+{
+  const auto t = now();
 
-    if (!sched_.done() && !ctx_.handover_to_px4_land) {
-      px4_->publish_offboard_control_mode(ctx_);
-    }
+  const double dt = std::clamp(
+    (t - last_time_).seconds(),
+    0.0,
+    0.20);
 
-    sched_.tick(ctx_, dt);
+  last_time_ = t;
 
-    // 每一拍发布视觉门控
-    publish_vision_gates();
+  // 先让当前任务更新控制模式和 setpoint
+  sched_.tick(ctx_, dt);
 
-    if (!sched_.done() && !ctx_.handover_to_px4_land) {
-      px4_->publish_setpoint_from_ctx(ctx_);
-    }
+  // 每一拍发布视觉门控
+  publish_vision_gates();
 
+  // Scheduler 已结束或已移交 PX4 LAND，
+  // 不再继续发送 Offboard 控制消息
+  if (sched_.done() ||
+      ctx_.handover_to_px4_land) {
+    return;
   }
+
+  // 控制模式与 setpoint 均来自本周期最新 Context
+  px4_->publish_offboard_control_mode(ctx_);
+  px4_->publish_setpoint_from_ctx(ctx_);
+}
 
 private:
   Context ctx_;

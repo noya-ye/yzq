@@ -273,6 +273,9 @@ struct Context
   // 控制输出
   // ============================================================
   bool use_vel_ctrl{false};
+  // false：普通位置控制，只发送 position
+  // true：轨迹控制，发送 position + velocity + acceleration
+  bool use_trajectory_ff{false};
 
   float sp_x{0.0f};
   float sp_y{0.0f};
