@@ -188,7 +188,7 @@ ITask::Status StartDownBlindCheckTask::tick(Context& ctx, double dt)
     RCLCPP_WARN(
       logger_,
       "[StartDownBlindCheckTask] timeout %.2fs, no target",
-      elapsed_);
+      elapsed_);//超时保护，无目标直接下一个任务
 
     finish_task(ctx, false);
     return Status::SUCCESS;
@@ -225,7 +225,7 @@ ITask::Status StartDownBlindCheckTask::tick_wait_frame(Context& ctx)
         "[StartDownBlindCheckTask] WAIT_FRAME fresh=%d targets=%zu elapsed=%.2f",
         down_targets_fresh(ctx) ? 1 : 0,
         ctx.vision_down_targets.size(),
-        elapsed_);
+        elapsed_);//fresh为1则有效，为0则无效
     }
     return Status::RUNNING;
   }
@@ -246,7 +246,7 @@ ITask::Status StartDownBlindCheckTask::tick_wait_frame(Context& ctx)
         "[StartDownBlindCheckTask] duplicate ID in first frame: id=%d",
         target.track_id);
       continue;
-    }
+    }//这段代码是在首帧建立补盲目标队列时检查 ID 是否重复。
 
     ctx.blindcheck_queue.push_back(target);
   }

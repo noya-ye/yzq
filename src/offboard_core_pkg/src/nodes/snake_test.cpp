@@ -861,6 +861,7 @@ private:
   SnakeGridTask* snake_task_{nullptr};
 
   uint32_t last_published_plan_id_{0};
+  bool mission_started_{false};
 
   rclcpp::TimerBase::SharedPtr timer_;
   rclcpp::Time last_time_;

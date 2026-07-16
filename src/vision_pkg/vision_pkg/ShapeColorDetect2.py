@@ -3,9 +3,8 @@ from rclpy.node import Node
 import cv2
 import numpy as np
 from cv_bridge import CvBridge
-from sensor_msgs.msg import Image
 from std_msgs.msg import Bool
-from custom_vision_msgs.msg import ServoTarget, ServoTargetArray
+from custom_vision_msgs.msg import ServoTarget,ServoTargetArray
 
 def get_map_roi(frame):
     hsv=cv2.cvtColor(frame,cv2.COLOR_BGR2HSV)
@@ -23,42 +22,26 @@ def get_map_roi(frame):
         cv2.drawContours(roi_mask,[hull],-1,255,-1)
     return roi_mask
 
-
 class ShapeColorNode(Node):
     def __init__(self):
         super().__init__('shape_color_down_node')
         self.bridge=CvBridge()
-
         self.cap=cv2.VideoCapture(0)
-        self.cap.set(cv2.CAP_PROP_FRAME_WIDTH,640)
-        self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT,480)
-        self.cap.set(cv2.CAP_PROP_FPS,30)
+        
         if not self.cap.isOpened():
             self.get_logger().error("Camera open failed")
-
         self.enabled=False
         self.create_subscription(Bool,'/vision/down/enable',self.enable_callback,10)
-
         self.pub=self.create_publisher(
             ServoTargetArray,
             '/vision/down/servo_targets',
             10
         )
-
-        self.debug_pub=self.create_publisher(
-            Image,
-            '/vision/down/debug_image',
-            10
-        )
-
-        self.timer=self.create_timer(0.03,self.loop)
-
+        self.timer=self.create_timer(0.05,self.loop)
         self.get_logger().info("ShapeColorDetect_Node started")
-
 
     def enable_callback(self,msg):
         self.enabled=bool(msg.data)
-
 
     def encode_type(self,color,shape):
         table={
@@ -70,106 +53,57 @@ class ShapeColorNode(Node):
         }
         return table.get((color,shape),0)
 
-
-    def draw_center_cross(self,img):
-        h,w=img.shape[:2]
-        cx=w//2
-        cy=h//2
-        cv2.line(img,(cx-20,cy),(cx+20,cy),(255,255,255),2)
-        cv2.line(img,(cx,cy-20),(cx,cy+20),(255,255,255),2)
-        cv2.circle(img,(cx,cy),5,(255,255,255),-1)
-
-
-    def draw_text_bg(self,img,text,org,color=(255,255,255)):
-        font=cv2.FONT_HERSHEY_SIMPLEX
-        scale=0.55
-        thickness=2
-        (tw,th),base=cv2.getTextSize(text,font,scale,thickness)
-        x,y=org
-        cv2.rectangle(img,(x-3,y-th-5),(x+tw+3,y+base+3),(0,0,0),-1)
-        cv2.putText(img,text,org,font,scale,color,thickness,cv2.LINE_AA)
-
-
     def loop(self):
         if not self.cap.isOpened():
             return
-
         ret,img=self.cap.read()
         if not ret:
             return
-
-        debug=img.copy()
         h,w=img.shape[:2]
-        self.draw_center_cross(debug)
-
         if not self.enabled:
-            self.draw_text_bg(debug,"ENABLE: false",(10,30),(0,0,255))
-            msg=self.bridge.cv2_to_imgmsg(cv2.resize(debug,(640,480)),"bgr8")
-            msg.header.stamp=self.get_clock().now().to_msg()
-            self.debug_pub.publish(msg)
             return
-
-        img=cv2.GaussianBlur(img,(5,5),0)
+        img=cv2.GaussianBlur(img,(7,7),0)
         roi_mask=get_map_roi(img)
         img=cv2.bitwise_and(img,img,mask=roi_mask)
         hsv=cv2.cvtColor(img,cv2.COLOR_BGR2HSV)
-
         target_array=ServoTargetArray()
-
-        # 临时保存检测结果
         detected_objects=[]
-
         color_ranges={
             "red":[([0,60,40],[20,255,255]),([150,60,40],[180,255,255])],
             "yellow":[([22,70,170],[36,255,255])],
             "green":[([40,50,80],[85,255,255])],
             "blue":[([85,60,40],[145,255,255])]
         }
-
-
         for color_name,ranges in color_ranges.items():
             mask=None
-
             for lower,upper in ranges:
                 temp=cv2.inRange(hsv,np.array(lower),np.array(upper))
                 mask=temp if mask is None else cv2.bitwise_or(mask,temp)
-
             contours,_=cv2.findContours(mask,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
-
             for cnt in contours:
                 hull=cv2.convexHull(cnt)
                 area=cv2.contourArea(hull)
-
                 if area<3700:
                     continue
-
                 perimeter=cv2.arcLength(hull,True)
-
                 if perimeter==0:
                     continue
-
                 circularity=4*np.pi*area/(perimeter*perimeter)
                 approx=cv2.approxPolyDP(hull,0.02*perimeter,True)
                 vertices=len(approx)
-
                 if circularity>0.976:
                     shape="circle"
                 elif 3<=vertices<=6:
                     shape=str(vertices)
                 else:
                     continue
-
                 M=cv2.moments(hull)
-
                 if M["m00"]==0:
                     continue
-
                 cx=int(M["m10"]/M["m00"])
                 cy=int(M["m01"]/M["m00"])
-
-                dx=(cx-w*0.5)
-                dy=(cy-h*0.5)
-
+                dx=(cx-w*0.5)/3.0
+                dy=(cy-h*0.5)/3.0
                 detected_objects.append({
                     "cx":cx,
                     "cy":cy,
@@ -180,33 +114,16 @@ class ShapeColorNode(Node):
                     "color":color_name,
                     "shape":shape
                 })
-
-                cv2.drawContours(debug,[hull],-1,(0,255,0),2)
-                cv2.circle(debug,(cx,cy),5,(0,255,255),-1)
-                        # ==========================
-        # 临时ID分配
-        # ==========================
         detected_objects.sort(key=lambda obj:obj["cx"])
-
         for idx,obj in enumerate(detected_objects):
-
             t=ServoTarget()
-
-            # 左到右分配ID
-            # 左边=1 右边=2
             track_id=idx+1
-
             t.x=float(track_id)
-
             t.y=0.0
-
             t.dx=float(obj["dx"])
             t.dy=float(obj["dy"])
-
             t.type=int(obj["type"])
-
             t.score=float(obj["score"])
-
             target_array.targets.append(t)
             self.get_logger().info(
                 f"[VISION_DOWN] "
@@ -219,77 +136,21 @@ class ShapeColorNode(Node):
                 f"dy={obj['dy']:.3f} "
                 f"score={obj['score']:.1f}"
             )
-
-            # debug显示ID
-            self.draw_text_bg(
-                debug,
-                f"ID:{idx+1} {obj['color']} {obj['shape']}",
-                (obj["cx"],obj["cy"]-15),
-                (255,255,255)
-            )
-
-
-        # ==========================
-        # 发布目标
-        # ==========================
         self.pub.publish(target_array)
 
-
-        self.draw_text_bg(
-            debug,
-            f"targets:{len(target_array.targets)}",
-            (10,30),
-            (0,255,0)
-        )
-
-
-        # ==========================
-        # 发布debug图像
-        # ==========================
-        debug_show=cv2.resize(
-            debug,
-            (640,480)
-        )
-
-
-        msg=self.bridge.cv2_to_imgmsg(
-            debug_show,
-            "bgr8"
-        )
-
-        msg.header.stamp=self.get_clock().now().to_msg()
-        msg.header.frame_id="camera"
-
-        self.debug_pub.publish(msg)
-
-
-
-    # ==========================
-    # 释放摄像头
-    # ==========================
     def destroy_node(self):
-
         if self.cap:
             self.cap.release()
-
         super().destroy_node()
 
-
-
 def main(args=None):
-
     rclpy.init(args=args)
-
     node=ShapeColorNode()
-
     try:
         rclpy.spin(node)
-
     finally:
         node.destroy_node()
         rclpy.shutdown()
-
-
 
 if __name__=="__main__":
     main()

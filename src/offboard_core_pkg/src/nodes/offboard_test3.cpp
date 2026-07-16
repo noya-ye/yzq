@@ -80,7 +80,7 @@ public:
 
     v_xy_tol_ = this->declare_parameter<double>("v_xy_tol", 0.2);
     v_z_tol_  = this->declare_parameter<double>("v_z_tol", 0.2);
-    stable_required_ = this->declare_parameter<int>("stable_required", 12);
+    stable_required_ = this->declare_parameter<int>("stable_required", 8);
 
     return_xy_tol_    = this->declare_parameter<double>("return_xy_tol", 0.20);
     return_step_xy_   = this->declare_parameter<double>("return_step_xy", 0.3);
@@ -88,7 +88,7 @@ public:
     home_stabilize_s_ = this->declare_parameter<double>("home_stabilize_s", 1.5);
 
     timeout_s_ = this->declare_parameter<double>("down_blind_timeout_s", 4.0);
-    align_tol_m_ = this->declare_parameter<double>("down_blind_align_tol_m", 0.02);
+    align_tol_m_ = this->declare_parameter<double>("down_blind_align_tol_m", 0.6);
     k_img_to_meter_ = this->declare_parameter<double>("down_blind_k_img_to_meter", 0.45);
     max_step_m_ = this->declare_parameter<double>("down_blind_max_step_m", 0.12);
     // 图像偏差 -> 机体系方向符号
@@ -193,11 +193,6 @@ public:
         }
       });
    
-    // ===== 地面站命令订阅 =====
-    ground_cmd_sub_ = create_subscription<ground_station_msgs::msg::GroundCommand>(
-      "/ground_station/cmd_parsed",
-      10,
-      std::bind(&OffboardTest3Node::ground_cmd_cb, this, std::placeholders::_1));
 
 
     // ===== 下视工业相机视觉伺服订阅 =====
@@ -333,73 +328,7 @@ void down_servo_cb(
     ctx_.vision_offset.score,
     ctx_.vision_offset.cost);
 }
-  void ground_cmd_cb(const ground_station_msgs::msg::GroundCommand::SharedPtr msg)
-  {
-    const uint8_t cmd = msg->cmd_type;
 
-    if (cmd == ground_station_msgs::msg::GroundCommand::CMD_GOTO) {
-      if (!msg->has_goal) {
-        RCLCPP_WARN(get_logger(), "[GCS] GOTO received but has_goal=false, ignored");
-        return;
-      }
-
-      const float gx = msg->x;
-      const float gy = msg->y;
-
-      // 地面站发送的 z 按“高度”理解：
-      // z=1.0 表示离地 1m。
-      // PX4 local NED 坐标里，向上是负 z，所以转换成 -1.0。
-      const float gz = -std::fabs(msg->z);
-
-      ctx_.detected_targets.push_back(VisionPosition{gx, gy, gz});
-
-      RCLCPP_WARN(
-        get_logger(),
-        "[GCS] GOTO appended to detected_targets: x=%.2f y=%.2f z=%.2f | total=%zu",
-        gx, gy, gz, ctx_.detected_targets.size());
-
-      return;
-    }
-
-    if (cmd == ground_station_msgs::msg::GroundCommand::CMD_START) {
-      RCLCPP_WARN(get_logger(), "[GCS] START received");
-      return;
-    }
-
-    if (cmd == ground_station_msgs::msg::GroundCommand::CMD_PAUSE) {
-      RCLCPP_WARN(get_logger(), "[GCS] PAUSE received");
-      return;
-    }
-
-    if (cmd == ground_station_msgs::msg::GroundCommand::CMD_RESUME) {
-      RCLCPP_WARN(get_logger(), "[GCS] RESUME received");
-      return;
-    }
-
-    if (cmd == ground_station_msgs::msg::GroundCommand::CMD_RTL) {
-      RCLCPP_WARN(get_logger(), "[GCS] RTL received");
-      return;
-    }
-
-    if (cmd == ground_station_msgs::msg::GroundCommand::CMD_LAND) {
-      RCLCPP_WARN(get_logger(), "[GCS] LAND received");
-      ctx_.handover_to_px4_land = true;
-      return;
-    }
-
-    if (cmd == ground_station_msgs::msg::GroundCommand::CMD_RESET) {
-      RCLCPP_WARN(get_logger(), "[GCS] RESET received");
-      return;
-    }
-
-    if (cmd == ground_station_msgs::msg::GroundCommand::CMD_CLEAR_TRACK) {
-      RCLCPP_WARN(get_logger(), "[GCS] CLEAR_TRACK received");
-      return;
-    }
-
-    RCLCPP_WARN(get_logger(), "[GCS] UNKNOWN cmd_type=%u raw='%s'",
-                static_cast<unsigned>(cmd), msg->raw.c_str());
-  }
 
 
 //任务的主要流程由 Scheduler 维护的任务链来执行，build_scheduler() 负责根据当前 Context 构建这个任务链。每当收到新的 GOTO 命令时，都会重建任务链，以确保 GoToTask 能读取到最新的 detected_targets。
@@ -476,22 +405,7 @@ std::string target_type_to_name(int type) const
     default: return "none";
   }
 }
-  void publish_task_status()
-  {
-    ground_station_msgs::msg::TaskStatus msg;
-    msg.header.stamp = now();
-    msg.task_name = sched_.current_name();
-    msg.current_wp = sched_.done() ? sched_.total_count()
-                                   : (sched_.current_index() + 1);
-    msg.total_wp = sched_.total_count();
-    msg.mission_done = sched_.done();
-
-    msg.target_type = ctx_.vision_offset.type;//传递当前最佳下视目标的类型，供地面站显示
-    msg.target_name = target_type_to_name(ctx_.vision_offset.type);
-
-    task_status_pub_->publish(msg);
-  }
-
+  
   void on_timer()
   {
     const auto t = now();
@@ -511,7 +425,7 @@ std::string target_type_to_name(int type) const
       px4_->publish_setpoint_from_ctx(ctx_);
     }
 
-    publish_task_status();
+  
   }
 
 private:
