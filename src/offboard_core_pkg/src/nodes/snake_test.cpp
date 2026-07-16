@@ -27,6 +27,8 @@
 #include "ground_station_msgs/msg/ground_command.hpp"
 #include "ground_station_msgs/msg/mission_plan.hpp"
 #include "ground_station_msgs/msg/task_status.hpp"
+#include "ground_station_msgs/msg/animal_info.hpp"
+#include "ground_station_msgs/msg/mission_result.hpp"
 
 #include "custom_vision_msgs/msg/servo_target_array.hpp"
 
@@ -217,7 +219,17 @@ private:
       create_publisher<ground_station_msgs::msg::MissionPlan>(
         "/ground_station/mission_plan",
         1);
+    animal_info_pub_ =
+      create_publisher<ground_station_msgs::msg::AnimalInfo>(
+        "/ground_station/animal_info",
+        10);//animal_info_pub_,用于巡查过程中实时上报一次动物识别结
 
+
+
+    mission_result_pub_ =
+      create_publisher<ground_station_msgs::msg::MissionResult>(
+        "/ground_station/mission_result",
+        1);
     vision_front_enable_pub_ =
       create_publisher<std_msgs::msg::Bool>(
         "/vision/front/enable",
@@ -382,86 +394,111 @@ private:
   }
 
   void groundCommandCallback(
-    const ground_station_msgs::msg::GroundCommand::SharedPtr msg)
-  {
-    const uint8_t command = msg->cmd_type;
+  const ground_station_msgs::msg::GroundCommand::SharedPtr msg)
+{
+  const uint8_t command = msg->cmd_type;
 
-    if (command ==
-        ground_station_msgs::msg::GroundCommand::CMD_GOTO) {
-      if (!msg->has_goal) {
-        return;
-      }
-
-      const float z = -std::fabs(msg->z);
-
-      ctx_.detected_targets.push_back(
-        VisionPosition{msg->x, msg->y, z});
-
-      RCLCPP_WARN(
-        get_logger(),
-        "[GCS] target appended: "
-        "x=%.2f y=%.2f z=%.2f total=%zu",
-        msg->x,
-        msg->y,
-        z,
-        ctx_.detected_targets.size());
-
+  if (command ==
+      ground_station_msgs::msg::GroundCommand::CMD_START) {
+    if (mission_started_) {
+      RCLCPP_WARN(get_logger(), "[GCS] mission already started");
       return;
     }
 
-    if (command ==
-        ground_station_msgs::msg::GroundCommand::CMD_START) {
-      RCLCPP_WARN(get_logger(), "[GCS] START");
+    if (!parseNoFlyCells(msg->no_fly_cells)) {
+      RCLCPP_ERROR(get_logger(), "[GCS] invalid no-fly cells");
       return;
     }
 
-    if (command ==
-        ground_station_msgs::msg::GroundCommand::CMD_PAUSE) {
-      RCLCPP_WARN(get_logger(), "[GCS] PAUSE");
-      return;
-    }
-
-    if (command ==
-        ground_station_msgs::msg::GroundCommand::CMD_RESUME) {
-      RCLCPP_WARN(get_logger(), "[GCS] RESUME");
-      return;
-    }
-
-    if (command ==
-        ground_station_msgs::msg::GroundCommand::CMD_RTL) {
-      RCLCPP_WARN(get_logger(), "[GCS] RTL");
-      return;
-    }
-
-    if (command ==
-        ground_station_msgs::msg::GroundCommand::CMD_LAND) {
-      RCLCPP_WARN(get_logger(), "[GCS] LAND");
-      ctx_.handover_to_px4_land = true;
-      return;
-    }
-
-    if (command ==
-        ground_station_msgs::msg::GroundCommand::CMD_RESET) {
-      RCLCPP_WARN(get_logger(), "[GCS] RESET");
-      return;
-    }
-
-    if (command ==
-        ground_station_msgs::msg::GroundCommand::CMD_CLEAR_TRACK) {
-      ctx_.detected_targets.clear();
-
-      RCLCPP_WARN(
-        get_logger(),
-        "[GCS] CLEAR_TRACK");
-
-      return;
-    }
+    buildScheduler();
+    mission_started_ = true;
 
     RCLCPP_WARN(
       get_logger(),
-      "[GCS] unknown command: %u",
-      static_cast<unsigned>(command));
+      "[GCS] START: no_fly=%zu",
+      obstacle_cells_.size());
+
+    return;
   }
+
+  if (command ==
+      ground_station_msgs::msg::GroundCommand::CMD_PAUSE) {
+    RCLCPP_WARN(get_logger(), "[GCS] PAUSE");
+    return;
+  }
+
+  if (command ==
+      ground_station_msgs::msg::GroundCommand::CMD_RESUME) {
+    RCLCPP_WARN(get_logger(), "[GCS] RESUME");
+    return;
+  }
+
+  if (command ==
+      ground_station_msgs::msg::GroundCommand::CMD_RTL) {
+    RCLCPP_WARN(get_logger(), "[GCS] RTL");
+    return;
+  }
+
+  if (command ==
+      ground_station_msgs::msg::GroundCommand::CMD_LAND) {
+    ctx_.handover_to_px4_land = true;
+    RCLCPP_WARN(get_logger(), "[GCS] LAND");
+    return;
+  }
+
+  if (command ==
+      ground_station_msgs::msg::GroundCommand::CMD_RESET) {
+    mission_started_ = false;
+    last_published_plan_id_ = 0;
+    obstacle_cells_.clear();
+    buildScheduler();
+
+    RCLCPP_WARN(get_logger(), "[GCS] RESET");
+    return;
+  }
+
+  if (command ==
+      ground_station_msgs::msg::GroundCommand::CMD_CLEAR_TRACK) {
+    ctx_.detected_targets.clear();
+    RCLCPP_WARN(get_logger(), "[GCS] CLEAR_TRACK");
+  }
+}
+bool parseNoFlyCells(
+  const std::vector<std::string>& names)
+{
+  obstacle_cells_.clear();
+
+  for (const auto& name : names) {
+    const auto b_pos = name.find('B');
+
+    if (name.size() < 4 ||
+        name.front() != 'A' ||
+        b_pos == std::string::npos) {
+      return false;
+    }
+
+    int ix;
+    int iy;
+
+    try {
+      ix = std::stoi(name.substr(1, b_pos - 1)) - 1;
+      iy = std::stoi(name.substr(b_pos + 1)) - 1;
+    } catch (...) {
+      return false;
+    }
+
+    if (ix < 0 || ix >= snake_x_cells_ ||
+        iy < 0 || iy >= snake_y_cells_ ||
+        (ix == 0 && iy == 0)) {
+      return false;
+    }
+
+    obstacle_cells_.push_back(
+      SnakeGridTask::ObstacleCell{ix, iy});
+  }
+
+  return true;
+}//增加字符串禁飞区解析
 
   void buildScheduler()
   {
@@ -700,61 +737,58 @@ private:
     }
   }
 
-  void publishTaskStatus()
-  {
-    ground_station_msgs::msg::TaskStatus msg;
+  uint8_t missionState() const
+{
+  const std::string task = sched_.current_name();
 
-    msg.header.stamp = now();
-    msg.task_name = sched_.current_name();
-    msg.mission_done = sched_.done();
-
-    /*
-     * 规划完成后，current_wp和total_wp表示蛇形路线进度。
-     *
-     * 地面站收到MissionPlan后，可用current_wp标记：
-     *
-     *   已完成路线
-     *   当前目标
-     *   未执行路线
-     */
-    if (snake_task_ != nullptr &&
-        snake_task_->planReady()) {
-      const std::size_t total =
-        snake_task_->totalWaypoints();
-
-      const std::size_t index =
-        snake_task_->currentIndex();
-
-      msg.total_wp =
-        static_cast<uint32_t>(total);
-
-      msg.current_wp =
-        total == 0
-        ? 0
-        : static_cast<uint32_t>(
-            std::min(index + 1, total));
-    } else {
-      msg.current_wp =
-        sched_.done()
-        ? static_cast<uint32_t>(
-            sched_.total_count())
-        : static_cast<uint32_t>(
-            sched_.current_index() + 1);
-
-      msg.total_wp =
-        static_cast<uint32_t>(
-          sched_.total_count());
-    }
-
-    msg.target_type =
-      ctx_.vision_offset.type;
-
-    msg.target_name =
-      targetTypeToName(
-        ctx_.vision_offset.type);
-
-    task_status_pub_->publish(msg);
+  if (sched_.done()) {
+    return ground_station_msgs::msg::TaskStatus::STATE_FINISHED;
   }
+
+  if (task == "TAKEOFF") {
+    return ground_station_msgs::msg::TaskStatus::STATE_TAKEOFF;
+  }
+
+  if (task == "SNAKE_GRID") {
+    return ground_station_msgs::msg::TaskStatus::STATE_PATROL;
+  }
+
+  if (task == "START_DOWN_BLIND_CHECK") {
+    return ground_station_msgs::msg::TaskStatus::STATE_BLIND_CHECK;
+  }
+
+  if (task == "ASTAR_GOTO") {
+    return ground_station_msgs::msg::TaskStatus::STATE_RETURNING;
+  }
+
+  if (task == "PX4_LAND_MODE") {
+    return ground_station_msgs::msg::TaskStatus::STATE_LANDING;
+  }
+
+  return ground_station_msgs::msg::TaskStatus::STATE_WAITING;
+}
+
+void publishTaskStatus()
+{
+  ground_station_msgs::msg::TaskStatus msg;
+
+  msg.state = missionState();
+  msg.mission_done = sched_.done();
+
+  if (snake_task_ != nullptr &&
+      snake_task_->planReady()) {
+    msg.plan_id = snake_task_->planId();
+
+    msg.current_index =
+      static_cast<uint32_t>(
+        snake_task_->currentIndex());
+
+    msg.current_cell =
+      snake_task_->currentCell();
+  }
+
+  task_status_pub_->publish(msg);
+}
 
   void onTimer()
   {
@@ -884,6 +918,13 @@ private:
   rclcpp::Publisher<
     std_msgs::msg::Bool>::SharedPtr
     vision_down_enable_pub_;
+  rclcpp::Publisher<
+    ground_station_msgs::msg::AnimalInfo>::SharedPtr
+    animal_info_pub_;
+
+  rclcpp::Publisher<
+    ground_station_msgs::msg::MissionResult>::SharedPtr
+    mission_result_pub_;
 
   // ===== Subscribers =====
   rclcpp::Subscription<

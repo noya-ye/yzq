@@ -7,21 +7,21 @@ from sensor_msgs.msg import Image
 from std_msgs.msg import Bool
 from custom_vision_msgs.msg import ServoTarget, ServoTargetArray
 
-# def get_map_roi(frame):
-#     hsv=cv2.cvtColor(frame,cv2.COLOR_BGR2HSV)
-#     lower=np.array([0,0,140])
-#     upper=np.array([180,70,255])
-#     mask=cv2.inRange(hsv,lower,upper)
-#     kernel=np.ones((7,7),np.uint8)
-#     mask=cv2.morphologyEx(mask,cv2.MORPH_CLOSE,kernel)
-#     mask=cv2.morphologyEx(mask,cv2.MORPH_OPEN,kernel)
-#     contours,_=cv2.findContours(mask,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
-#     roi_mask=np.zeros_like(mask)
-#     if contours:
-#         cnt=max(contours,key=cv2.contourArea)
-#         hull=cv2.convexHull(cnt)
-#         cv2.drawContours(roi_mask,[hull],-1,255,-1)
-#     return roi_mask
+def get_map_roi(frame):
+    hsv=cv2.cvtColor(frame,cv2.COLOR_BGR2HSV)
+    lower=np.array([0,0,140])
+    upper=np.array([180,70,255])
+    mask=cv2.inRange(hsv,lower,upper)
+    kernel=np.ones((7,7),np.uint8)
+    mask=cv2.morphologyEx(mask,cv2.MORPH_CLOSE,kernel)
+    mask=cv2.morphologyEx(mask,cv2.MORPH_OPEN,kernel)
+    contours,_=cv2.findContours(mask,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
+    roi_mask=np.zeros_like(mask)
+    if contours:
+        cnt=max(contours,key=cv2.contourArea)
+        hull=cv2.convexHull(cnt)
+        cv2.drawContours(roi_mask,[hull],-1,255,-1)
+    return roi_mask
 
 
 class ShapeColorNode(Node):
@@ -36,7 +36,7 @@ class ShapeColorNode(Node):
         if not self.cap.isOpened():
             self.get_logger().error("Camera open failed")
 
-        self.enabled=True
+        self.enabled=False
         self.create_subscription(Bool,'/vision/down/enable',self.enable_callback,10)
 
         self.pub=self.create_publisher(
@@ -167,8 +167,8 @@ class ShapeColorNode(Node):
                 cx=int(M["m10"]/M["m00"])
                 cy=int(M["m01"]/M["m00"])
 
-                dx=(cx-w*0.5)/float(w)
-                dy=(cy-h*0.5)/float(h)
+                dx=(cx-w*0.5)
+                dy=(cy-h*0.5)
 
                 detected_objects.append({
                     "cx":cx,
@@ -194,7 +194,9 @@ class ShapeColorNode(Node):
 
             # 左到右分配ID
             # 左边=1 右边=2
-            t.x=float(idx+1)
+            track_id=idx+1
+
+            t.x=float(track_id)
 
             t.y=0.0
 
@@ -206,9 +208,19 @@ class ShapeColorNode(Node):
             t.score=float(obj["score"])
 
             target_array.targets.append(t)
+            self.get_logger().info(
+                f"[VISION_DOWN] "
+                f"id={track_id} "
+                f"color={obj['color']} "
+                f"shape={obj['shape']} "
+                f"type={obj['type']} "
+                f"center=({obj['cx']},{obj['cy']}) "
+                f"dx={obj['dx']:.3f} "
+                f"dy={obj['dy']:.3f} "
+                f"score={obj['score']:.1f}"
+            )
 
-
-            #debug显示ID
+            # debug显示ID
             self.draw_text_bg(
                 debug,
                 f"ID:{idx+1} {obj['color']} {obj['shape']}",

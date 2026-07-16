@@ -1,10 +1,11 @@
 #include "ground_station_bridge_pkg/udp_ground_station_bridge_node.hpp"
 
 #include <algorithm>
+#include <cerrno>
 #include <chrono>
-#include <cmath>
 #include <cctype>
 #include <cstring>
+#include <sstream>
 
 #include <arpa/inet.h>
 #include <fcntl.h>
@@ -17,99 +18,133 @@ namespace ground_station_bridge_pkg
 {
 
 UdpGroundStationBridgeNode::UdpGroundStationBridgeNode()
-: Node("udp_ground_station_bridge_node"),
-  udp_fd_(-1)
+: Node("udp_ground_station_bridge_node")
 {
-  // ===== UDP 参数 =====
-  declare_parameter<std::string>("udp_bind_ip", "0.0.0.0");
-  declare_parameter<int>("udp_bind_port", 9000);
+  udp_bind_ip_ =
+    declare_parameter<std::string>(
+      "udp_bind_ip", "0.0.0.0");
 
-  declare_parameter<std::string>("udp_remote_ip", "192.168.43.50");
-  declare_parameter<int>("udp_remote_port", 9001);
+  udp_bind_port_ =
+    declare_parameter<int>(
+      "udp_bind_port", 9000);
 
-  declare_parameter<bool>("print_tx", true);
-  declare_parameter<bool>("print_rx", true);
+  udp_remote_ip_ =
+    declare_parameter<std::string>(
+      "udp_remote_ip", "192.168.43.50");
 
-  // ===== ROS topic 参数 =====
-  declare_parameter<std::string>("local_pos_topic", "/fmu/out/vehicle_local_position");
-  declare_parameter<std::string>("attitude_topic", "/fmu/out/vehicle_attitude");
-  declare_parameter<std::string>("vehicle_status_topic", "/fmu/out/vehicle_status_v1");
-  declare_parameter<std::string>("task_status_topic", "/ground_station/task_status");
-  declare_parameter<std::string>("raw_cmd_topic", "/ground_station/cmd");
-  declare_parameter<std::string>("parsed_cmd_topic", "/ground_station/cmd_parsed");
-  declare_parameter<std::string>("telemetry_topic", "/ground_station/telemetry");
+  udp_remote_port_ =
+    declare_parameter<int>(
+      "udp_remote_port", 9001);
 
-  get_parameter("udp_bind_ip", udp_bind_ip_);
-  get_parameter("udp_bind_port", udp_bind_port_);
+  print_tx_ =
+    declare_parameter<bool>("print_tx", true);
 
-  get_parameter("udp_remote_ip", udp_remote_ip_);
-  get_parameter("udp_remote_port", udp_remote_port_);
+  print_rx_ =
+    declare_parameter<bool>("print_rx", true);
 
-  get_parameter("print_tx", print_tx_);
-  get_parameter("print_rx", print_rx_);
+  raw_cmd_topic_ =
+    declare_parameter<std::string>(
+      "raw_cmd_topic",
+      "/ground_station/cmd");
 
-  get_parameter("local_pos_topic", local_pos_topic_);
-  get_parameter("attitude_topic", attitude_topic_);
-  get_parameter("vehicle_status_topic", vehicle_status_topic_);
-  get_parameter("task_status_topic", task_status_topic_);
-  get_parameter("raw_cmd_topic", raw_cmd_topic_);
-  get_parameter("parsed_cmd_topic", parsed_cmd_topic_);
-  get_parameter("telemetry_topic", telemetry_topic_);
+  parsed_cmd_topic_ =
+    declare_parameter<std::string>(
+      "parsed_cmd_topic",
+      "/ground_station/cmd_parsed");
 
-  // ===== UDP 初始化 =====
+  mission_plan_topic_ =
+    declare_parameter<std::string>(
+      "mission_plan_topic",
+      "/ground_station/mission_plan");
+
+  task_status_topic_ =
+    declare_parameter<std::string>(
+      "task_status_topic",
+      "/ground_station/task_status");
+
+  animal_info_topic_ =
+    declare_parameter<std::string>(
+      "animal_info_topic",
+      "/ground_station/animal_info");
+
+  mission_result_topic_ =
+    declare_parameter<std::string>(
+      "mission_result_topic",
+      "/ground_station/mission_result");
+
   if (!udp_init()) {
     RCLCPP_ERROR(get_logger(), "UDP init failed");
   }
 
-  // ===== PX4 QoS =====
-  auto px4_qos = rclcpp::QoS(rclcpp::KeepLast(10))
-                   .best_effort()
-                   .durability_volatile();
+  parsed_cmd_pub_ =
+    create_publisher<
+      ground_station_msgs::msg::GroundCommand>(
+      parsed_cmd_topic_,
+      10);
 
-  local_pos_sub_ = create_subscription<px4_msgs::msg::VehicleLocalPosition>(
-    local_pos_topic_, px4_qos,
-    std::bind(&UdpGroundStationBridgeNode::local_pos_cb, this, std::placeholders::_1));
+  raw_cmd_sub_ =
+    create_subscription<std_msgs::msg::String>(
+      raw_cmd_topic_,
+      10,
+      std::bind(
+        &UdpGroundStationBridgeNode::raw_cmd_cb,
+        this,
+        std::placeholders::_1));
 
-  attitude_sub_ = create_subscription<px4_msgs::msg::VehicleAttitude>(
-    attitude_topic_, px4_qos,
-    std::bind(&UdpGroundStationBridgeNode::attitude_cb, this, std::placeholders::_1));
+  mission_plan_sub_ =
+    create_subscription<
+      ground_station_msgs::msg::MissionPlan>(
+      mission_plan_topic_,
+      rclcpp::QoS(1).reliable(),
+      std::bind(
+        &UdpGroundStationBridgeNode::mission_plan_cb,
+        this,
+        std::placeholders::_1));
 
-  status_sub_ = create_subscription<px4_msgs::msg::VehicleStatus>(
-    vehicle_status_topic_, px4_qos,
-    std::bind(&UdpGroundStationBridgeNode::status_cb, this, std::placeholders::_1));
+  task_status_sub_ =
+    create_subscription<
+      ground_station_msgs::msg::TaskStatus>(
+      task_status_topic_,
+      10,
+      std::bind(
+        &UdpGroundStationBridgeNode::task_status_cb,
+        this,
+        std::placeholders::_1));
 
-  task_status_sub_ = create_subscription<ground_station_msgs::msg::TaskStatus>(
-    task_status_topic_, 10,
-    std::bind(&UdpGroundStationBridgeNode::task_status_cb, this, std::placeholders::_1));
+  animal_info_sub_ =
+    create_subscription<
+      ground_station_msgs::msg::AnimalInfo>(
+      animal_info_topic_,
+      10,
+      std::bind(
+        &UdpGroundStationBridgeNode::animal_info_cb,
+        this,
+        std::placeholders::_1));
 
-  // 保留 ROS-only 调试入口：
-  // ros2 topic pub /ground_station/cmd std_msgs/msg/String "{data: 'START'}" -1
-  raw_cmd_sub_ = create_subscription<std_msgs::msg::String>(
-    raw_cmd_topic_, 10,
-    std::bind(&UdpGroundStationBridgeNode::raw_cmd_cb, this, std::placeholders::_1));
+  mission_result_sub_ =
+    create_subscription<
+      ground_station_msgs::msg::MissionResult>(
+      mission_result_topic_,
+      10,
+      std::bind(
+        &UdpGroundStationBridgeNode::mission_result_cb,
+        this,
+        std::placeholders::_1));
 
-  parsed_cmd_pub_ = create_publisher<ground_station_msgs::msg::GroundCommand>(
-    parsed_cmd_topic_, 10);
+  rx_timer_ =
+    create_wall_timer(
+      50ms,
+      std::bind(
+        &UdpGroundStationBridgeNode::rx_timer_cb,
+        this));
 
-  telemetry_pub_ = create_publisher<ground_station_msgs::msg::Telemetry>(
-    telemetry_topic_, 10);
-
-  tx_timer_ = create_wall_timer(
-    200ms, std::bind(&UdpGroundStationBridgeNode::tx_timer_cb, this));
-
-  rx_timer_ = create_wall_timer(
-    50ms, std::bind(&UdpGroundStationBridgeNode::rx_timer_cb, this));
-
-  telemetry_pub_timer_ = create_wall_timer(
-    200ms, std::bind(&UdpGroundStationBridgeNode::telemetry_pub_timer_cb, this));
-
-  RCLCPP_INFO(get_logger(), "udp_ground_station_bridge_node started");
-  RCLCPP_INFO(get_logger(), "UDP bind   : %s:%d", udp_bind_ip_.c_str(), udp_bind_port_);
-  RCLCPP_INFO(get_logger(), "UDP remote : %s:%d", udp_remote_ip_.c_str(), udp_remote_port_);
-  RCLCPP_INFO(get_logger(), "task_status_topic: %s", task_status_topic_.c_str());
-  RCLCPP_INFO(get_logger(), "raw_cmd_topic    : %s", raw_cmd_topic_.c_str());
-  RCLCPP_INFO(get_logger(), "parsed_cmd_topic : %s", parsed_cmd_topic_.c_str());
-  RCLCPP_INFO(get_logger(), "telemetry_topic  : %s", telemetry_topic_.c_str());
+  RCLCPP_INFO(
+    get_logger(),
+    "[UDP] bind=%s:%d remote=%s:%d",
+    udp_bind_ip_.c_str(),
+    udp_bind_port_,
+    udp_remote_ip_.c_str(),
+    udp_remote_port_);
 }
 
 UdpGroundStationBridgeNode::~UdpGroundStationBridgeNode()
@@ -120,49 +155,83 @@ UdpGroundStationBridgeNode::~UdpGroundStationBridgeNode()
 bool UdpGroundStationBridgeNode::udp_init()
 {
   udp_fd_ = ::socket(AF_INET, SOCK_DGRAM, 0);
+
   if (udp_fd_ < 0) {
-    RCLCPP_ERROR(get_logger(), "socket() failed: %s", std::strerror(errno));
+    RCLCPP_ERROR(
+      get_logger(),
+      "socket failed: %s",
+      std::strerror(errno));
+
     return false;
   }
 
   int reuse = 1;
-  if (::setsockopt(udp_fd_, SOL_SOCKET, SO_REUSEADDR, &reuse, sizeof(reuse)) < 0) {
-    RCLCPP_WARN(get_logger(), "setsockopt(SO_REUSEADDR) failed: %s", std::strerror(errno));
-  }
 
-  // 设置非阻塞，防止 rx_timer 卡死 ROS2
-  int flags = ::fcntl(udp_fd_, F_GETFL, 0);
+  ::setsockopt(
+    udp_fd_,
+    SOL_SOCKET,
+    SO_REUSEADDR,
+    &reuse,
+    sizeof(reuse));
+
+  const int flags =
+    ::fcntl(udp_fd_, F_GETFL, 0);
+
   if (flags >= 0) {
-    ::fcntl(udp_fd_, F_SETFL, flags | O_NONBLOCK);
+    ::fcntl(
+      udp_fd_,
+      F_SETFL,
+      flags | O_NONBLOCK);
   }
 
-  std::memset(&local_addr_, 0, sizeof(local_addr_));
   local_addr_.sin_family = AF_INET;
-  local_addr_.sin_port = htons(static_cast<uint16_t>(udp_bind_port_));
+  local_addr_.sin_port =
+    htons(
+      static_cast<uint16_t>(
+        udp_bind_port_));
 
-  if (::inet_pton(AF_INET, udp_bind_ip_.c_str(), &local_addr_.sin_addr) <= 0) {
-    RCLCPP_ERROR(get_logger(), "invalid udp_bind_ip: %s", udp_bind_ip_.c_str());
-    udp_close();
-    return false;
-  }
-
-  if (::bind(udp_fd_, reinterpret_cast<struct sockaddr*>(&local_addr_), sizeof(local_addr_)) < 0) {
+  if (::inet_pton(
+        AF_INET,
+        udp_bind_ip_.c_str(),
+        &local_addr_.sin_addr) != 1) {
     RCLCPP_ERROR(
       get_logger(),
-      "bind(%s:%d) failed: %s",
-      udp_bind_ip_.c_str(),
-      udp_bind_port_,
-      std::strerror(errno));
+      "invalid bind IP: %s",
+      udp_bind_ip_.c_str());
+
     udp_close();
     return false;
   }
 
-  std::memset(&remote_addr_, 0, sizeof(remote_addr_));
-  remote_addr_.sin_family = AF_INET;
-  remote_addr_.sin_port = htons(static_cast<uint16_t>(udp_remote_port_));
+  if (::bind(
+        udp_fd_,
+        reinterpret_cast<sockaddr*>(
+          &local_addr_),
+        sizeof(local_addr_)) < 0) {
+    RCLCPP_ERROR(
+      get_logger(),
+      "bind failed: %s",
+      std::strerror(errno));
 
-  if (::inet_pton(AF_INET, udp_remote_ip_.c_str(), &remote_addr_.sin_addr) <= 0) {
-    RCLCPP_ERROR(get_logger(), "invalid udp_remote_ip: %s", udp_remote_ip_.c_str());
+    udp_close();
+    return false;
+  }
+
+  remote_addr_.sin_family = AF_INET;
+  remote_addr_.sin_port =
+    htons(
+      static_cast<uint16_t>(
+        udp_remote_port_));
+
+  if (::inet_pton(
+        AF_INET,
+        udp_remote_ip_.c_str(),
+        &remote_addr_.sin_addr) != 1) {
+    RCLCPP_ERROR(
+      get_logger(),
+      "invalid remote IP: %s",
+      udp_remote_ip_.c_str());
+
     udp_close();
     return false;
   }
@@ -178,256 +247,145 @@ void UdpGroundStationBridgeNode::udp_close()
   }
 }
 
-void UdpGroundStationBridgeNode::local_pos_cb(
-  const px4_msgs::msg::VehicleLocalPosition::SharedPtr msg)
+void UdpGroundStationBridgeNode::send_udp(
+  const std::string& data)
 {
-  telemetry_.local_pos_valid = msg->xy_valid && msg->z_valid;
-  telemetry_.x = msg->x;
-  telemetry_.y = msg->y;
-  telemetry_.z = msg->z;
-  telemetry_.vx = msg->vx;
-  telemetry_.vy = msg->vy;
-  telemetry_.vz = msg->vz;
-  telemetry_.stamp_us = msg->timestamp;
+  if (udp_fd_ < 0) {
+    return;
+  }
+
+  const ssize_t sent =
+    ::sendto(
+      udp_fd_,
+      data.data(),
+      data.size(),
+      0,
+      reinterpret_cast<sockaddr*>(
+        &remote_addr_),
+      sizeof(remote_addr_));
+
+  if (sent < 0) {
+    RCLCPP_WARN_THROTTLE(
+      get_logger(),
+      *get_clock(),
+      2000,
+      "UDP send failed: %s",
+      std::strerror(errno));
+
+    return;
+  }
+
+  if (print_tx_) {
+    RCLCPP_INFO(
+      get_logger(),
+      "[UDP TX] %s",
+      data.c_str());
+  }
 }
 
-void UdpGroundStationBridgeNode::attitude_cb(
-  const px4_msgs::msg::VehicleAttitude::SharedPtr msg)
+void UdpGroundStationBridgeNode::mission_plan_cb(
+  const ground_station_msgs::msg::MissionPlan::SharedPtr msg)
 {
-  telemetry_.attitude_valid = true;
-  telemetry_.yaw = yaw_from_quat(msg->q[0], msg->q[1], msg->q[2], msg->q[3]);
-  telemetry_.stamp_us = msg->timestamp;
-}
+  std::ostringstream json;
 
-void UdpGroundStationBridgeNode::status_cb(
-  const px4_msgs::msg::VehicleStatus::SharedPtr msg)
-{
-  telemetry_.status_valid = true;
-  telemetry_.arming_state = msg->arming_state;
-  telemetry_.nav_state = msg->nav_state;
-  telemetry_.stamp_us = msg->timestamp;
+  json
+    << "{"
+    << "\"type\":\"plan\","
+    << "\"plan_id\":" << msg->plan_id << ","
+    << "\"route\":[";
+
+  for (std::size_t i = 0;
+       i < msg->route_cells.size();
+       ++i) {
+    if (i > 0) {
+      json << ",";
+    }
+
+    json
+      << "\""
+      << escape_json(msg->route_cells[i])
+      << "\"";
+  }
+
+  json << "]}";
+
+  send_udp(json.str());
 }
 
 void UdpGroundStationBridgeNode::task_status_cb(
   const ground_station_msgs::msg::TaskStatus::SharedPtr msg)
 {
-  telemetry_.task_name = msg->task_name;
-  telemetry_.current_wp = msg->current_wp;
-  telemetry_.total_wp = msg->total_wp;
-  telemetry_.mission_done = msg->mission_done;
+  std::ostringstream json;
 
-  telemetry_.target_type = msg->target_type;
-  telemetry_.target_name = msg->target_name;
+  json
+    << "{"
+    << "\"type\":\"status\","
+    << "\"plan_id\":" << msg->plan_id << ","
+    << "\"state\":"
+    << static_cast<unsigned>(msg->state) << ","
+    << "\"current_index\":"
+    << msg->current_index << ","
+    << "\"current_cell\":\""
+    << escape_json(msg->current_cell) << "\","
+    << "\"mission_done\":"
+    << (msg->mission_done ? "true" : "false")
+    << "}";
+
+  send_udp(json.str());
 }
 
-float UdpGroundStationBridgeNode::yaw_from_quat(float q0, float q1, float q2, float q3)
+void UdpGroundStationBridgeNode::animal_info_cb(
+  const ground_station_msgs::msg::AnimalInfo::SharedPtr msg)
 {
-  const float siny_cosp = 2.0f * (q0 * q3 + q1 * q2);
-  const float cosy_cosp = 1.0f - 2.0f * (q2 * q2 + q3 * q3);
-  return std::atan2(siny_cosp, cosy_cosp);
+  std::ostringstream json;
+
+  json
+    << "{"
+    << "\"type\":\"animal\","
+    << "\"plan_id\":" << msg->plan_id << ","
+    << "\"cell\":\""
+    << escape_json(msg->cell) << "\","
+    << "\"animal_type\":"
+    << static_cast<unsigned>(msg->animal_type) << ","
+    << "\"count\":" << msg->count
+    << "}";
+
+  send_udp(json.str());
 }
 
-std::string UdpGroundStationBridgeNode::trim_upper(std::string s) const
+void UdpGroundStationBridgeNode::mission_result_cb(
+  const ground_station_msgs::msg::MissionResult::SharedPtr msg)
 {
-  s.erase(
-    std::remove_if(
-      s.begin(),
-      s.end(),
-      [](unsigned char c) {
-        return std::isspace(c);
-      }),
-    s.end());
+  std::ostringstream json;
 
-  std::transform(
-    s.begin(),
-    s.end(),
-    s.begin(),
-    [](unsigned char c) {
-      return static_cast<char>(std::toupper(c));
-    });
+  json
+    << "{"
+    << "\"type\":\"result\","
+    << "\"plan_id\":" << msg->plan_id << ","
+    << "\"elephant\":" << msg->elephant_count << ","
+    << "\"tiger\":" << msg->tiger_count << ","
+    << "\"wolf\":" << msg->wolf_count << ","
+    << "\"monkey\":" << msg->monkey_count << ","
+    << "\"peacock\":" << msg->peacock_count
+    << "}";
 
-  return s;
+  send_udp(json.str());
 }
 
-ground_station_msgs::msg::GroundCommand
-UdpGroundStationBridgeNode::parse_command(const std::string& raw) const
+void UdpGroundStationBridgeNode::raw_cmd_cb(
+  const std_msgs::msg::String::SharedPtr msg)
 {
-  ground_station_msgs::msg::GroundCommand out;
-  out.header.stamp = now();
-  out.raw = raw;
-  out.cmd_type = ground_station_msgs::msg::GroundCommand::CMD_UNKNOWN;
+  const auto command =
+    parse_command(msg->data);
 
-  // ===== GOTO 默认值 =====
-  out.has_goal = false;
-  out.x = 0.0f;
-  out.y = 0.0f;
-  out.z = 1.0f;
+  parsed_cmd_pub_->publish(command);
 
-  std::string cmd = trim_upper(raw);
-
-  // 去掉帧头 $
-  if (!cmd.empty() && cmd.front() == '$') {
-    cmd.erase(cmd.begin());
-  }
-
-  // 去掉校验部分 *XX
-  auto star_pos = cmd.find('*');
-  if (star_pos != std::string::npos) {
-    cmd = cmd.substr(0, star_pos);
-  }
-
-  // 支持：
-  // $CMD:START*XX
-  // $CMD:GOTO,X=1.2,Y=-0.5,Z=1.0*XX
-  // START
-  // GOTO,X=1.2,Y=-0.5,Z=1.0
-  if (cmd.rfind("CMD:", 0) == 0) {
-    cmd = cmd.substr(4);
-  } else if (cmd.rfind("CMD=", 0) == 0) {
-    cmd = cmd.substr(4);
-  } else if (cmd.rfind("TYPE=", 0) == 0) {
-    cmd = cmd.substr(5);
-  }
-
-  // =========================
-  // GOTO 坐标解析
-  // 格式：
-  // GOTO,X=1.20,Y=-0.50,Z=1.00
-  // =========================
-  if (cmd.rfind("GOTO", 0) == 0) {
-    out.cmd_type = ground_station_msgs::msg::GroundCommand::CMD_GOTO;
-    out.has_goal = true;
-
-    auto read_float = [&](const std::string& key, float& value) -> bool {
-      const std::string tag = key + "=";
-      const auto p = cmd.find(tag);
-      if (p == std::string::npos) {
-        return false;
-      }
-
-      const auto value_start = p + tag.size();
-      auto value_end = cmd.find(",", value_start);
-      if (value_end == std::string::npos) {
-        value_end = cmd.size();
-      }
-
-      try {
-        value = std::stof(cmd.substr(value_start, value_end - value_start));
-        return true;
-      } catch (...) {
-        return false;
-      }
-    };
-
-    read_float("X", out.x);
-    read_float("Y", out.y);
-    read_float("Z", out.z);
-
-    RCLCPP_INFO(
-      get_logger(),
-      "Parsed GOTO: x=%.2f y=%.2f z=%.2f",
-      out.x, out.y, out.z);
-
-    return out;
-  }
-
-  // =========================
-  // 普通命令解析
-  // =========================
-  if (cmd == "START") {
-    out.cmd_type = ground_station_msgs::msg::GroundCommand::CMD_START;
-  } else if (cmd == "PAUSE") {
-    out.cmd_type = ground_station_msgs::msg::GroundCommand::CMD_PAUSE;
-  } else if (cmd == "RESUME") {
-    out.cmd_type = ground_station_msgs::msg::GroundCommand::CMD_RESUME;
-  } else if (cmd == "RTL" || cmd == "RETURN" || cmd == "RETURN_HOME") {
-    out.cmd_type = ground_station_msgs::msg::GroundCommand::CMD_RTL;
-  } else if (cmd == "LAND") {
-    out.cmd_type = ground_station_msgs::msg::GroundCommand::CMD_LAND;
-  } else if (cmd == "RESET") {
-    out.cmd_type = ground_station_msgs::msg::GroundCommand::CMD_RESET;
-  } else if (cmd == "CLEAR_TRACK") {
-    out.cmd_type = ground_station_msgs::msg::GroundCommand::CMD_CLEAR_TRACK;
-  }
-
-  return out;
-}
-
-void UdpGroundStationBridgeNode::raw_cmd_cb(const std_msgs::msg::String::SharedPtr msg)
-{
-  auto parsed = parse_command(msg->data);
-  parsed_cmd_pub_->publish(parsed);
-
-  RCLCPP_INFO_THROTTLE(
-    get_logger(), *get_clock(), 500,
-    "CMD raw='%s' parsed=%u",
-    msg->data.c_str(),
-    static_cast<unsigned>(parsed.cmd_type));
-}
-
-void UdpGroundStationBridgeNode::telemetry_pub_timer_cb()
-{
-  ground_station_msgs::msg::Telemetry msg;
-  msg.header.stamp = now();
-
-  msg.local_pos_valid = telemetry_.local_pos_valid;
-  msg.attitude_valid = telemetry_.attitude_valid;
-  msg.status_valid = telemetry_.status_valid;
-
-  msg.x = telemetry_.x;
-  msg.y = telemetry_.y;
-  msg.z = telemetry_.z;
-
-  msg.vx = telemetry_.vx;
-  msg.vy = telemetry_.vy;
-  msg.vz = telemetry_.vz;
-
-  msg.yaw = telemetry_.yaw;
-
-  msg.arming_state = telemetry_.arming_state;
-  msg.nav_state = telemetry_.nav_state;
-
-  msg.task_name = telemetry_.task_name;
-  msg.current_wp = telemetry_.current_wp;
-  msg.total_wp = telemetry_.total_wp;
-  msg.mission_done = telemetry_.mission_done;
-  msg.target_type = telemetry_.target_type;
-  msg.target_name = telemetry_.target_name;
-
-  telemetry_pub_->publish(msg);
-}
-
-void UdpGroundStationBridgeNode::tx_timer_cb()
-{
-  const std::string frame = Protocol::encode_status(telemetry_);
-
-  if (print_tx_) {
-    RCLCPP_INFO_THROTTLE(
-      get_logger(), *get_clock(), 1000,
-      "UDP TX %s:%d : %s",
-      udp_remote_ip_.c_str(),
-      udp_remote_port_,
-      frame.c_str());
-  }
-
-  if (udp_fd_ < 0) {
-    return;
-  }
-
-  const ssize_t sent = ::sendto(
-    udp_fd_,
-    frame.data(),
-    frame.size(),
-    0,
-    reinterpret_cast<struct sockaddr*>(&remote_addr_),
-    sizeof(remote_addr_));
-
-  if (sent < 0) {
-    RCLCPP_WARN_THROTTLE(
-      get_logger(), *get_clock(), 2000,
-      "UDP sendto failed: %s",
-      std::strerror(errno));
-  }
+  RCLCPP_INFO(
+    get_logger(),
+    "[CMD] type=%u no_fly=%zu",
+    static_cast<unsigned>(
+      command.cmd_type),
+    command.no_fly_cells.size());
 }
 
 void UdpGroundStationBridgeNode::rx_timer_cb()
@@ -436,44 +394,348 @@ void UdpGroundStationBridgeNode::rx_timer_cb()
     return;
   }
 
-  char buffer[1024] = {0};
+  char buffer[2048];
 
   while (true) {
-    struct sockaddr_in src_addr;
-    socklen_t src_len = sizeof(src_addr);
-    std::memset(&src_addr, 0, sizeof(src_addr));
+    sockaddr_in source{};
+    socklen_t source_length =
+      sizeof(source);
 
-    const ssize_t n = ::recvfrom(
-      udp_fd_,
-      buffer,
-      sizeof(buffer) - 1,
-      0,
-      reinterpret_cast<struct sockaddr*>(&src_addr),
-      &src_len);
+    const ssize_t size =
+      ::recvfrom(
+        udp_fd_,
+        buffer,
+        sizeof(buffer) - 1,
+        0,
+        reinterpret_cast<sockaddr*>(
+          &source),
+        &source_length);
 
-    if (n <= 0) {
+    if (size <= 0) {
       break;
     }
 
-    std::string rx(buffer, buffer + n);
+    buffer[size] = '\0';
+
+    const std::string raw(
+      buffer,
+      static_cast<std::size_t>(size));
 
     if (print_rx_) {
-      char src_ip[INET_ADDRSTRLEN] = {0};
-      ::inet_ntop(AF_INET, &src_addr.sin_addr, src_ip, sizeof(src_ip));
-      const int src_port = ntohs(src_addr.sin_port);
-
-      RCLCPP_INFO_THROTTLE(
-        get_logger(), *get_clock(), 200,
-        "UDP RX %s:%d : %s",
-        src_ip,
-        src_port,
-        rx.c_str());
+      RCLCPP_INFO(
+        get_logger(),
+        "[UDP RX] %s",
+        raw.c_str());
     }
 
-    std_msgs::msg::String raw_msg;
-    raw_msg.data = rx;
-    raw_cmd_cb(std::make_shared<std_msgs::msg::String>(raw_msg));
+    const auto command =
+      parse_command(raw);
+
+    parsed_cmd_pub_->publish(command);
   }
+}
+
+ground_station_msgs::msg::GroundCommand
+UdpGroundStationBridgeNode::parse_command(
+  const std::string& raw) const
+{
+  ground_station_msgs::msg::GroundCommand output;
+
+  output.cmd_type =
+    ground_station_msgs::msg::GroundCommand::
+    CMD_NONE;
+
+  std::string command_name;
+
+  /*
+   * JSON格式：
+   *
+   * {
+   *   "type":"command",
+   *   "cmd":"start",
+   *   "no_fly_cells":["A3B2","A3B3"]
+   * }
+   */
+  if (raw.find('{') != std::string::npos) {
+    command_name =
+      upper(
+        json_string(raw, "cmd"));
+
+    output.no_fly_cells =
+      json_string_array(
+        raw,
+        "no_fly_cells");
+  } else {
+    /*
+     * ROS调试格式：
+     *
+     * START,A3B2,A3B3
+     * PAUSE
+     * LAND
+     */
+    std::string text = trim(raw);
+
+    if (!text.empty() &&
+        text.front() == '$') {
+      text.erase(text.begin());
+    }
+
+    const auto checksum =
+      text.find('*');
+
+    if (checksum != std::string::npos) {
+      text.erase(checksum);
+    }
+
+    if (text.rfind("CMD:", 0) == 0) {
+      text.erase(0, 4);
+    }
+
+    std::stringstream stream(text);
+    std::string token;
+
+    if (std::getline(stream, token, ',')) {
+      command_name =
+        upper(trim(token));
+    }
+
+    while (std::getline(stream, token, ',')) {
+      token = upper(trim(token));
+
+      if (token.rfind("NOFLY=", 0) == 0) {
+        token.erase(0, 6);
+      }
+
+      std::stringstream cell_stream(token);
+      std::string cell;
+
+      while (std::getline(
+          cell_stream,
+          cell,
+          '|')) {
+        cell = upper(trim(cell));
+
+        if (!cell.empty()) {
+          output.no_fly_cells.push_back(cell);
+        }
+      }
+    }
+  }
+
+  for (auto& cell : output.no_fly_cells) {
+    cell = upper(trim(cell));
+  }
+
+  if (command_name == "START") {
+    output.cmd_type =
+      ground_station_msgs::msg::GroundCommand::
+      CMD_START;
+  } else if (command_name == "PAUSE") {
+    output.cmd_type =
+      ground_station_msgs::msg::GroundCommand::
+      CMD_PAUSE;
+  } else if (command_name == "RESUME") {
+    output.cmd_type =
+      ground_station_msgs::msg::GroundCommand::
+      CMD_RESUME;
+  } else if (
+    command_name == "RTL" ||
+    command_name == "RETURN" ||
+    command_name == "RETURN_HOME")
+  {
+    output.cmd_type =
+      ground_station_msgs::msg::GroundCommand::
+      CMD_RTL;
+  } else if (command_name == "LAND") {
+    output.cmd_type =
+      ground_station_msgs::msg::GroundCommand::
+      CMD_LAND;
+  } else if (command_name == "RESET") {
+    output.cmd_type =
+      ground_station_msgs::msg::GroundCommand::
+      CMD_RESET;
+  } else if (command_name == "CLEAR_TRACK") {
+    output.cmd_type =
+      ground_station_msgs::msg::GroundCommand::
+      CMD_CLEAR_TRACK;
+  }
+
+  return output;
+}
+
+std::string UdpGroundStationBridgeNode::trim(
+  const std::string& text)
+{
+  const auto first =
+    std::find_if_not(
+      text.begin(),
+      text.end(),
+      [](unsigned char c) {
+        return std::isspace(c);
+      });
+
+  const auto last =
+    std::find_if_not(
+      text.rbegin(),
+      text.rend(),
+      [](unsigned char c) {
+        return std::isspace(c);
+      }).base();
+
+  if (first >= last) {
+    return "";
+  }
+
+  return std::string(first, last);
+}
+
+std::string UdpGroundStationBridgeNode::upper(
+  std::string text)
+{
+  std::transform(
+    text.begin(),
+    text.end(),
+    text.begin(),
+    [](unsigned char c) {
+      return static_cast<char>(
+        std::toupper(c));
+    });
+
+  return text;
+}
+
+std::string UdpGroundStationBridgeNode::escape_json(
+  const std::string& text)
+{
+  std::string result;
+  result.reserve(text.size());
+
+  for (const char c : text) {
+    switch (c) {
+      case '\\':
+        result += "\\\\";
+        break;
+
+      case '"':
+        result += "\\\"";
+        break;
+
+      case '\n':
+        result += "\\n";
+        break;
+
+      case '\r':
+        result += "\\r";
+        break;
+
+      default:
+        result.push_back(c);
+        break;
+    }
+  }
+
+  return result;
+}
+
+std::string UdpGroundStationBridgeNode::json_string(
+  const std::string& json,
+  const std::string& key)
+{
+  const std::string key_text =
+    "\"" + key + "\"";
+
+  const auto key_pos =
+    json.find(key_text);
+
+  if (key_pos == std::string::npos) {
+    return "";
+  }
+
+  const auto colon_pos =
+    json.find(':', key_pos + key_text.size());
+
+  if (colon_pos == std::string::npos) {
+    return "";
+  }
+
+  const auto start =
+    json.find('"', colon_pos + 1);
+
+  if (start == std::string::npos) {
+    return "";
+  }
+
+  const auto end =
+    json.find('"', start + 1);
+
+  if (end == std::string::npos) {
+    return "";
+  }
+
+  return json.substr(
+    start + 1,
+    end - start - 1);
+}
+
+std::vector<std::string>
+UdpGroundStationBridgeNode::json_string_array(
+  const std::string& json,
+  const std::string& key)
+{
+  std::vector<std::string> values;
+
+  const std::string key_text =
+    "\"" + key + "\"";
+
+  const auto key_pos =
+    json.find(key_text);
+
+  if (key_pos == std::string::npos) {
+    return values;
+  }
+
+  const auto array_start =
+    json.find('[', key_pos + key_text.size());
+
+  if (array_start == std::string::npos) {
+    return values;
+  }
+
+  const auto array_end =
+    json.find(']', array_start + 1);
+
+  if (array_end == std::string::npos) {
+    return values;
+  }
+
+  std::size_t position = array_start + 1;
+
+  while (position < array_end) {
+    const auto quote_start =
+      json.find('"', position);
+
+    if (quote_start == std::string::npos ||
+        quote_start >= array_end) {
+      break;
+    }
+
+    const auto quote_end =
+      json.find('"', quote_start + 1);
+
+    if (quote_end == std::string::npos ||
+        quote_end > array_end) {
+      break;
+    }
+
+    values.push_back(
+      json.substr(
+        quote_start + 1,
+        quote_end - quote_start - 1));
+
+    position = quote_end + 1;
+  }
+
+  return values;
 }
 
 }  // namespace ground_station_bridge_pkg

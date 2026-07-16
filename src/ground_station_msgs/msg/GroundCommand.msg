@@ -10,9 +10,6 @@ uint8 CMD_GOTO=8
 
 uint8 cmd_type
 
-bool has_goal
-float32 x
-float32 y
-float32 z
-
-string raw
+# START命令携带禁飞网格
+# 例如：["A3B2", "A3B3", "A3B4"]
+string[] no_fly_cells

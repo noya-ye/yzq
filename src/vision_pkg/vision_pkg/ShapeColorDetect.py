@@ -54,7 +54,7 @@ class ShapeColorNode(Node):
 # =====================================================
       
         self.bridge = CvBridge()
-        self.enabled = False
+        self.enabled = True
         self.image_sub = self.create_subscription(
             Image,
             '/camera/down',
