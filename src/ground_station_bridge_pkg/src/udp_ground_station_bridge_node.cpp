@@ -30,7 +30,7 @@ UdpGroundStationBridgeNode::UdpGroundStationBridgeNode()
 
   udp_remote_ip_ =
     declare_parameter<std::string>(
-      "udp_remote_ip", "192.168.43.50");
+      "udp_remote_ip", "192.168.43.66");
 
   udp_remote_port_ =
     declare_parameter<int>(
@@ -443,7 +443,7 @@ UdpGroundStationBridgeNode::parse_command(
 
   output.cmd_type =
     ground_station_msgs::msg::GroundCommand::
-    CMD_NONE;
+    CMD_UNKNOWN;
 
   std::string command_name;
 

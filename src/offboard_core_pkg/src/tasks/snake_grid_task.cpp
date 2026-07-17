@@ -83,6 +83,7 @@ void SnakeGridTask::onEnter(Context& ctx)
   ctx.origin_dy = origin_y_;
   ctx.current_r = -1;
   ctx.current_c = -1;
+  ctx.vision_down_enable=true;
 
   buildWaypoints();
   if (phase_ == Phase::FAILED) {
@@ -122,6 +123,9 @@ ITask::Status SnakeGridTask::tick(Context& ctx, double dt_s)
     phase_ = Phase::FINISHED;
     return ITask::Status::SUCCESS;
   }
+
+
+  ctx.vision_down_enable=true;
 
   const Waypoint& wp = waypoints_[index_];
   ctx.current_c = wp.ix;
@@ -178,6 +182,7 @@ ITask::Status SnakeGridTask::tick(Context& ctx, double dt_s)
 void SnakeGridTask::onExit(Context& ctx)
 {
   (void)ctx;
+    ctx.vision_down_enable=false;
   if (failed()) {
     RCLCPP_ERROR(logger_, "[SNAKE] exit failed: plan=%u wp=%zu/%zu",
       static_cast<unsigned>(plan_id_), currentIndex(), totalWaypoints());
@@ -428,9 +433,13 @@ void SnakeGridTask::rebuildRouteCells()
   }
 }
 
-std::string SnakeGridTask::cellToName(int ix, int iy) const
+std::string SnakeGridTask::cellToName(
+  int ix,
+  int iy) const
 {
-  return "A" + std::to_string(ix + 1) + "B" + std::to_string(iy + 1);
+  return
+    "A" + std::to_string(cfg_.x_cells - ix) +
+    "B" + std::to_string(iy + 1);
 }
 
 void SnakeGridTask::moveCommandToward(const Waypoint& wp)

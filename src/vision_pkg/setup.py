@@ -49,6 +49,7 @@ setup(
 
         'shape_color_down_node=vision_pkg.ShapeColorDetect2:main',
         
+        'video_record_node=vision_pkg.Record:main'
         ],
     },
 )

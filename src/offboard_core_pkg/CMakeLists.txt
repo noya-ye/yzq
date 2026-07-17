@@ -200,32 +200,32 @@ target_include_directories(offboard_test1_node PUBLIC
 target_compile_features(offboard_test1_node PUBLIC cxx_std_17)
 
 
-# ========================
-# node: offboard_test2
-# ========================
-add_executable(offboard_test2_node
-  src/nodes/offboard_test2.cpp
-)
+# # ========================
+# # node: offboard_test2
+# # ========================
+# add_executable(offboard_test2_node
+#   src/nodes/offboard_test2.cpp
+# )
 
-target_link_libraries(offboard_test2_node
-  offboard_core
-)
+# target_link_libraries(offboard_test2_node
+#   offboard_core
+# )
 
-ament_target_dependencies(offboard_test2_node
-  rclcpp
-  std_msgs
-  px4_msgs
-  ground_station_msgs
-  nlohmann_json
-  Eigen3
-)
+# ament_target_dependencies(offboard_test2_node
+#   rclcpp
+#   std_msgs
+#   px4_msgs
+#   ground_station_msgs
+#   nlohmann_json
+#   Eigen3
+# )
 
-target_include_directories(offboard_test2_node PUBLIC
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-  $<INSTALL_INTERFACE:include>
-)
+# target_include_directories(offboard_test2_node PUBLIC
+#   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+#   $<INSTALL_INTERFACE:include>
+# )
 
-target_compile_features(offboard_test2_node PUBLIC cxx_std_17)
+# target_compile_features(offboard_test2_node PUBLIC cxx_std_17)
 
 # ========================
 # node: offboard_test3
@@ -257,60 +257,60 @@ target_compile_features(offboard_test3_node PUBLIC cxx_std_17)
 
 
 
-# ========================
-# node: offboard_test4
-# ========================
-add_executable(offboard_test4_node
-  src/nodes/offboard_test4.cpp
-)
+# # ========================
+# # node: offboard_test4
+# # ========================
+# add_executable(offboard_test4_node
+#   src/nodes/offboard_test4.cpp
+# )
 
-target_link_libraries(offboard_test4_node
-  offboard_core
-)
+# target_link_libraries(offboard_test4_node
+#   offboard_core
+# )
 
-ament_target_dependencies(offboard_test4_node
-  rclcpp
-  std_msgs
-  px4_msgs
-  nlohmann_json
-  Eigen3  
-  custom_vision_msgs 
-)
+# ament_target_dependencies(offboard_test4_node
+#   rclcpp
+#   std_msgs
+#   px4_msgs
+#   nlohmann_json
+#   Eigen3  
+#   custom_vision_msgs 
+# )
 
-target_include_directories(offboard_test4_node PUBLIC
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-  $<INSTALL_INTERFACE:include>
-)
+# target_include_directories(offboard_test4_node PUBLIC
+#   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+#   $<INSTALL_INTERFACE:include>
+# )
 
-target_compile_features(offboard_test4_node PUBLIC cxx_std_17)
+# target_compile_features(offboard_test4_node PUBLIC cxx_std_17)
 
-# ========================
-# node: yaw_spin_test
-# ========================
-add_executable(yaw_spin_test_node
-  src/nodes/yaw_spin_test.cpp
-)
+# # ========================
+# # node: yaw_spin_test
+# # ========================
+# add_executable(yaw_spin_test_node
+#   src/nodes/yaw_spin_test.cpp
+# )
 
-target_link_libraries(yaw_spin_test_node
-  offboard_core
-)
+# target_link_libraries(yaw_spin_test_node
+#   offboard_core
+# )
 
-ament_target_dependencies(yaw_spin_test_node
-  rclcpp
-  std_msgs
-  px4_msgs
-  ground_station_msgs
-  nlohmann_json
-  Eigen3
-  custom_vision_msgs
-)
+# ament_target_dependencies(yaw_spin_test_node
+#   rclcpp
+#   std_msgs
+#   px4_msgs
+#   ground_station_msgs
+#   nlohmann_json
+#   Eigen3
+#   custom_vision_msgs
+# )
 
-target_include_directories(yaw_spin_test_node PUBLIC
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-  $<INSTALL_INTERFACE:include>
-)
+# target_include_directories(yaw_spin_test_node PUBLIC
+#   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+#   $<INSTALL_INTERFACE:include>
+# )
 
-target_compile_features(yaw_spin_test_node PUBLIC cxx_std_17)
+# target_compile_features(yaw_spin_test_node PUBLIC cxx_std_17)
 
 # ========================
 # node: trajectory_test_node
@@ -403,10 +403,10 @@ install(
     offboard_core
     offboard_test0_node
     offboard_test1_node
-    offboard_test2_node
+    # offboard_test2_node
     offboard_test3_node
-    offboard_test4_node
-    yaw_spin_test_node
+    # offboard_test4_node
+    # yaw_spin_test_node
     trajectory_test_node
     d_advance
     snake_test

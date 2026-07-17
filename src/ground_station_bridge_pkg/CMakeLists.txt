@@ -18,39 +18,6 @@ include_directories(
   include
 )
 
-# =========================
-# Core library：原串口版核心
-# =========================
-add_library(ground_station_bridge_core
-  src/protocol.cpp
-  src/serial_port.cpp
-  src/ground_station_bridge_node.cpp
-)
-
-ament_target_dependencies(ground_station_bridge_core
-  rclcpp
-  std_msgs
-  px4_msgs
-  ground_station_msgs
-)
-
-# =========================
-# 原串口版节点
-# =========================
-add_executable(ground_station_bridge_node
-  src/main.cpp
-)
-
-target_link_libraries(ground_station_bridge_node
-  ground_station_bridge_core
-)
-
-ament_target_dependencies(ground_station_bridge_node
-  rclcpp
-  std_msgs
-  px4_msgs
-  ground_station_msgs
-)
 
 # =========================
 # UDP 版节点
@@ -88,8 +55,6 @@ install(
 
 install(
   TARGETS
-    ground_station_bridge_core
-    ground_station_bridge_node
     udp_ground_station_bridge_node
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib

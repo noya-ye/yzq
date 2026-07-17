@@ -10,6 +10,7 @@
 #include <string>
 #include <utility>
 #include <vector>
+#include <cctype>
 
 #include "rclcpp/qos.hpp"
 #include "rclcpp/rclcpp.hpp"
@@ -87,10 +88,10 @@ private:
 
     // ===== 蛇形网格参数 =====
     snake_x_cells_ =
-      declare_parameter<int>("snake_x_cells", 7);
+      declare_parameter<int>("snake_x_cells", 9);
 
     snake_y_cells_ =
-      declare_parameter<int>("snake_y_cells", 9);
+      declare_parameter<int>("snake_y_cells", 7);
 
     snake_cell_size_ =
       declare_parameter<double>("snake_cell_size", 0.5);
@@ -468,33 +469,67 @@ bool parseNoFlyCells(
 {
   obstacle_cells_.clear();
 
-  for (const auto& name : names) {
+  for (std::string name : names) {
+    std::transform(
+      name.begin(),
+      name.end(),
+      name.begin(),
+      [](unsigned char c) {
+        return static_cast<char>(std::toupper(c));
+      });
+
     const auto b_pos = name.find('B');
 
-    if (name.size() < 4 ||
+    if (name.empty() ||
         name.front() != 'A' ||
         b_pos == std::string::npos) {
       return false;
     }
 
-    int ix;
-    int iy;
+    int a;
+    int b;
 
     try {
-      ix = std::stoi(name.substr(1, b_pos - 1)) - 1;
-      iy = std::stoi(name.substr(b_pos + 1)) - 1;
+      a = std::stoi(
+        name.substr(1, b_pos - 1));
+
+      b = std::stoi(
+        name.substr(b_pos + 1));
     } catch (...) {
       return false;
     }
 
-    if (ix < 0 || ix >= snake_x_cells_ ||
-        iy < 0 || iy >= snake_y_cells_ ||
-        (ix == 0 && iy == 0)) {
+    if (a < 1 || a > snake_x_cells_ ||
+        b < 1 || b > snake_y_cells_) {
       return false;
     }
 
-    obstacle_cells_.push_back(
-      SnakeGridTask::ObstacleCell{ix, iy});
+    /*
+     * A9B1 -> (0,0)
+     * A8B1 -> (1,0)
+     * A1B7 -> (8,6)
+     */
+    const int ix = snake_x_cells_ - a;
+    const int iy = b - 1;
+
+    if (ix == 0 && iy == 0) {
+      RCLCPP_ERROR(
+        get_logger(),
+        "[GCS] A9B1 is the takeoff cell");
+      return false;
+    }
+
+    const bool duplicate = std::any_of(
+      obstacle_cells_.begin(),
+      obstacle_cells_.end(),
+      [ix, iy](const SnakeGridTask::ObstacleCell& cell) {
+        return cell.ix == ix && cell.iy == iy;
+      });
+
+    if (!duplicate) {
+      obstacle_cells_.push_back(
+        SnakeGridTask::ObstacleCell{ix, iy});
+    }
   }
 
   return true;
@@ -548,7 +583,7 @@ bool parseNoFlyCells(
 
     snake_cfg.obstacle_cells = obstacle_cells_;
 
-    snake_cfg.include_start_cell = false;
+    snake_cfg.include_start_cell = true;
     snake_cfg.hover_s = snake_hover_s_;
     snake_cfg.max_step_m = snake_max_step_m_;
     snake_cfg.arrive_xy_m = snake_arrive_xy_m_;
@@ -704,39 +739,6 @@ bool parseNoFlyCells(
       msg.route_cells.size());
   }
 
-  static std::string targetTypeToName(int type)
-  {
-    switch (type) {
-      case 1: return "red_circle";
-      case 2: return "red_square";
-      case 3: return "red_triangle";
-      case 4: return "red_pentagon";
-      case 5: return "red_hexagon";
-
-      case 6: return "green_circle";
-      case 7: return "green_square";
-      case 8: return "green_triangle";
-      case 9: return "green_pentagon";
-      case 10: return "green_hexagon";
-
-      case 11: return "yellow_circle";
-      case 12: return "yellow_square";
-      case 13: return "yellow_triangle";
-      case 14: return "yellow_pentagon";
-      case 15: return "yellow_hexagon";
-
-      case 16: return "blue_circle";
-      case 17: return "blue_square";
-      case 18: return "blue_triangle";
-      case 19: return "blue_pentagon";
-      case 20: return "blue_hexagon";
-
-      case 21: return "illegal_shape";
-
-      default: return "none";
-    }
-  }
-
   uint8_t missionState() const
 {
   const std::string task = sched_.current_name();
@@ -791,62 +793,64 @@ void publishTaskStatus()
 }
 
   void onTimer()
-  {
-    const auto current_time = now();
+{
+  const auto current_time = now();
 
-    double dt =
-      (current_time - last_time_).seconds();
+  double dt =
+    (current_time - last_time_).seconds();
 
-    last_time_ = current_time;
+  last_time_ = current_time;
 
-    if (!std::isfinite(dt) || dt < 0.0) {
-      dt = 0.0;
-    }
-
-    dt = std::min(dt, 0.20);
-
-    if (!sched_.done() &&
-        !ctx_.handover_to_px4_land) {
-      px4_->publish_offboard_control_mode(ctx_);
-    }
-
-    handleDownAlignInterrupt();
-
-    sched_.tick(ctx_, dt);
-
-    publishMissionPlan();
-    publishVisionGates();
-
-    if (!sched_.done() &&
-        !ctx_.handover_to_px4_land) {
-      px4_->publish_setpoint_from_ctx(ctx_);
-    }
-
-    publishTaskStatus();
-
-    RCLCPP_INFO_THROTTLE(
-      get_logger(),
-      *get_clock(),
-      2000,
-      "[SNAKE_TEST] task=%s done=%d valid=%d "
-      "pos=(%.2f %.2f %.2f) "
-      "sp=(%.2f %.2f %.2f) "
-      "cell=(r=%d,c=%d) "
-      "down=%d request=%d",
-      sched_.current_name().c_str(),
-      sched_.done() ? 1 : 0,
-      ctx_.pos_valid() ? 1 : 0,
-      ctx_.cx(),
-      ctx_.cy(),
-      ctx_.cz(),
-      ctx_.sp_x,
-      ctx_.sp_y,
-      ctx_.sp_z,
-      ctx_.current_r,
-      ctx_.current_c,
-      ctx_.vision_down_enable ? 1 : 0,
-      ctx_.down_align_request ? 1 : 0);
+  if (!std::isfinite(dt) || dt < 0.0) {
+    dt = 0.0;
   }
+
+  dt = std::min(dt, 0.20);
+
+  /*
+   * 等待地面站START命令。
+   */
+  if (!mission_started_) {
+    publishVisionGates();
+    publishTaskStatus();
+    return;
+  }
+
+  if (!sched_.done() &&
+      !ctx_.handover_to_px4_land) {
+    px4_->publish_offboard_control_mode(ctx_);
+  }
+
+  handleDownAlignInterrupt();
+  sched_.tick(ctx_, dt);
+
+  publishMissionPlan();
+  publishVisionGates();
+
+  if (!sched_.done() &&
+      !ctx_.handover_to_px4_land) {
+    px4_->publish_setpoint_from_ctx(ctx_);
+  }
+
+  publishTaskStatus();
+
+  RCLCPP_INFO_THROTTLE(
+    get_logger(),
+    *get_clock(),
+    2000,
+    "[SNAKE_TEST] task=%s done=%d pos=(%.2f %.2f %.2f) "
+    "sp=(%.2f %.2f %.2f) cell=(r=%d,c=%d)",
+    sched_.current_name().c_str(),
+    sched_.done() ? 1 : 0,
+    ctx_.cx(),
+    ctx_.cy(),
+    ctx_.cz(),
+    ctx_.sp_x,
+    ctx_.sp_y,
+    ctx_.sp_z,
+    ctx_.current_r,
+    ctx_.current_c);
+}
 
 private:
   Context ctx_;
@@ -871,8 +875,8 @@ private:
   double arrival_error_max_{0.25};
 
   // ===== 蛇形参数 =====
-  int snake_x_cells_{7};
-  int snake_y_cells_{9};
+  int snake_x_cells_{9};
+  int snake_y_cells_{7};
 
   double snake_cell_size_{0.5};
   double snake_hover_s_{0.5};

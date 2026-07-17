@@ -8,8 +8,8 @@ def generate_launch_description():
 
         Node(
             package='vision_pkg',
-            executable='shape_color_down_node',
-            name='shape_color_down_node',
+            executable='video_record_node',
+            name='video_record_node',
             output='screen'
         ),
 
