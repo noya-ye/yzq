@@ -137,48 +137,46 @@ ITask::Status SnakeGridTask::tick(Context& ctx, double dt_s)
   }
 
   if (phase_ == Phase::MOVING) {
-    moveCommandToward(wp);
-    publishSetpoint(ctx);
-    if (!arrived(ctx, wp)) {
-      return ITask::Status::RUNNING;
+  moveCommandToward(wp, dt_s);
+  publishSetpoint(ctx);
+
+  /*
+   * 普通直线中间点不等待飞机实际到达。
+   * 指令点到达该网格后立即推进下一格，让PX4沿整行连续飞行。
+   */
+  if (!wp.hover_after) {
+    const double dx = wp.x - cmd_x_;
+    const double dy = wp.y - cmd_y_;
+    const double dz = wp.z - cmd_z_;
+
+    if (std::sqrt(dx * dx + dy * dy + dz * dz) <= 1e-4) {
+      nextWaypoint();
     }
 
-    cmd_x_ = wp.x;
-    cmd_y_ = wp.y;
-    cmd_z_ = wp.z;
-    publishSetpoint(ctx);
-
-    if (wp.hover_after && cfg_.hover_s > 1e-3) {
-      hover_elapsed_s_ = 0.0;
-      phase_ = Phase::HOVERING;
-      RCLCPP_INFO(logger_, "[SNAKE] reached %s wp=%zu/%zu hover=%.2fs",
-        route_cells_[index_].c_str(), index_ + 1, waypoints_.size(), cfg_.hover_s);
-      return ITask::Status::RUNNING;
-    }
-
-    nextWaypoint();
     return ITask::Status::RUNNING;
   }
 
-  if (phase_ == Phase::HOVERING) {
-    cmd_x_ = wp.x;
-    cmd_y_ = wp.y;
-    cmd_z_ = wp.z;
-    publishSetpoint(ctx);
+  /*
+   * 行尾、A*转折点需要等待飞机实际到达。
+   */
+  if (!arrived(ctx, wp)) {
+    return ITask::Status::RUNNING;
+  }
 
-    double safe_dt = dt_s;
-    if (!std::isfinite(safe_dt) || safe_dt < 0.0) {
-      safe_dt = 0.0;
-    }
-    hover_elapsed_s_ += std::min(safe_dt, 0.2);
-    if (hover_elapsed_s_ >= cfg_.hover_s) {
-      nextWaypoint();
-    }
+  cmd_x_ = wp.x;
+  cmd_y_ = wp.y;
+  cmd_z_ = wp.z;
+  publishSetpoint(ctx);
+
+  if (cfg_.hover_s > 1e-3) {
+    hover_elapsed_s_ = 0.0;
+    phase_ = Phase::HOVERING;
+  } else {
+    nextWaypoint();
   }
 
   return ITask::Status::RUNNING;
 }
-
 void SnakeGridTask::onExit(Context& ctx)
 {
   (void)ctx;
@@ -442,12 +440,15 @@ std::string SnakeGridTask::cellToName(
     "B" + std::to_string(iy + 1);
 }
 
-void SnakeGridTask::moveCommandToward(const Waypoint& wp)
+void SnakeGridTask::moveCommandToward(
+  const Waypoint& wp,
+  double dt_s)
 {
   const double dx = wp.x - cmd_x_;
   const double dy = wp.y - cmd_y_;
   const double dz = wp.z - cmd_z_;
-  const double distance = std::sqrt(dx * dx + dy * dy + dz * dz);
+  const double distance =
+    std::sqrt(dx * dx + dy * dy + dz * dz);
 
   if (distance < 1e-6) {
     cmd_x_ = wp.x;
@@ -456,8 +457,28 @@ void SnakeGridTask::moveCommandToward(const Waypoint& wp)
     return;
   }
 
-  const double step = std::max(0.0, cfg_.max_step_m);
-  if (step < 1e-6 || distance <= step) {
+  double safe_dt = dt_s;
+
+  if (!std::isfinite(safe_dt) ||
+      safe_dt <= 0.0) {
+    safe_dt = 0.05;
+  }
+
+  safe_dt = std::min(safe_dt, 0.10);
+
+  /*
+   * 兼容现有参数：
+   * 原max_step_m是50ms周期下的步长。
+   * 换算成速度后，再乘实际dt。
+   */
+  const double max_speed_mps =
+    std::max(0.0, cfg_.max_step_m) / 0.05;
+
+  const double step =
+    max_speed_mps * safe_dt;
+
+  if (step < 1e-6 ||
+      distance <= step) {
     cmd_x_ = wp.x;
     cmd_y_ = wp.y;
     cmd_z_ = wp.z;
@@ -465,6 +486,7 @@ void SnakeGridTask::moveCommandToward(const Waypoint& wp)
   }
 
   const double ratio = step / distance;
+
   cmd_x_ += dx * ratio;
   cmd_y_ += dy * ratio;
   cmd_z_ += dz * ratio;

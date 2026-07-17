@@ -245,8 +245,8 @@ private:
     int iy) const;
 
   void moveCommandToward(
-    const Waypoint& wp);
-
+  const Waypoint& wp,
+  double dt_s);
   bool arrived(
     const Context& ctx,
     const Waypoint& wp) const;
