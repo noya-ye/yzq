@@ -73,8 +73,8 @@ private:
   double score_thresh_{500.0};
   double dup_remove_radius_{0.5};
 
-  double align_timeout_s_{20.0};
-  double align_lost_timeout_s_{6.0};
+  double align_timeout_s_{15.0};
+  double align_lost_timeout_s_{2.0};
 
   double img_to_body_x_sign_{-1.0};
   double img_to_body_y_sign_{1.0};

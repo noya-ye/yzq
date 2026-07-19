@@ -11,6 +11,8 @@
 #include <utility>
 #include <vector>
 #include <cctype>
+#include <unordered_map>
+#include <unordered_set>
 
 #include "rclcpp/qos.hpp"
 #include "rclcpp/rclcpp.hpp"
@@ -41,6 +43,7 @@
 #include "offboard_core_pkg/tasks/snake_grid_task.hpp"
 #include "offboard_core_pkg/tasks/start_down_blind_check_task.hpp"
 #include "offboard_core_pkg/planners/a_star_goto_task.hpp"
+#include "offboard_core_pkg/tasks/land_45_task.hpp"
 
 using namespace std::chrono_literals;
 
@@ -185,7 +188,7 @@ private:
         obstacle_cells_.push_back(
           SnakeGridTask::ObstacleCell{ix, iy});
       }
-    }
+    }//判断障碍是否合法，并把障碍转化为snake可以读懂的形式
 
     return true;
   }
@@ -195,6 +198,10 @@ private:
     rclcpp::QoS px4_qos(rclcpp::KeepLast(1));
     px4_qos.best_effort();
     px4_qos.durability_volatile();
+
+    landing_led_pub_ = create_publisher<std_msgs::msg::Bool>(
+      "/landing/led_enable",
+      10);
 
     offboard_control_mode_pub_ =
       create_publisher<px4_msgs::msg::OffboardControlMode>(
@@ -344,38 +351,78 @@ private:
   void downServoCallback(
     const custom_vision_msgs::msg::ServoTargetArray::SharedPtr msg)
   {
-    if (!ctx_.vision_down_enable) {
+    if (!mission_started_) {
       return;
     }
 
     const uint64_t now_us =
-      static_cast<uint64_t>(
-        now().nanoseconds() / 1000ULL);
+      static_cast<uint64_t>(now().nanoseconds() / 1000ULL);
 
     ctx_.vision_last_update_us = now_us;
-    ctx_.vision_down_targets.clear();
     ctx_.vision_down_targets_stamp_us = now_us;
+    ctx_.vision_down_targets.clear();
+
+    if (msg->targets.empty()) {
+      ctx_.vision_offset = VisionOffset{};
+      return;
+    }
+
+    const auto read_track_id = [](float raw_id, int32_t& track_id) {
+      if (!std::isfinite(raw_id) || raw_id < 0.0f || raw_id > 1000000.0f) {
+        return false;
+      }
+
+      const float rounded = std::round(raw_id);
+
+      if (std::fabs(raw_id - rounded) > 1e-3f) {
+        return false;
+      }
+
+      track_id = static_cast<int32_t>(rounded);
+      return true;
+    };
+
+    std::unordered_map<int32_t, int> id_count;
 
     for (const auto& target : msg->targets) {
-      if (target.type == 0 ||
-          target.score < 500.0f) {
+      if (target.type == 0 || target.score < 500.0f) {
         continue;
       }
 
-      VisionOffset offset;
+      int32_t track_id = -1;
 
-      offset.dx = target.dx;
-      offset.dy = target.dy;
-      offset.type = target.type;
-      offset.score = target.score;
-      offset.stamp_us = now_us;
+      if (!read_track_id(target.x, track_id)) {
+        continue;
+      }
 
-      offset.cost =
-        target.dx * target.dx +
-        target.dy * target.dy -
-        1e-6f * target.score;
+      id_count[track_id]++;
+    }
 
-      ctx_.vision_down_targets.push_back(offset);
+    for (const auto& target : msg->targets) {
+      if (target.type == 0 || target.score < 500.0f) {
+        continue;
+      }
+
+      int32_t track_id = -1;
+
+      if (!read_track_id(target.x, track_id) ||
+          id_count[track_id] != 1) {
+        continue;
+      }
+
+      VisionOffset vo;
+      vo.track_id = track_id;
+      vo.dx = target.dx;
+      vo.dy = target.dy;
+      vo.type = target.type;
+      vo.score = target.score;
+      vo.stamp_us = now_us;
+
+      const float center_cost = target.dx * target.dx + target.dy * target.dy;
+      const float area_bonus = 1e-6f * target.score;
+      vo.cost = center_cost - area_bonus;
+
+      ctx_.vision_down_targets.push_back(vo);
     }
 
     if (ctx_.vision_down_targets.empty()) {
@@ -386,13 +433,142 @@ private:
     std::sort(
       ctx_.vision_down_targets.begin(),
       ctx_.vision_down_targets.end(),
-      [](const VisionOffset& lhs, const VisionOffset& rhs) {
-        return lhs.cost < rhs.cost;
+      [](const VisionOffset& a, const VisionOffset& b) {
+        return a.cost < b.cost;
       });
 
-    ctx_.vision_offset =
-      ctx_.vision_down_targets.front();
+    ctx_.vision_offset = ctx_.vision_down_targets.front();
+
+    /*
+     * 巡检过程中一旦收到新的有效目标，立即请求进入下视补盲中断。
+     * 同一个 track_id 只触发一次，避免补盲结束后被同一目标反复打断。
+     */
+    if (sched_.current_name() == "SNAKE_GRID" &&
+        !ctx_.down_align_request &&
+        !animal_report_pending_ &&
+        reported_animal_tracks_.count(ctx_.vision_offset.track_id) == 0) {
+      pending_interrupt_track_id_ = ctx_.vision_offset.track_id;
+      pending_animal_target_ = ctx_.vision_offset;
+      ctx_.down_align_request = true;
+
+      RCLCPP_WARN(
+        get_logger(),
+        "[VISION_DOWN] target detected -> interrupt: id=%d type=%d "
+        "dx=%.3f dy=%.3f score=%.1f",
+        ctx_.vision_offset.track_id,
+        ctx_.vision_offset.type,
+        ctx_.vision_offset.dx,
+        ctx_.vision_offset.dy,
+        ctx_.vision_offset.score);
+    }
   }
+
+  bool currentPositionToCell(
+    int& ix,
+    int& iy,
+    float& animal_x,
+    float& animal_y,
+    std::string& cell_name) const
+  {
+    if (!ctx_.pos_valid() || !ctx_.home_inited || snake_cell_size_ <= 0.0) {
+      return false;
+    }
+
+    /*
+     * 补盲纠偏完成后，无人机已经位于动物正上方。
+     * 因此动物平面位置直接取纠偏结束时的无人机本地位置，
+     * 不再使用 dx/dy 做二次位置补偿。
+     */
+    animal_x = ctx_.cx();
+    animal_y = ctx_.cy();
+
+    ix = static_cast<int>(std::lround(
+      (static_cast<double>(animal_x) - ctx_.origin_dx) /
+      snake_cell_size_));
+
+    iy = static_cast<int>(std::lround(
+      (static_cast<double>(animal_y) - ctx_.origin_dy) /
+      snake_cell_size_));
+
+    if (ix < 0 || ix >= snake_x_cells_ ||
+        iy < 0 || iy >= snake_y_cells_) {
+      return false;
+    }
+
+    const int a = snake_x_cells_ - ix;
+    const int b = iy + 1;
+    cell_name = "A" + std::to_string(a) + "B" + std::to_string(b);
+    return true;
+  }
+
+void publishAnimalInfoAfterAlign()
+{
+  if (!animal_report_pending_) {
+    return;
+  }
+
+  const auto target = pending_animal_target_;
+
+  int ix = -1;
+  int iy = -1;
+  float animal_x = 0.0f;
+  float animal_y = 0.0f;
+  std::string cell_name;
+
+  if (!currentPositionToCell(ix, iy, animal_x, animal_y, cell_name)) {
+    RCLCPP_WARN(
+      get_logger(),
+      "[ANIMAL] failed to calculate cell: pos=(%.2f %.2f)",
+      ctx_.cx(),
+      ctx_.cy());
+
+    animal_report_pending_ = false;
+    pending_animal_target_ = VisionOffset{};
+    return;
+  }
+
+  if (reported_animal_tracks_.count(target.track_id) > 0) {
+    RCLCPP_WARN(
+      get_logger(),
+      "[ANIMAL] track already reported: id=%d",
+      target.track_id);
+
+    animal_report_pending_ = false;
+    pending_animal_target_ = VisionOffset{};
+    return;
+  }
+
+  ground_station_msgs::msg::AnimalInfo msg;
+
+  msg.plan_id =
+    snake_task_ != nullptr && snake_task_->planReady()
+    ? snake_task_->planId()
+    : 0;
+
+  msg.cell = cell_name;
+  msg.animal_type = static_cast<uint8_t>(target.type);
+  msg.count = 1;
+
+  animal_info_pub_->publish(msg);
+  reported_animal_tracks_.insert(target.track_id);
+
+  RCLCPP_WARN(
+    get_logger(),
+    "[ANIMAL] published: plan=%u cell=%s type=%u count=%u "
+    "track=%d grid=(%d,%d) pos=(%.2f %.2f)",
+    static_cast<unsigned>(msg.plan_id),
+    msg.cell.c_str(),
+    static_cast<unsigned>(msg.animal_type),
+    static_cast<unsigned>(msg.count),
+    target.track_id,
+    ix,
+    iy,
+    animal_x,
+    animal_y);
+
+  animal_report_pending_ = false;
+  pending_animal_target_ = VisionOffset{};
+}
 
   void groundCommandCallback(
   const ground_station_msgs::msg::GroundCommand::SharedPtr msg)
@@ -451,6 +627,14 @@ private:
       ground_station_msgs::msg::GroundCommand::CMD_RESET) {
     mission_started_ = false;
     last_published_plan_id_ = 0;
+    pending_interrupt_track_id_ = -1;
+    last_interrupt_track_id_ = -1;
+    ctx_.down_align_request = false;
+    ctx_.vision_offset = VisionOffset{};
+    ctx_.vision_down_targets.clear();
+    pending_animal_target_ = VisionOffset{};
+    animal_report_pending_ = false;
+    reported_animal_tracks_.clear();
     obstacle_cells_.clear();
     buildScheduler();
 
@@ -461,6 +645,14 @@ private:
   if (command ==
       ground_station_msgs::msg::GroundCommand::CMD_CLEAR_TRACK) {
     ctx_.detected_targets.clear();
+    pending_interrupt_track_id_ = -1;
+    last_interrupt_track_id_ = -1;
+    ctx_.down_align_request = false;
+    ctx_.vision_offset = VisionOffset{};
+    ctx_.vision_down_targets.clear();
+    pending_animal_target_ = VisionOffset{};
+    animal_report_pending_ = false;
+    reported_animal_tracks_.clear();
     RCLCPP_WARN(get_logger(), "[GCS] CLEAR_TRACK");
   }
 }
@@ -534,7 +726,25 @@ bool parseNoFlyCells(
 
   return true;
 }//增加字符串禁飞区解析
+SnakeGridTask::FirstAxis chooseSnakeFirstAxis() const
+{
+  if (obstacle_cells_.size() < 2) {
+    return SnakeGridTask::FirstAxis::X_FIRST;
+  }
 
+  const int first_ix = obstacle_cells_.front().ix;
+
+  const bool along_y = std::all_of(
+    obstacle_cells_.begin(),
+    obstacle_cells_.end(),
+    [first_ix](const SnakeGridTask::ObstacleCell& cell) {
+      return cell.ix == first_ix;
+    });
+
+  return along_y
+    ? SnakeGridTask::FirstAxis::Y_FIRST
+    : SnakeGridTask::FirstAxis::X_FIRST;
+}
   void buildScheduler()
   {
     sched_.clear();
@@ -571,9 +781,17 @@ bool parseNoFlyCells(
 
     SnakeGridTask::Config snake_cfg;
 
-    snake_cfg.first_axis =
-      SnakeGridTask::FirstAxis::X_FIRST;
+    const auto first_axis =
+      chooseSnakeFirstAxis();
 
+    snake_cfg.first_axis = first_axis;
+
+    RCLCPP_INFO(
+      get_logger(),
+      "[SNAKE] selected axis=%s",
+      first_axis == SnakeGridTask::FirstAxis::Y_FIRST
+        ? "Y_FIRST"
+        : "X_FIRST");
     snake_cfg.stop_mode =
       SnakeGridTask::StopMode::LINE_END_ONLY;
 
@@ -610,13 +828,33 @@ bool parseNoFlyCells(
      * y_cells为偶数：
      *   最后一行反向扫描，结束在左端。
      */
-    const int snake_end_x =
-      snake_y_cells_ % 2 == 1
-      ? snake_x_cells_ - 1
-      : 0;
+    int snake_end_x = 0;
+    int snake_end_y = 0;
 
-    const int snake_end_y =
-      snake_y_cells_ - 1;
+    if (first_axis ==
+        SnakeGridTask::FirstAxis::X_FIRST) {
+      /*
+      * 一行一行沿x扫描。
+      */
+      snake_end_x =
+        snake_y_cells_ % 2 == 1
+        ? snake_x_cells_ - 1
+        : 0;
+
+      snake_end_y =
+        snake_y_cells_ - 1;
+    } else {
+      /*
+      * 一列一列沿y扫描。
+      */
+      snake_end_x =
+        snake_x_cells_ - 1;
+
+      snake_end_y =
+        snake_x_cells_ % 2 == 1
+        ? snake_y_cells_ - 1
+        : 0;
+    }
 
     offboard_core_pkg::AStarGotoTask::Config astar_cfg;
 
@@ -652,11 +890,32 @@ bool parseNoFlyCells(
         get_logger(),
         astar_cfg));
 
-    sched_.add(
-      std::make_unique<
-        offboard_core_pkg::Px4LandModeTask>(
-        get_logger(),
-        *px4_));
+    offboard_core_pkg::Land45Task::Config land45_cfg;
+
+    land45_cfg.approach_dir_x = 0.0;
+    land45_cfg.approach_dir_y = 1.0;
+
+    land45_cfg.approach_step_m = 0.04;
+    land45_cfg.descend_step_m = 0.025;
+
+    land45_cfg.approach_xy_tol_m = 0.08;
+    land45_cfg.approach_z_tol_m = 0.08;
+
+    land45_cfg.handover_height_m = 0.18;
+    land45_cfg.max_horizontal_offset_m = 1.50;
+
+    land45_cfg.approach_hold_s = 0.40;
+    land45_cfg.led_toggle_s = 0.25;
+    land45_cfg.timeout_s = 30.0;
+
+    sched_.add(std::make_unique<offboard_core_pkg::Land45Task>(
+      get_logger(),
+      land45_cfg,
+      landing_led_pub_));
+
+    sched_.add(std::make_unique<offboard_core_pkg::Px4LandModeTask>(
+      get_logger(),
+      *px4_));
 
     sched_.addAux(
       std::make_unique<
@@ -681,10 +940,18 @@ bool parseNoFlyCells(
       return;
     }
 
-    if (sched_.interrupt(
-          "START_DOWN_BLIND_CHECK",
-          ctx_)) {
+    if (sched_.current_name() != "SNAKE_GRID") {
       ctx_.down_align_request = false;
+      pending_interrupt_track_id_ = -1;
+      pending_animal_target_ = VisionOffset{};
+      return;
+    }
+
+    if (sched_.interrupt("START_DOWN_BLIND_CHECK", ctx_)) {
+      ctx_.down_align_request = false;
+      last_interrupt_track_id_ = pending_interrupt_track_id_;
+      pending_interrupt_track_id_ = -1;
+      animal_report_pending_ = true;
 
       RCLCPP_WARN(
         get_logger(),
@@ -707,7 +974,14 @@ bool parseNoFlyCells(
     vision_front_enable_pub_->publish(front_msg);
 
     std_msgs::msg::Bool down_msg;
-    down_msg.data = ctx_.vision_down_enable;
+    const std::string task = sched_.current_name();
+
+    // 巡检阶段必须开启下视视觉，否则无法在发现目标时发起中断。
+    down_msg.data =
+      ctx_.vision_down_enable ||
+      task == "SNAKE_GRID" ||
+      task == "START_DOWN_BLIND_CHECK";
+
     vision_down_enable_pub_->publish(down_msg);
   }
 
@@ -763,7 +1037,8 @@ bool parseNoFlyCells(
     return ground_station_msgs::msg::TaskStatus::STATE_RETURNING;
   }
 
-  if (task == "PX4_LAND_MODE") {
+  if (task == "LAND_45" ||
+      task == "PX4_LAND_MODE") {
     return ground_station_msgs::msg::TaskStatus::STATE_LANDING;
   }
 
@@ -822,7 +1097,15 @@ void publishTaskStatus()
   }
 
   handleDownAlignInterrupt();
+
+  const std::string task_before_tick = sched_.current_name();
   sched_.tick(ctx_, dt);
+  const std::string task_after_tick = sched_.current_name();
+
+  if (task_before_tick == "START_DOWN_BLIND_CHECK" &&
+      task_after_tick != "START_DOWN_BLIND_CHECK") {
+    publishAnimalInfoAfterAlign();
+  }
 
   publishMissionPlan();
   publishVisionGates();
@@ -866,6 +1149,11 @@ private:
 
   uint32_t last_published_plan_id_{0};
   bool mission_started_{false};
+  int32_t pending_interrupt_track_id_{-1};
+  int32_t last_interrupt_track_id_{-1};
+  VisionOffset pending_animal_target_{};
+  bool animal_report_pending_{false};
+  std::unordered_set<int32_t> reported_animal_tracks_;
 
   rclcpp::TimerBase::SharedPtr timer_;
   rclcpp::Time last_time_;
@@ -955,6 +1243,8 @@ private:
   rclcpp::Subscription<
     custom_vision_msgs::msg::ServoTargetArray>::SharedPtr
     down_servo_sub_;
+  rclcpp::Publisher<std_msgs::msg::Bool>::SharedPtr 
+    landing_led_pub_;
 };
 
 int main(int argc, char** argv)

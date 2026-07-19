@@ -7,6 +7,8 @@
 #include <cstdint>
 #include <utility>
 #include <vector>
+#include <limits>
+
 
 namespace
 {
@@ -116,18 +118,20 @@ ITask::Status SnakeGridTask::tick(Context& ctx, double dt_s)
   if (phase_ == Phase::FAILED) {
     return ITask::Status::FAILURE;
   }
+
   if (phase_ == Phase::FINISHED) {
     return ITask::Status::SUCCESS;
   }
+
   if (index_ >= waypoints_.size()) {
     phase_ = Phase::FINISHED;
     return ITask::Status::SUCCESS;
   }
 
-
-  ctx.vision_down_enable=true;
+  ctx.vision_down_enable = true;
 
   const Waypoint& wp = waypoints_[index_];
+
   ctx.current_c = wp.ix;
   ctx.current_r = wp.iy;
 
@@ -137,42 +141,67 @@ ITask::Status SnakeGridTask::tick(Context& ctx, double dt_s)
   }
 
   if (phase_ == Phase::MOVING) {
-  moveCommandToward(wp, dt_s);
-  publishSetpoint(ctx);
+    moveCommandToward(wp, dt_s);
+    publishSetpoint(ctx);
 
-  /*
-   * 普通直线中间点不等待飞机实际到达。
-   * 指令点到达该网格后立即推进下一格，让PX4沿整行连续飞行。
-   */
-  if (!wp.hover_after) {
-    const double dx = wp.x - cmd_x_;
-    const double dy = wp.y - cmd_y_;
-    const double dz = wp.z - cmd_z_;
+    /*
+     * 普通直线中间点：
+     * 指令点到达当前网格后立即推进，不等待飞机实际到达。
+     */
+    if (!wp.hover_after) {
+      const double dx = wp.x - cmd_x_;
+      const double dy = wp.y - cmd_y_;
+      const double dz = wp.z - cmd_z_;
 
-    if (std::sqrt(dx * dx + dy * dy + dz * dz) <= 1e-4) {
+      if (std::sqrt(dx * dx + dy * dy + dz * dz) <= 1e-4) {
+        nextWaypoint();
+      }
+
+      return ITask::Status::RUNNING;
+    }
+
+    /*
+     * 行尾、A* 转折点：
+     * 等待飞机实际到达。
+     */
+    if (!arrived(ctx, wp)) {
+      return ITask::Status::RUNNING;
+    }
+
+    cmd_x_ = wp.x;
+    cmd_y_ = wp.y;
+    cmd_z_ = wp.z;
+    publishSetpoint(ctx);
+
+    if (cfg_.hover_s > 1e-3) {
+      hover_elapsed_s_ = 0.0;
+      phase_ = Phase::HOVERING;
+    } else {
       nextWaypoint();
     }
 
     return ITask::Status::RUNNING;
   }
 
-  /*
-   * 行尾、A*转折点需要等待飞机实际到达。
-   */
-  if (!arrived(ctx, wp)) {
+  if (phase_ == Phase::HOVERING) {
+    /*
+     * 已经确认到达后，锁定行尾目标并持续计时。
+     * 不因为几厘米定位漂移反复重置。
+     */
+    cmd_x_ = wp.x;
+    cmd_y_ = wp.y;
+    cmd_z_ = wp.z;
+    publishSetpoint(ctx);
+
+    if (std::isfinite(dt_s) && dt_s > 0.0) {
+      hover_elapsed_s_ += std::min(dt_s, 0.20);
+    }
+
+    if (hover_elapsed_s_ >= cfg_.hover_s) {
+      nextWaypoint();
+    }
+
     return ITask::Status::RUNNING;
-  }
-
-  cmd_x_ = wp.x;
-  cmd_y_ = wp.y;
-  cmd_z_ = wp.z;
-  publishSetpoint(ctx);
-
-  if (cfg_.hover_s > 1e-3) {
-    hover_elapsed_s_ = 0.0;
-    phase_ = Phase::HOVERING;
-  } else {
-    nextWaypoint();
   }
 
   return ITask::Status::RUNNING;
@@ -208,23 +237,89 @@ void SnakeGridTask::onPause(Context& ctx)
 
 void SnakeGridTask::onResume(Context& ctx)
 {
-  if (phase_ == Phase::FAILED || phase_ == Phase::FINISHED || index_ >= waypoints_.size()) {
+  if (phase_ == Phase::FAILED ||
+      phase_ == Phase::FINISHED ||
+      waypoints_.empty()) {
     return;
   }
 
-  if (ctx.pos_valid()) {
-    cmd_x_ = static_cast<double>(ctx.cx());
-    cmd_y_ = static_cast<double>(ctx.cy());
-    cmd_z_ = static_cast<double>(ctx.cz());
+  if (!ctx.pos_valid()) {
+    phase_ = Phase::MOVING;
+    hover_elapsed_s_ = 0.0;
+    return;
   }
 
-  phase_ = Phase::MOVING;
-  hover_elapsed_s_ = 0.0;
-  RCLCPP_WARN(logger_, "[SNAKE] resumed: plan=%u cell=%s wp=%zu/%zu",
-    static_cast<unsigned>(plan_id_), currentCell().c_str(),
-    displayWaypointIndex(), waypoints_.size());
-}
+  const double px = static_cast<double>(ctx.cx());
+  const double py = static_cast<double>(ctx.cy());
+  const double pz = static_cast<double>(ctx.cz());
 
+  /*
+   * index_ 可能领先飞机实际位置，因此只在中断恢复时，
+   * 根据实际位置重新查找已经推进过的路线进度。
+   */
+  const std::size_t search_end =
+    std::min(index_, waypoints_.size() - 1);
+
+  /*
+   * 只搜索当前索引之前的有限范围，
+   * 避免A*绕障造成重复经过同一区域时匹配到很早的点。
+   */
+  const std::size_t search_begin =
+    search_end > 12 ? search_end - 12 : 0;
+
+  std::size_t nearest_index = search_begin;
+  double nearest_distance =
+    std::numeric_limits<double>::max();
+
+  for (std::size_t i = search_begin; i <= search_end; ++i) {
+    const double dx = waypoints_[i].x - px;
+    const double dy = waypoints_[i].y - py;
+    const double distance = std::hypot(dx, dy);
+
+    if (distance < nearest_distance) {
+      nearest_distance = distance;
+      nearest_index = i;
+    }
+  }
+
+  /*
+   * 最近点视为已经巡检过，
+   * 中断结束后直接飞向它的下一个 waypoint。
+   */
+  index_ = nearest_index + 1;
+
+  cmd_x_ = px;
+  cmd_y_ = py;
+  cmd_z_ = pz;
+
+  hover_elapsed_s_ = 0.0;
+  phase_ = Phase::MOVING;
+
+  if (index_ >= waypoints_.size()) {
+    phase_ = Phase::FINISHED;
+
+    RCLCPP_WARN(
+      logger_,
+      "[SNAKE] resumed: nearest=%s, no remaining waypoint",
+      cellToName(
+        waypoints_[nearest_index].ix,
+        waypoints_[nearest_index].iy).c_str());
+
+    return;
+  }
+
+  RCLCPP_WARN(
+    logger_,
+    "[SNAKE] resumed: actual nearest=%s next=%s "
+    "wp=%zu/%zu dist=%.2f",
+    cellToName(
+      waypoints_[nearest_index].ix,
+      waypoints_[nearest_index].iy).c_str(),
+    currentCell().c_str(),
+    displayWaypointIndex(),
+    waypoints_.size(),
+    nearest_distance);
+}
 void SnakeGridTask::buildWaypoints()
 {
   using AStarPlanner = offboard_core_pkg::AStarPlanner;

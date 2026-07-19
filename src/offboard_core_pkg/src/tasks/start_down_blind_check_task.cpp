@@ -2,7 +2,6 @@
 
 #include <algorithm>
 #include <cmath>
-#include <cstdlib>
 #include <string>
 #include <unordered_set>
 
@@ -40,15 +39,11 @@ std::string target_type_to_name(int type)
   }
 }
 
+// 临时禁用 MCU 串口发送。
+// 保留函数和调用位置，避免改变任务状态机及其他控制逻辑。
 void send_mcu_command(char command)
 {
-  std::system("stty -F /dev/ttyUSB1 115200 cs8 -cstopb -parenb raw");
-
-  if (command == 'a') {
-    std::system("printf 'a' > /dev/ttyUSB1");
-  } else if (command == 'b') {
-    std::system("printf 'b' > /dev/ttyUSB1");
-  }
+  (void)command;
 }
 
 }  // namespace
@@ -135,8 +130,8 @@ void StartDownBlindCheckTask::onEnter(Context& ctx)
 
 ITask::Status StartDownBlindCheckTask::tick(Context& ctx, double dt)
 {
-  elapsed_ += dt;//表示当前任务从 onEnter() 开始，已经运行了多久。
-  print_elapsed_ += dt;//只用于控制日志打印频率，避免每 50 ms 打一条日志。
+  elapsed_ += dt;
+  print_elapsed_ += dt;
 
   const uint64_t frame_stamp = ctx.vision_down_targets_stamp_us;
 
@@ -172,7 +167,7 @@ ITask::Status StartDownBlindCheckTask::tick(Context& ctx, double dt)
 
     finish_task(ctx, false);
     return Status::SUCCESS;
-  }//安全保护，飞出MAX_RADIUS_M自动降落
+  }
 
   ctx.vision_front_enable = false;
   ctx.vision_down_enable = true;
@@ -188,7 +183,7 @@ ITask::Status StartDownBlindCheckTask::tick(Context& ctx, double dt)
     RCLCPP_WARN(
       logger_,
       "[StartDownBlindCheckTask] timeout %.2fs, no target",
-      elapsed_);//超时保护，无目标直接下一个任务
+      elapsed_);
 
     finish_task(ctx, false);
     return Status::SUCCESS;
@@ -197,12 +192,16 @@ ITask::Status StartDownBlindCheckTask::tick(Context& ctx, double dt)
   switch (state_) {
     case BlindCheckState::WAIT_FRAME:
       return tick_wait_frame(ctx);
+
     case BlindCheckState::PICK_NEXT:
       return tick_pick_next(ctx);
+
     case BlindCheckState::ALIGN_TARGET:
       return tick_align_target(ctx, dt);
+
     case BlindCheckState::RETURN_ORIGIN:
       return tick_return_origin(ctx);
+
     case BlindCheckState::FINISH:
       finish_task(ctx, true);
       return Status::SUCCESS;
@@ -220,13 +219,15 @@ ITask::Status StartDownBlindCheckTask::tick_wait_frame(Context& ctx)
   if (!down_targets_fresh(ctx) || ctx.vision_down_targets.empty()) {
     if (print_elapsed_ > 0.5) {
       print_elapsed_ = 0.0;
+
       RCLCPP_INFO(
         logger_,
         "[StartDownBlindCheckTask] WAIT_FRAME fresh=%d targets=%zu elapsed=%.2f",
         down_targets_fresh(ctx) ? 1 : 0,
         ctx.vision_down_targets.size(),
-        elapsed_);//fresh为1则有效，为0则无效
+        elapsed_);
     }
+
     return Status::RUNNING;
   }
 
@@ -246,7 +247,7 @@ ITask::Status StartDownBlindCheckTask::tick_wait_frame(Context& ctx)
         "[StartDownBlindCheckTask] duplicate ID in first frame: id=%d",
         target.track_id);
       continue;
-    }//这段代码是在首帧建立补盲目标队列时检查 ID 是否重复。
+    }
 
     ctx.blindcheck_queue.push_back(target);
   }
@@ -292,7 +293,10 @@ ITask::Status StartDownBlindCheckTask::tick_pick_next(Context& ctx)
 
   if (ctx.blindcheck_index >=
       static_cast<int>(ctx.blindcheck_queue.size())) {
-    RCLCPP_WARN(logger_, "[StartDownBlindCheckTask] all targets finished");
+    RCLCPP_WARN(
+      logger_,
+      "[StartDownBlindCheckTask] all targets finished");
+
     state_ = BlindCheckState::FINISH;
     return Status::RUNNING;
   }
@@ -352,6 +356,7 @@ ITask::Status StartDownBlindCheckTask::tick_align_target(
 
     if (print_elapsed_ > 0.5) {
       print_elapsed_ = 0.0;
+
       RCLCPP_WARN(
         logger_,
         "[StartDownBlindCheckTask] id=%d lost=%.2fs align=%.2fs",
@@ -387,36 +392,49 @@ ITask::Status StartDownBlindCheckTask::tick_align_target(
 
   float dwx = 0.0f;
   float dwy = 0.0f;
-  image_offset_to_world_delta(ctx, dx, dy, dwx, dwy);
 
- // 远离目标时快速纠偏，接近目标后自动减速
-float correction_gain = 0.35f;
-float dynamic_max_step = 0.03f;
+  image_offset_to_world_delta(
+    ctx,
+    dx,
+    dy,
+    dwx,
+    dwy);
 
-if (err_m > 0.12f) {
-  correction_gain = 0.75f;
-  dynamic_max_step = static_cast<float>(max_step_m_);
-} else if (err_m > 0.07f) {
-  correction_gain = 0.55f;
-  dynamic_max_step = std::min(
-    static_cast<float>(max_step_m_),
-    0.07f);
-}
+  float correction_gain = 0.35f;
+  float dynamic_max_step = 0.03f;
 
-dwx *= correction_gain;
-dwy *= correction_gain;
+  if (err_m > 0.12f) {
+    correction_gain = 0.75f;
+    dynamic_max_step = static_cast<float>(max_step_m_);
+  } else if (err_m > 0.07f) {
+    correction_gain = 0.55f;
+    dynamic_max_step = std::min(
+      static_cast<float>(max_step_m_),
+      0.07f);
+  }
 
-const float norm = std::hypot(dwx, dwy);
+  dwx *= correction_gain;
+  dwy *= correction_gain;
 
-if (norm > dynamic_max_step && norm > 1e-6f) {
-  const float scale = dynamic_max_step / norm;
-  dwx *= scale;
-  dwy *= scale;
-}
-  const uint64_t frame_stamp = ctx.vision_down_targets_stamp_us;
-  const bool new_frame = frame_stamp != last_control_frame_stamp_us_;
-  const float enter_tol = static_cast<float>(align_tol_m_);
-  const float exit_tol = enter_tol * 1.5f;
+  const float norm = std::hypot(dwx, dwy);
+
+  if (norm > dynamic_max_step && norm > 1e-6f) {
+    const float scale = dynamic_max_step / norm;
+    dwx *= scale;
+    dwy *= scale;
+  }
+
+  const uint64_t frame_stamp =
+    ctx.vision_down_targets_stamp_us;
+
+  const bool new_frame =
+    frame_stamp != last_control_frame_stamp_us_;
+
+  const float enter_tol =
+    static_cast<float>(align_tol_m_);
+
+  const float exit_tol =
+    enter_tol * 1.5f;
 
   if (new_frame) {
     last_control_frame_stamp_us_ = frame_stamp;
@@ -427,6 +445,7 @@ if (norm > dynamic_max_step && norm > 1e-6f) {
       stable_count_++;
 
       if (!mcu_a_sent_) {
+        // 串口发送已禁用，只保留状态标记。
         send_mcu_command('a');
         mcu_a_sent_ = true;
       }
@@ -446,6 +465,7 @@ if (norm > dynamic_max_step && norm > 1e-6f) {
 
   if (print_elapsed_ > 0.5) {
     print_elapsed_ = 0.0;
+
     RCLCPP_INFO(
       logger_,
       "[StartDownBlindCheckTask] ALIGN id=%d dx=%.3f dy=%.3f err=%.3f "
@@ -469,7 +489,10 @@ if (norm > dynamic_max_step && norm > 1e-6f) {
       matched.track_id,
       err_m);
 
-    remove_nearby_rough_targets(ctx, ctx.cx(), ctx.cy());
+    remove_nearby_rough_targets(
+      ctx,
+      ctx.cx(),
+      ctx.cy());
 
     ctx.blindcheck_locked = false;
     ctx.vision_target_locked = false;
@@ -489,6 +512,7 @@ ITask::Status StartDownBlindCheckTask::tick_return_origin(Context& ctx)
   ctx.mcu_switch_request = false;
 
   if (!mcu_b_sent_) {
+    // 串口发送已禁用，只保留状态标记。
     send_mcu_command('b');
     mcu_b_sent_ = true;
   }
@@ -499,6 +523,7 @@ ITask::Status StartDownBlindCheckTask::tick_return_origin(Context& ctx)
 
   if (print_elapsed_ > 0.5) {
     print_elapsed_ = 0.0;
+
     RCLCPP_INFO(
       logger_,
       "[StartDownBlindCheckTask] RETURN_ORIGIN %d/%zu dist=%.3f",
@@ -515,11 +540,13 @@ ITask::Status StartDownBlindCheckTask::tick_return_origin(Context& ctx)
   return Status::RUNNING;
 }
 
-bool StartDownBlindCheckTask::down_targets_fresh(const Context& ctx) const
+bool StartDownBlindCheckTask::down_targets_fresh(
+  const Context& ctx) const
 {
-  return ctx.vision_down_targets_stamp_us != 0 &&
-         ctx.vision_down_targets_stamp_us == last_down_frame_stamp_us_ &&
-         down_frame_age_s_ < 0.7;
+  return
+    ctx.vision_down_targets_stamp_us != 0 &&
+    ctx.vision_down_targets_stamp_us == last_down_frame_stamp_us_ &&
+    down_frame_age_s_ < 0.7;
 }
 
 bool StartDownBlindCheckTask::find_locked_target_in_frame(
@@ -545,7 +572,6 @@ bool StartDownBlindCheckTask::find_locked_target_in_frame(
       continue;
     }
 
-    // 同一个 ID 一帧出现多次，说明 Vision ID 异常。
     if (found) {
       return false;
     }
@@ -556,8 +582,6 @@ bool StartDownBlindCheckTask::find_locked_target_in_frame(
     }
 
     matched = target;
-
-    // ID决定目标身份，保留最初锁定的类别。
     matched.type =
       ctx.blindcheck_locked_target.type;
 
@@ -567,9 +591,12 @@ bool StartDownBlindCheckTask::find_locked_target_in_frame(
   return found;
 }
 
-void StartDownBlindCheckTask::finish_task(Context& ctx, bool aligned)
+void StartDownBlindCheckTask::finish_task(
+  Context& ctx,
+  bool aligned)
 {
   if (mcu_a_sent_ && !mcu_b_sent_) {
+    // 串口发送已禁用，只保留状态标记。
     send_mcu_command('b');
     mcu_b_sent_ = true;
   }
@@ -584,17 +611,21 @@ void StartDownBlindCheckTask::finish_task(Context& ctx, bool aligned)
 }
 
 void StartDownBlindCheckTask::image_offset_to_world_delta(
-    const Context& ctx,
-    float dx_img,
-    float dy_img,
-    float& dwx,
-    float& dwy) const
+  const Context& ctx,
+  float dx_img,
+  float dy_img,
+  float& dwx,
+  float& dwy) const
 {
   const float body_dx = static_cast<float>(
-    img_to_body_x_sign_ * k_img_to_meter_ * dy_img);
+    img_to_body_x_sign_ *
+    k_img_to_meter_ *
+    dy_img);
 
   const float body_dy = static_cast<float>(
-    img_to_body_y_sign_ * k_img_to_meter_ * dx_img);
+    img_to_body_y_sign_ *
+    k_img_to_meter_ *
+    dx_img);
 
   const float cos_yaw = std::cos(ctx.yaw);
   const float sin_yaw = std::sin(ctx.yaw);
@@ -604,23 +635,27 @@ void StartDownBlindCheckTask::image_offset_to_world_delta(
 }
 
 void StartDownBlindCheckTask::remove_nearby_rough_targets(
-    Context& ctx,
-    float x,
-    float y)
+  Context& ctx,
+  float x,
+  float y)
 {
-  const std::size_t before = ctx.detected_targets.size();
+  const std::size_t before =
+    ctx.detected_targets.size();
 
   ctx.detected_targets.erase(
     std::remove_if(
       ctx.detected_targets.begin(),
       ctx.detected_targets.end(),
       [&](const VisionPosition& target) {
-        return std::hypot(target.x - x, target.y - y) <
-               static_cast<float>(dup_remove_radius_);
+        return std::hypot(
+          target.x - x,
+          target.y - y) <
+          static_cast<float>(dup_remove_radius_);
       }),
     ctx.detected_targets.end());
 
-  const std::size_t removed = before - ctx.detected_targets.size();
+  const std::size_t removed =
+    before - ctx.detected_targets.size();
 
   if (removed > 0) {
     RCLCPP_WARN(

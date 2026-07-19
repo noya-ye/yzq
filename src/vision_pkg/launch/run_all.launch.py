@@ -8,8 +8,8 @@ def generate_launch_description():
 
         Node(
             package='vision_pkg',
-            executable='video_record_node',
-            name='video_record_node',
+            executable='yolo_node',
+            name='yolo_node',
             output='screen'
         ),
 
